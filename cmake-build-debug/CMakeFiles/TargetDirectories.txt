@@ -1,0 +1,3 @@
+S:/Projekte/20210201-BSICServer/cmake-build-debug/CMakeFiles/code.elf.dir
+S:/Projekte/20210201-BSICServer/cmake-build-debug/CMakeFiles/edit_cache.dir
+S:/Projekte/20210201-BSICServer/cmake-build-debug/CMakeFiles/rebuild_cache.dir

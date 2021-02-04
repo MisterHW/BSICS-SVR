@@ -1,0 +1,1 @@
+S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE -g  -mfloat-abi=hard -mfpu=fpv5-sp-d16 -Wl,-gc-sections,--print-memory-usage,-Map=S:/Projekte/20210201-BSICServer/cmake-build-debug/code.map -mcpu=cortex-m7 -mthumb -mthumb-interwork -T S:/Projekte/20210201-BSICServer/STM32F767ZITx_FLASH.ld @CMakeFiles\code.elf.dir\objects1.rsp  -o code.elf 
