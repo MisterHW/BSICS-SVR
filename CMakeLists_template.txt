@@ -57,10 +57,12 @@ else ()
 endif ()
 
 include_directories(${includes} Applications/SCPI_Server/Inc)
+include_directories(Applications/SCPI_Server/Inc Middlewares/Third_Party/libscpi/inc) # added
 
 add_definitions(${defines})
 
 file(GLOB_RECURSE SOURCES ${sources})
+file(GLOB_RECURSE SOURCES ${SOURCES} "Applications/*.*") # added
 
 set(LINKER_SCRIPT $${CMAKE_SOURCE_DIR}/${linkerScript})
 
@@ -71,6 +73,8 @@ add_link_options(-T $${LINKER_SCRIPT})
 
 
 add_executable($${PROJECT_NAME}.elf $${SOURCES} $${LINKER_SCRIPT})
+target_link_libraries(${PROJECT_NAME}.elf ${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/libscpi/dist/libscpi.a) # added
+
 
 set(HEX_FILE $${PROJECT_BINARY_DIR}/$${PROJECT_NAME}.hex)
 set(BIN_FILE $${PROJECT_BINARY_DIR}/$${PROJECT_NAME}.bin)

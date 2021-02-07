@@ -49,6 +49,8 @@ CMakeFiles/code.elf.dir/Applications/SCPI_Server/Src/scpi_server.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -147,6 +149,8 @@ CMakeFiles/code.elf.dir/Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.c.
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.c
@@ -181,6 +185,8 @@ CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c
@@ -214,6 +220,8 @@ CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.c.
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.c
@@ -247,6 +255,8 @@ CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma.c
@@ -280,6 +290,8 @@ CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma_ex.c.
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma_ex.c
@@ -313,6 +325,8 @@ CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_eth.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_eth.c
@@ -346,6 +360,8 @@ CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c.o
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c
@@ -379,6 +395,8 @@ CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.c
@@ -412,6 +430,8 @@ CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.c.ob
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.c
@@ -445,6 +465,8 @@ CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c
@@ -478,6 +500,8 @@ CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c_ex.c.
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c_ex.c
@@ -511,6 +535,8 @@ CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr.c
@@ -544,6 +570,8 @@ CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr_ex.c.
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr_ex.c
@@ -577,6 +605,8 @@ CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.c
@@ -610,6 +640,8 @@ CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.c.
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.c
@@ -643,6 +675,8 @@ CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim.c
@@ -676,9 +710,46 @@ CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim_ex.c.
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim_ex.c
+CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c.obj
+ ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h
+ ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f7xx.h
+ ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h
+ ../Drivers/CMSIS/Include/cmsis_armcc.h
+ ../Drivers/CMSIS/Include/cmsis_armcc_V6.h
+ ../Drivers/CMSIS/Include/cmsis_gcc.h
+ ../Drivers/CMSIS/Include/core_cm7.h
+ ../Drivers/CMSIS/Include/core_cmFunc.h
+ ../Drivers/CMSIS/Include/core_cmInstr.h
+ ../Drivers/CMSIS/Include/core_cmSimd.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_cortex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_dma.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_dma_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_eth.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_flash.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_flash_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_gpio.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_gpio_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_i2c.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_i2c_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pwr.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pwr_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
+ ../Inc/main.h
+ ../Inc/stm32f7xx_hal_conf.h
+ S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c.obj
  ../Drivers/CMSIS/Include/cmsis_armcc.h
  ../Drivers/CMSIS/Include/cmsis_gcc.h
@@ -823,6 +894,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/api_lib.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -916,6 +989,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/api_msg.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -1009,6 +1084,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/err.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -1068,6 +1145,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netbuf.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -1122,6 +1201,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netdb.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -1198,6 +1279,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netifapi.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -1285,6 +1368,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/sockets.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -1387,6 +1472,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/tcpip.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -1471,6 +1558,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -1555,6 +1644,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/def.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -1596,6 +1687,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/dns.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -1660,6 +1753,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/inet_chksum.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -1709,6 +1804,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/init.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -1825,6 +1922,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ip.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -1885,6 +1984,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/autoip.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -1946,6 +2047,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/dhcp.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -2015,6 +2118,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/etharp.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -2084,6 +2189,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -2149,6 +2256,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/igmp.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -2212,6 +2321,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -2290,6 +2401,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_addr.c.ob
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -2344,6 +2457,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_frag.c.ob
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -2410,6 +2525,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/dhcp6.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -2452,6 +2569,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ethip6.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -2515,6 +2634,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/icmp6.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -2580,6 +2701,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/inet6.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -2627,6 +2750,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -2701,6 +2826,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6_addr.c.ob
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -2747,6 +2874,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6_frag.c.ob
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -2811,6 +2940,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/mld6.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -2876,6 +3007,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/nd6.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -2944,6 +3077,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/mem.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -3007,6 +3142,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/memp.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -3116,6 +3253,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/netif.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -3215,6 +3354,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/pbuf.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -3301,6 +3442,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/raw.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -3363,6 +3506,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/stats.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -3409,6 +3554,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/sys.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -3465,6 +3612,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -3533,6 +3682,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp_in.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -3602,6 +3753,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp_out.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -3686,6 +3839,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/timeouts.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -3785,6 +3940,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/udp.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -3854,6 +4011,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ethernet.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -3958,6 +4117,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/lowpan6.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -4042,6 +4203,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/auth.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -4148,6 +4311,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ccp.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -4248,6 +4413,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap-md5.c.ob
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -4350,6 +4517,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap-new.c.ob
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -4453,6 +4622,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap_ms.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -4555,6 +4726,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/demand.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -4660,6 +4833,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/eap.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -4761,6 +4936,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ecp.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -4862,6 +5039,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/eui64.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -4962,6 +5141,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/fsm.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -5062,6 +5243,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ipcp.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -5167,6 +5350,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ipv6cp.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -5273,6 +5458,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/lcp.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -5374,6 +5561,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/magic.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -5475,6 +5664,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/mppe.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -5575,6 +5766,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/multilink.c.o
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -5679,6 +5872,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ppp.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -5787,6 +5982,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppapi.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -5894,6 +6091,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppcrypt.c.ob
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -5994,6 +6193,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppoe.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -6100,6 +6301,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppol2tp.c.ob
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -6205,6 +6408,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppos.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -6311,6 +6516,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/upap.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -6411,6 +6618,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/utils.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -6516,6 +6725,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/vj.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -6616,6 +6827,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/slipif.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -6689,6 +6902,8 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/system/OS/sys_arch.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/lwipopts.h
  ../Inc/main.h
@@ -6752,6 +6967,8 @@ CMakeFiles/code.elf.dir/Src/ethernetif.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/ethernetif.h
  ../Inc/lwipopts.h
@@ -6846,6 +7063,8 @@ CMakeFiles/code.elf.dir/Src/lwip.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/ethernetif.h
  ../Inc/lwip.h
@@ -6937,6 +7156,8 @@ CMakeFiles/code.elf.dir/Src/main.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/ethernetif.h
  ../Inc/lwip.h
@@ -7025,6 +7246,8 @@ CMakeFiles/code.elf.dir/Src/stm32f7xx_hal_msp.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Src/stm32f7xx_hal_msp.c
@@ -7058,6 +7281,8 @@ CMakeFiles/code.elf.dir/Src/stm32f7xx_hal_timebase_TIM.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Src/stm32f7xx_hal_timebase_TIM.c
@@ -7091,6 +7316,8 @@ CMakeFiles/code.elf.dir/Src/stm32f7xx_it.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/FreeRTOSConfig.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -7139,6 +7366,8 @@ CMakeFiles/code.elf.dir/Src/syscalls.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/lwipopts.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
@@ -7179,6 +7408,8 @@ CMakeFiles/code.elf.dir/Src/system_stm32f7xx.c.obj
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h
  ../Inc/main.h
  ../Inc/stm32f7xx_hal_conf.h
  S:/Projekte/20210201-BSICServer/Src/system_stm32f7xx.c

@@ -323,9 +323,22 @@ CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim_ex.c.
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim_ex.c.s"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S S:\Projekte\20210201-BSICServer\Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_tim_ex.c -o CMakeFiles\code.elf.dir\Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_tim_ex.c.s
 
+CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c.obj: CMakeFiles/code.elf.dir/flags.make
+CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c.obj: ../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c.obj"
+	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_uart.c.obj   -c S:\Projekte\20210201-BSICServer\Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_uart.c
+
+CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c.i"
+	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E S:\Projekte\20210201-BSICServer\Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_uart.c > CMakeFiles\code.elf.dir\Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_uart.c.i
+
+CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c.s"
+	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S S:\Projekte\20210201-BSICServer\Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_uart.c -o CMakeFiles\code.elf.dir\Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_uart.c.s
+
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c.obj: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c.i: cmake_force
@@ -338,7 +351,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/croutine.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/croutine.c.obj: ../Middlewares/Third_Party/FreeRTOS/Source/croutine.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/croutine.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/croutine.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\FreeRTOS\Source\croutine.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\FreeRTOS\Source\croutine.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/croutine.c.i: cmake_force
@@ -351,7 +364,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/croutine.c.s: cm
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c.obj: ../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\FreeRTOS\Source\event_groups.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\FreeRTOS\Source\event_groups.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c.i: cmake_force
@@ -364,7 +377,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c.s
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/list.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/list.c.obj: ../Middlewares/Third_Party/FreeRTOS/Source/list.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/list.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/list.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\FreeRTOS\Source\list.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\FreeRTOS\Source\list.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/list.c.i: cmake_force
@@ -377,7 +390,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/list.c.s: cmake_
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1/port.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1/port.c.obj: ../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1/port.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1/port.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1/port.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\FreeRTOS\Source\portable\GCC\ARM_CM7\r0p1\port.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\FreeRTOS\Source\portable\GCC\ARM_CM7\r0p1\port.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1/port.c.i: cmake_force
@@ -390,7 +403,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c.obj: ../Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\FreeRTOS\Source\portable\MemMang\heap_4.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\FreeRTOS\Source\portable\MemMang\heap_4.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c.i: cmake_force
@@ -403,7 +416,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/queue.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/queue.c.obj: ../Middlewares/Third_Party/FreeRTOS/Source/queue.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/queue.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/queue.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\FreeRTOS\Source\queue.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\FreeRTOS\Source\queue.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/queue.c.i: cmake_force
@@ -416,7 +429,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/queue.c.s: cmake
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/tasks.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/tasks.c.obj: ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/tasks.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/tasks.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\FreeRTOS\Source\tasks.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\FreeRTOS\Source\tasks.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/tasks.c.i: cmake_force
@@ -429,7 +442,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/tasks.c.s: cmake
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/timers.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/timers.c.obj: ../Middlewares/Third_Party/FreeRTOS/Source/timers.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/timers.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/timers.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\FreeRTOS\Source\timers.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\FreeRTOS\Source\timers.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/timers.c.i: cmake_force
@@ -442,7 +455,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/timers.c.s: cmak
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/api_lib.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/api_lib.c.obj: ../Middlewares/Third_Party/LwIP/src/api/api_lib.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/api_lib.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/api_lib.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\api\api_lib.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\api\api_lib.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/api_lib.c.i: cmake_force
@@ -455,7 +468,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/api_lib.c.s: cmake_
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/api_msg.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/api_msg.c.obj: ../Middlewares/Third_Party/LwIP/src/api/api_msg.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/api_msg.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/api_msg.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\api\api_msg.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\api\api_msg.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/api_msg.c.i: cmake_force
@@ -468,7 +481,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/api_msg.c.s: cmake_
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/err.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/err.c.obj: ../Middlewares/Third_Party/LwIP/src/api/err.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/err.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/err.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\api\err.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\api\err.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/err.c.i: cmake_force
@@ -481,7 +494,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/err.c.s: cmake_forc
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netbuf.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netbuf.c.obj: ../Middlewares/Third_Party/LwIP/src/api/netbuf.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netbuf.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netbuf.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\api\netbuf.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\api\netbuf.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netbuf.c.i: cmake_force
@@ -494,7 +507,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netbuf.c.s: cmake_f
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netdb.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netdb.c.obj: ../Middlewares/Third_Party/LwIP/src/api/netdb.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netdb.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netdb.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\api\netdb.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\api\netdb.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netdb.c.i: cmake_force
@@ -507,7 +520,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netdb.c.s: cmake_fo
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netifapi.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netifapi.c.obj: ../Middlewares/Third_Party/LwIP/src/api/netifapi.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netifapi.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netifapi.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\api\netifapi.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\api\netifapi.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netifapi.c.i: cmake_force
@@ -520,7 +533,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/netifapi.c.s: cmake
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/sockets.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/sockets.c.obj: ../Middlewares/Third_Party/LwIP/src/api/sockets.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/sockets.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/sockets.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\api\sockets.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\api\sockets.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/sockets.c.i: cmake_force
@@ -533,7 +546,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/sockets.c.s: cmake_
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/tcpip.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/tcpip.c.obj: ../Middlewares/Third_Party/LwIP/src/api/tcpip.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/tcpip.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/tcpip.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\api\tcpip.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\api\tcpip.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/tcpip.c.i: cmake_force
@@ -546,7 +559,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/api/tcpip.c.s: cmake_fo
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.c.obj: ../Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\apps\mqtt\mqtt.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\apps\mqtt\mqtt.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.c.i: cmake_force
@@ -559,7 +572,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.c.s: cma
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/def.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/def.c.obj: ../Middlewares/Third_Party/LwIP/src/core/def.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/def.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/def.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\def.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\def.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/def.c.i: cmake_force
@@ -572,7 +585,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/def.c.s: cmake_for
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/dns.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/dns.c.obj: ../Middlewares/Third_Party/LwIP/src/core/dns.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/dns.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/dns.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\dns.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\dns.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/dns.c.i: cmake_force
@@ -585,7 +598,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/dns.c.s: cmake_for
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/inet_chksum.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/inet_chksum.c.obj: ../Middlewares/Third_Party/LwIP/src/core/inet_chksum.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/inet_chksum.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/inet_chksum.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\inet_chksum.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\inet_chksum.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/inet_chksum.c.i: cmake_force
@@ -598,7 +611,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/inet_chksum.c.s: c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/init.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/init.c.obj: ../Middlewares/Third_Party/LwIP/src/core/init.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/init.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/init.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\init.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\init.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/init.c.i: cmake_force
@@ -611,7 +624,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/init.c.s: cmake_fo
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ip.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ip.c.obj: ../Middlewares/Third_Party/LwIP/src/core/ip.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ip.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ip.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\ip.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\ip.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ip.c.i: cmake_force
@@ -624,7 +637,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ip.c.s: cmake_forc
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/autoip.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/autoip.c.obj: ../Middlewares/Third_Party/LwIP/src/core/ipv4/autoip.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/autoip.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/autoip.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\ipv4\autoip.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\ipv4\autoip.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/autoip.c.i: cmake_force
@@ -637,7 +650,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/autoip.c.s: c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/dhcp.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/dhcp.c.obj: ../Middlewares/Third_Party/LwIP/src/core/ipv4/dhcp.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/dhcp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/dhcp.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\ipv4\dhcp.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\ipv4\dhcp.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/dhcp.c.i: cmake_force
@@ -650,7 +663,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/dhcp.c.s: cma
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/etharp.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/etharp.c.obj: ../Middlewares/Third_Party/LwIP/src/core/ipv4/etharp.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/etharp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/etharp.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\ipv4\etharp.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\ipv4\etharp.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/etharp.c.i: cmake_force
@@ -663,7 +676,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/etharp.c.s: c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c.obj: ../Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\ipv4\icmp.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\ipv4\icmp.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c.i: cmake_force
@@ -676,7 +689,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c.s: cma
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/igmp.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/igmp.c.obj: ../Middlewares/Third_Party/LwIP/src/core/ipv4/igmp.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/igmp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/igmp.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\ipv4\igmp.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\ipv4\igmp.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/igmp.c.i: cmake_force
@@ -689,7 +702,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/igmp.c.s: cma
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c.obj: ../Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\ipv4\ip4.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\ipv4\ip4.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c.i: cmake_force
@@ -702,7 +715,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c.s: cmak
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_addr.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_addr.c.obj: ../Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_addr.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_addr.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_addr.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\ipv4\ip4_addr.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\ipv4\ip4_addr.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_addr.c.i: cmake_force
@@ -715,7 +728,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_addr.c.s:
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_frag.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_frag.c.obj: ../Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_frag.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_frag.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_frag.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\ipv4\ip4_frag.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\ipv4\ip4_frag.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_frag.c.i: cmake_force
@@ -728,7 +741,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_frag.c.s:
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/dhcp6.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/dhcp6.c.obj: ../Middlewares/Third_Party/LwIP/src/core/ipv6/dhcp6.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/dhcp6.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/dhcp6.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\ipv6\dhcp6.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\ipv6\dhcp6.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/dhcp6.c.i: cmake_force
@@ -741,7 +754,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/dhcp6.c.s: cm
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ethip6.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ethip6.c.obj: ../Middlewares/Third_Party/LwIP/src/core/ipv6/ethip6.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ethip6.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ethip6.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\ipv6\ethip6.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\ipv6\ethip6.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ethip6.c.i: cmake_force
@@ -754,7 +767,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ethip6.c.s: c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/icmp6.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/icmp6.c.obj: ../Middlewares/Third_Party/LwIP/src/core/ipv6/icmp6.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/icmp6.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/icmp6.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\ipv6\icmp6.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\ipv6\icmp6.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/icmp6.c.i: cmake_force
@@ -767,7 +780,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/icmp6.c.s: cm
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/inet6.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/inet6.c.obj: ../Middlewares/Third_Party/LwIP/src/core/ipv6/inet6.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/inet6.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_55) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/inet6.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\ipv6\inet6.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\ipv6\inet6.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/inet6.c.i: cmake_force
@@ -780,7 +793,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/inet6.c.s: cm
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6.c.obj: ../Middlewares/Third_Party/LwIP/src/core/ipv6/ip6.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_55) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\ipv6\ip6.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\ipv6\ip6.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6.c.i: cmake_force
@@ -793,7 +806,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6.c.s: cmak
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6_addr.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6_addr.c.obj: ../Middlewares/Third_Party/LwIP/src/core/ipv6/ip6_addr.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6_addr.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6_addr.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\ipv6\ip6_addr.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\ipv6\ip6_addr.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6_addr.c.i: cmake_force
@@ -806,7 +819,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6_addr.c.s:
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6_frag.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6_frag.c.obj: ../Middlewares/Third_Party/LwIP/src/core/ipv6/ip6_frag.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6_frag.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6_frag.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\ipv6\ip6_frag.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\ipv6\ip6_frag.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6_frag.c.i: cmake_force
@@ -819,7 +832,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/ip6_frag.c.s:
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/mld6.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/mld6.c.obj: ../Middlewares/Third_Party/LwIP/src/core/ipv6/mld6.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/mld6.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/mld6.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\ipv6\mld6.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\ipv6\mld6.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/mld6.c.i: cmake_force
@@ -832,7 +845,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/mld6.c.s: cma
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/nd6.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/nd6.c.obj: ../Middlewares/Third_Party/LwIP/src/core/ipv6/nd6.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/nd6.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/nd6.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\ipv6\nd6.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\ipv6\nd6.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/nd6.c.i: cmake_force
@@ -845,7 +858,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/ipv6/nd6.c.s: cmak
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/mem.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/mem.c.obj: ../Middlewares/Third_Party/LwIP/src/core/mem.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/mem.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/mem.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\mem.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\mem.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/mem.c.i: cmake_force
@@ -858,7 +871,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/mem.c.s: cmake_for
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/memp.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/memp.c.obj: ../Middlewares/Third_Party/LwIP/src/core/memp.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/memp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/memp.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\memp.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\memp.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/memp.c.i: cmake_force
@@ -871,7 +884,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/memp.c.s: cmake_fo
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/netif.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/netif.c.obj: ../Middlewares/Third_Party/LwIP/src/core/netif.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/netif.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_63) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/netif.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\netif.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\netif.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/netif.c.i: cmake_force
@@ -884,7 +897,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/netif.c.s: cmake_f
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/pbuf.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/pbuf.c.obj: ../Middlewares/Third_Party/LwIP/src/core/pbuf.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_63) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/pbuf.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_64) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/pbuf.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\pbuf.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\pbuf.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/pbuf.c.i: cmake_force
@@ -897,7 +910,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/pbuf.c.s: cmake_fo
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/raw.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/raw.c.obj: ../Middlewares/Third_Party/LwIP/src/core/raw.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_64) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/raw.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_65) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/raw.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\raw.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\raw.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/raw.c.i: cmake_force
@@ -910,7 +923,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/raw.c.s: cmake_for
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/stats.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/stats.c.obj: ../Middlewares/Third_Party/LwIP/src/core/stats.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_65) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/stats.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_66) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/stats.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\stats.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\stats.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/stats.c.i: cmake_force
@@ -923,7 +936,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/stats.c.s: cmake_f
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/sys.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/sys.c.obj: ../Middlewares/Third_Party/LwIP/src/core/sys.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_66) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/sys.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_67) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/sys.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\sys.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\sys.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/sys.c.i: cmake_force
@@ -936,7 +949,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/sys.c.s: cmake_for
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp.c.obj: ../Middlewares/Third_Party/LwIP/src/core/tcp.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_67) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_68) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\tcp.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\tcp.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp.c.i: cmake_force
@@ -949,7 +962,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp.c.s: cmake_for
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp_in.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp_in.c.obj: ../Middlewares/Third_Party/LwIP/src/core/tcp_in.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_68) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp_in.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_69) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp_in.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\tcp_in.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\tcp_in.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp_in.c.i: cmake_force
@@ -962,7 +975,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp_in.c.s: cmake_
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp_out.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp_out.c.obj: ../Middlewares/Third_Party/LwIP/src/core/tcp_out.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_69) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp_out.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_70) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp_out.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\tcp_out.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\tcp_out.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp_out.c.i: cmake_force
@@ -975,7 +988,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/tcp_out.c.s: cmake
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/timeouts.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/timeouts.c.obj: ../Middlewares/Third_Party/LwIP/src/core/timeouts.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_70) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/timeouts.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_71) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/timeouts.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\timeouts.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\timeouts.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/timeouts.c.i: cmake_force
@@ -988,7 +1001,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/timeouts.c.s: cmak
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/udp.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/udp.c.obj: ../Middlewares/Third_Party/LwIP/src/core/udp.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_71) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/udp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_72) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/udp.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\core\udp.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\core\udp.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/udp.c.i: cmake_force
@@ -1001,7 +1014,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/core/udp.c.s: cmake_for
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ethernet.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ethernet.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ethernet.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_72) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ethernet.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_73) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ethernet.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ethernet.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ethernet.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ethernet.c.i: cmake_force
@@ -1014,7 +1027,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ethernet.c.s: cma
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/lowpan6.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/lowpan6.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/lowpan6.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_73) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/lowpan6.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_74) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/lowpan6.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\lowpan6.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\lowpan6.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/lowpan6.c.i: cmake_force
@@ -1027,7 +1040,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/lowpan6.c.s: cmak
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/auth.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/auth.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/auth.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_74) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/auth.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_75) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/auth.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\auth.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\auth.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/auth.c.i: cmake_force
@@ -1040,7 +1053,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/auth.c.s: cma
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ccp.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ccp.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/ccp.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_75) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ccp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_76) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ccp.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\ccp.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\ccp.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ccp.c.i: cmake_force
@@ -1053,7 +1066,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ccp.c.s: cmak
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap-md5.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap-md5.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/chap-md5.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_76) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap-md5.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_77) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap-md5.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\chap-md5.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\chap-md5.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap-md5.c.i: cmake_force
@@ -1066,7 +1079,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap-md5.c.s:
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap-new.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap-new.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/chap-new.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_77) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap-new.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_78) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap-new.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\chap-new.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\chap-new.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap-new.c.i: cmake_force
@@ -1079,7 +1092,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap-new.c.s:
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap_ms.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap_ms.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/chap_ms.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_78) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap_ms.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_79) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap_ms.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\chap_ms.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\chap_ms.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap_ms.c.i: cmake_force
@@ -1092,7 +1105,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/chap_ms.c.s: 
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/demand.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/demand.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/demand.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_79) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/demand.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_80) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/demand.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\demand.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\demand.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/demand.c.i: cmake_force
@@ -1105,7 +1118,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/demand.c.s: c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/eap.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/eap.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/eap.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_80) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/eap.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_81) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/eap.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\eap.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\eap.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/eap.c.i: cmake_force
@@ -1118,7 +1131,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/eap.c.s: cmak
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ecp.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ecp.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/ecp.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_81) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ecp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_82) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ecp.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\ecp.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\ecp.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ecp.c.i: cmake_force
@@ -1131,7 +1144,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ecp.c.s: cmak
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/eui64.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/eui64.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/eui64.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_82) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/eui64.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_83) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/eui64.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\eui64.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\eui64.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/eui64.c.i: cmake_force
@@ -1144,7 +1157,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/eui64.c.s: cm
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/fsm.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/fsm.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/fsm.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_83) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/fsm.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_84) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/fsm.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\fsm.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\fsm.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/fsm.c.i: cmake_force
@@ -1157,7 +1170,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/fsm.c.s: cmak
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ipcp.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ipcp.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/ipcp.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_84) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ipcp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_85) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ipcp.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\ipcp.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\ipcp.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ipcp.c.i: cmake_force
@@ -1170,7 +1183,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ipcp.c.s: cma
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ipv6cp.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ipv6cp.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/ipv6cp.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_85) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ipv6cp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_86) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ipv6cp.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\ipv6cp.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\ipv6cp.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ipv6cp.c.i: cmake_force
@@ -1183,7 +1196,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ipv6cp.c.s: c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/lcp.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/lcp.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/lcp.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_86) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/lcp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_87) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/lcp.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\lcp.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\lcp.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/lcp.c.i: cmake_force
@@ -1196,7 +1209,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/lcp.c.s: cmak
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/magic.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/magic.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/magic.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_87) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/magic.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_88) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/magic.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\magic.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\magic.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/magic.c.i: cmake_force
@@ -1209,7 +1222,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/magic.c.s: cm
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/mppe.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/mppe.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/mppe.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_88) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/mppe.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_89) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/mppe.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\mppe.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\mppe.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/mppe.c.i: cmake_force
@@ -1222,7 +1235,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/mppe.c.s: cma
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/multilink.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/multilink.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/multilink.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_89) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/multilink.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_90) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/multilink.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\multilink.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\multilink.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/multilink.c.i: cmake_force
@@ -1235,7 +1248,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/multilink.c.s
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ppp.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ppp.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/ppp.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_90) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ppp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_91) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ppp.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\ppp.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\ppp.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ppp.c.i: cmake_force
@@ -1248,7 +1261,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/ppp.c.s: cmak
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppapi.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppapi.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/pppapi.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_91) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppapi.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_92) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppapi.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\pppapi.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\pppapi.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppapi.c.i: cmake_force
@@ -1261,7 +1274,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppapi.c.s: c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppcrypt.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppcrypt.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/pppcrypt.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_92) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppcrypt.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_93) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppcrypt.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\pppcrypt.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\pppcrypt.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppcrypt.c.i: cmake_force
@@ -1274,7 +1287,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppcrypt.c.s:
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppoe.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppoe.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/pppoe.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_93) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppoe.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_94) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppoe.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\pppoe.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\pppoe.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppoe.c.i: cmake_force
@@ -1287,7 +1300,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppoe.c.s: cm
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppol2tp.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppol2tp.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/pppol2tp.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_94) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppol2tp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_95) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppol2tp.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\pppol2tp.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\pppol2tp.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppol2tp.c.i: cmake_force
@@ -1300,7 +1313,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppol2tp.c.s:
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppos.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppos.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/pppos.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_95) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppos.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_96) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppos.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\pppos.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\pppos.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppos.c.i: cmake_force
@@ -1313,7 +1326,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/pppos.c.s: cm
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/upap.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/upap.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/upap.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_96) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/upap.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_97) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/upap.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\upap.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\upap.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/upap.c.i: cmake_force
@@ -1326,7 +1339,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/upap.c.s: cma
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/utils.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/utils.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/utils.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_97) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/utils.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_98) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/utils.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\utils.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\utils.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/utils.c.i: cmake_force
@@ -1339,7 +1352,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/utils.c.s: cm
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/vj.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/vj.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/ppp/vj.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_98) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/vj.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_99) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/vj.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\ppp\vj.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\ppp\vj.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/vj.c.i: cmake_force
@@ -1352,7 +1365,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/ppp/vj.c.s: cmake
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/slipif.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/slipif.c.obj: ../Middlewares/Third_Party/LwIP/src/netif/slipif.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_99) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/slipif.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_100) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/slipif.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\src\netif\slipif.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\src\netif\slipif.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/slipif.c.i: cmake_force
@@ -1365,7 +1378,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/src/netif/slipif.c.s: cmake
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/system/OS/sys_arch.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/system/OS/sys_arch.c.obj: ../Middlewares/Third_Party/LwIP/system/OS/sys_arch.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_100) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/system/OS/sys_arch.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_101) "Building C object CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/system/OS/sys_arch.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Middlewares\Third_Party\LwIP\system\OS\sys_arch.c.obj   -c S:\Projekte\20210201-BSICServer\Middlewares\Third_Party\LwIP\system\OS\sys_arch.c
 
 CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/system/OS/sys_arch.c.i: cmake_force
@@ -1378,7 +1391,7 @@ CMakeFiles/code.elf.dir/Middlewares/Third_Party/LwIP/system/OS/sys_arch.c.s: cma
 
 CMakeFiles/code.elf.dir/Src/ethernetif.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Src/ethernetif.c.obj: ../Src/ethernetif.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_101) "Building C object CMakeFiles/code.elf.dir/Src/ethernetif.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_102) "Building C object CMakeFiles/code.elf.dir/Src/ethernetif.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Src\ethernetif.c.obj   -c S:\Projekte\20210201-BSICServer\Src\ethernetif.c
 
 CMakeFiles/code.elf.dir/Src/ethernetif.c.i: cmake_force
@@ -1391,7 +1404,7 @@ CMakeFiles/code.elf.dir/Src/ethernetif.c.s: cmake_force
 
 CMakeFiles/code.elf.dir/Src/freertos.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Src/freertos.c.obj: ../Src/freertos.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_102) "Building C object CMakeFiles/code.elf.dir/Src/freertos.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_103) "Building C object CMakeFiles/code.elf.dir/Src/freertos.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Src\freertos.c.obj   -c S:\Projekte\20210201-BSICServer\Src\freertos.c
 
 CMakeFiles/code.elf.dir/Src/freertos.c.i: cmake_force
@@ -1404,7 +1417,7 @@ CMakeFiles/code.elf.dir/Src/freertos.c.s: cmake_force
 
 CMakeFiles/code.elf.dir/Src/lwip.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Src/lwip.c.obj: ../Src/lwip.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_103) "Building C object CMakeFiles/code.elf.dir/Src/lwip.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_104) "Building C object CMakeFiles/code.elf.dir/Src/lwip.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Src\lwip.c.obj   -c S:\Projekte\20210201-BSICServer\Src\lwip.c
 
 CMakeFiles/code.elf.dir/Src/lwip.c.i: cmake_force
@@ -1417,7 +1430,7 @@ CMakeFiles/code.elf.dir/Src/lwip.c.s: cmake_force
 
 CMakeFiles/code.elf.dir/Src/main.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Src/main.c.obj: ../Src/main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_104) "Building C object CMakeFiles/code.elf.dir/Src/main.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_105) "Building C object CMakeFiles/code.elf.dir/Src/main.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Src\main.c.obj   -c S:\Projekte\20210201-BSICServer\Src\main.c
 
 CMakeFiles/code.elf.dir/Src/main.c.i: cmake_force
@@ -1430,7 +1443,7 @@ CMakeFiles/code.elf.dir/Src/main.c.s: cmake_force
 
 CMakeFiles/code.elf.dir/Src/stm32f7xx_hal_msp.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Src/stm32f7xx_hal_msp.c.obj: ../Src/stm32f7xx_hal_msp.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_105) "Building C object CMakeFiles/code.elf.dir/Src/stm32f7xx_hal_msp.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_106) "Building C object CMakeFiles/code.elf.dir/Src/stm32f7xx_hal_msp.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Src\stm32f7xx_hal_msp.c.obj   -c S:\Projekte\20210201-BSICServer\Src\stm32f7xx_hal_msp.c
 
 CMakeFiles/code.elf.dir/Src/stm32f7xx_hal_msp.c.i: cmake_force
@@ -1443,7 +1456,7 @@ CMakeFiles/code.elf.dir/Src/stm32f7xx_hal_msp.c.s: cmake_force
 
 CMakeFiles/code.elf.dir/Src/stm32f7xx_hal_timebase_TIM.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Src/stm32f7xx_hal_timebase_TIM.c.obj: ../Src/stm32f7xx_hal_timebase_TIM.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_106) "Building C object CMakeFiles/code.elf.dir/Src/stm32f7xx_hal_timebase_TIM.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_107) "Building C object CMakeFiles/code.elf.dir/Src/stm32f7xx_hal_timebase_TIM.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Src\stm32f7xx_hal_timebase_TIM.c.obj   -c S:\Projekte\20210201-BSICServer\Src\stm32f7xx_hal_timebase_TIM.c
 
 CMakeFiles/code.elf.dir/Src/stm32f7xx_hal_timebase_TIM.c.i: cmake_force
@@ -1456,7 +1469,7 @@ CMakeFiles/code.elf.dir/Src/stm32f7xx_hal_timebase_TIM.c.s: cmake_force
 
 CMakeFiles/code.elf.dir/Src/stm32f7xx_it.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Src/stm32f7xx_it.c.obj: ../Src/stm32f7xx_it.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_107) "Building C object CMakeFiles/code.elf.dir/Src/stm32f7xx_it.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_108) "Building C object CMakeFiles/code.elf.dir/Src/stm32f7xx_it.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Src\stm32f7xx_it.c.obj   -c S:\Projekte\20210201-BSICServer\Src\stm32f7xx_it.c
 
 CMakeFiles/code.elf.dir/Src/stm32f7xx_it.c.i: cmake_force
@@ -1469,7 +1482,7 @@ CMakeFiles/code.elf.dir/Src/stm32f7xx_it.c.s: cmake_force
 
 CMakeFiles/code.elf.dir/Src/syscalls.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Src/syscalls.c.obj: ../Src/syscalls.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_108) "Building C object CMakeFiles/code.elf.dir/Src/syscalls.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_109) "Building C object CMakeFiles/code.elf.dir/Src/syscalls.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Src\syscalls.c.obj   -c S:\Projekte\20210201-BSICServer\Src\syscalls.c
 
 CMakeFiles/code.elf.dir/Src/syscalls.c.i: cmake_force
@@ -1482,7 +1495,7 @@ CMakeFiles/code.elf.dir/Src/syscalls.c.s: cmake_force
 
 CMakeFiles/code.elf.dir/Src/system_stm32f7xx.c.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/Src/system_stm32f7xx.c.obj: ../Src/system_stm32f7xx.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_109) "Building C object CMakeFiles/code.elf.dir/Src/system_stm32f7xx.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_110) "Building C object CMakeFiles/code.elf.dir/Src/system_stm32f7xx.c.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\code.elf.dir\Src\system_stm32f7xx.c.obj   -c S:\Projekte\20210201-BSICServer\Src\system_stm32f7xx.c
 
 CMakeFiles/code.elf.dir/Src/system_stm32f7xx.c.i: cmake_force
@@ -1495,7 +1508,7 @@ CMakeFiles/code.elf.dir/Src/system_stm32f7xx.c.s: cmake_force
 
 CMakeFiles/code.elf.dir/startup/startup_stm32f767xx.s.obj: CMakeFiles/code.elf.dir/flags.make
 CMakeFiles/code.elf.dir/startup/startup_stm32f767xx.s.obj: ../startup/startup_stm32f767xx.s
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_110) "Building ASM object CMakeFiles/code.elf.dir/startup/startup_stm32f767xx.s.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_111) "Building ASM object CMakeFiles/code.elf.dir/startup/startup_stm32f767xx.s.obj"
 	S:\GNUTOO~1\72018-~1\bin\AR19DD~1.EXE $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\code.elf.dir\startup\startup_stm32f767xx.s.obj -c S:\Projekte\20210201-BSICServer\startup\startup_stm32f767xx.s
 
 # Object files for target code.elf
@@ -1519,6 +1532,7 @@ code_elf_OBJECTS = \
 "CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.c.obj" \
 "CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim.c.obj" \
 "CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim_ex.c.obj" \
+"CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c.obj" \
 "CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c.obj" \
 "CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/croutine.c.obj" \
 "CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c.obj" \
@@ -1633,6 +1647,7 @@ code.elf: CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal
 code.elf: CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.c.obj
 code.elf: CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim.c.obj
 code.elf: CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim_ex.c.obj
+code.elf: CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c.obj
 code.elf: CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c.obj
 code.elf: CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/croutine.c.obj
 code.elf: CMakeFiles/code.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c.obj
@@ -1728,7 +1743,7 @@ code.elf: CMakeFiles/code.elf.dir/build.make
 code.elf: ../Middlewares/Third_Party/libscpi/dist/libscpi.a
 code.elf: CMakeFiles/code.elf.dir/objects1.rsp
 code.elf: CMakeFiles/code.elf.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_111) "Linking C executable code.elf"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=S:\Projekte\20210201-BSICServer\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_112) "Linking C executable code.elf"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\code.elf.dir\link.txt --verbose=$(VERBOSE)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Building S:/Projekte/20210201-BSICServer/cmake-build-debug/code.hex"
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Building S:/Projekte/20210201-BSICServer/cmake-build-debug/code.bin"
