@@ -1,4 +1,7 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/code.elf.dir/Applications/SCPI_Server/Src/scpi-def.c.obj"
+  "CMakeFiles/code.elf.dir/Applications/SCPI_Server/Src/scpi_server.c.obj"
+  "CMakeFiles/code.elf.dir/Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.c.obj"
   "CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c.obj"
   "CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.c.obj"
   "CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma.c.obj"

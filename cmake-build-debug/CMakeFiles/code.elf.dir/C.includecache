@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+../Applications/SCPI_Server/Inc/scpi_server.h
+stdint.h
+-
+
 ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h
 core_cm7.h
 ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/core_cm7.h
@@ -1559,6 +1563,14 @@ sys/time.h
 ../Middlewares/Third_Party/LwIP/system/arch/sys_arch.h
 cmsis_os.h
 ../Middlewares/Third_Party/LwIP/system/arch/cmsis_os.h
+
+S:/Projekte/20210201-BSICServer/Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.c
+stm32f7xx_nucleo_144.h
+S:/Projekte/20210201-BSICServer/Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.h
+
+S:/Projekte/20210201-BSICServer/Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.h
+stm32f7xx_hal.h
+S:/Projekte/20210201-BSICServer/Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_hal.h
 
 S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c
 stm32f7xx_hal.h
@@ -3491,6 +3503,12 @@ cmsis_os.h
 S:/Projekte/20210201-BSICServer/Src/cmsis_os.h
 lwip.h
 S:/Projekte/20210201-BSICServer/Src/lwip.h
+lwip/netif.h
+S:/Projekte/20210201-BSICServer/Src/lwip/netif.h
+lwip/tcpip.h
+S:/Projekte/20210201-BSICServer/Src/lwip/tcpip.h
+scpi_server.h
+S:/Projekte/20210201-BSICServer/Src/scpi_server.h
 
 S:/Projekte/20210201-BSICServer/Src/stm32f7xx_hal_msp.c
 stm32f7xx_hal.h

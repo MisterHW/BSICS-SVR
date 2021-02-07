@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
+  <component name="CidrRootsConfiguration">
+    <sourceRoots>
+      <file path="$PROJECT_DIR$/Applications/SCPI_Server" />
+      <file path="$PROJECT_DIR$/Src/test" />
+      <file path="$PROJECT_DIR$/lib/libscpi/inc" />
+    </sourceRoots>
+    <excludeRoots>
+      <file path="$PROJECT_DIR$/Middlewares/Third_Party/libscpi/Third_Party" />
+      <file path="$PROJECT_DIR$/Middlewares/Third_Party/libscpi/obj" />
+      <file path="$PROJECT_DIR$/Middlewares/Third_Party/libscpi/src" />
+      <file path="$PROJECT_DIR$/Middlewares/Third_Party/libscpi/test" />
+    </excludeRoots>
+  </component>
 </project>

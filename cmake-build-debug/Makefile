@@ -142,6 +142,87 @@ code.elf/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\code.elf.dir\build.make CMakeFiles/code.elf.dir/build
 .PHONY : code.elf/fast
 
+Applications/SCPI_Server/Src/scpi-def.obj: Applications/SCPI_Server/Src/scpi-def.c.obj
+
+.PHONY : Applications/SCPI_Server/Src/scpi-def.obj
+
+# target to build an object file
+Applications/SCPI_Server/Src/scpi-def.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\code.elf.dir\build.make CMakeFiles/code.elf.dir/Applications/SCPI_Server/Src/scpi-def.c.obj
+.PHONY : Applications/SCPI_Server/Src/scpi-def.c.obj
+
+Applications/SCPI_Server/Src/scpi-def.i: Applications/SCPI_Server/Src/scpi-def.c.i
+
+.PHONY : Applications/SCPI_Server/Src/scpi-def.i
+
+# target to preprocess a source file
+Applications/SCPI_Server/Src/scpi-def.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\code.elf.dir\build.make CMakeFiles/code.elf.dir/Applications/SCPI_Server/Src/scpi-def.c.i
+.PHONY : Applications/SCPI_Server/Src/scpi-def.c.i
+
+Applications/SCPI_Server/Src/scpi-def.s: Applications/SCPI_Server/Src/scpi-def.c.s
+
+.PHONY : Applications/SCPI_Server/Src/scpi-def.s
+
+# target to generate assembly for a file
+Applications/SCPI_Server/Src/scpi-def.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\code.elf.dir\build.make CMakeFiles/code.elf.dir/Applications/SCPI_Server/Src/scpi-def.c.s
+.PHONY : Applications/SCPI_Server/Src/scpi-def.c.s
+
+Applications/SCPI_Server/Src/scpi_server.obj: Applications/SCPI_Server/Src/scpi_server.c.obj
+
+.PHONY : Applications/SCPI_Server/Src/scpi_server.obj
+
+# target to build an object file
+Applications/SCPI_Server/Src/scpi_server.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\code.elf.dir\build.make CMakeFiles/code.elf.dir/Applications/SCPI_Server/Src/scpi_server.c.obj
+.PHONY : Applications/SCPI_Server/Src/scpi_server.c.obj
+
+Applications/SCPI_Server/Src/scpi_server.i: Applications/SCPI_Server/Src/scpi_server.c.i
+
+.PHONY : Applications/SCPI_Server/Src/scpi_server.i
+
+# target to preprocess a source file
+Applications/SCPI_Server/Src/scpi_server.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\code.elf.dir\build.make CMakeFiles/code.elf.dir/Applications/SCPI_Server/Src/scpi_server.c.i
+.PHONY : Applications/SCPI_Server/Src/scpi_server.c.i
+
+Applications/SCPI_Server/Src/scpi_server.s: Applications/SCPI_Server/Src/scpi_server.c.s
+
+.PHONY : Applications/SCPI_Server/Src/scpi_server.s
+
+# target to generate assembly for a file
+Applications/SCPI_Server/Src/scpi_server.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\code.elf.dir\build.make CMakeFiles/code.elf.dir/Applications/SCPI_Server/Src/scpi_server.c.s
+.PHONY : Applications/SCPI_Server/Src/scpi_server.c.s
+
+Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.obj: Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.c.obj
+
+.PHONY : Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.obj
+
+# target to build an object file
+Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\code.elf.dir\build.make CMakeFiles/code.elf.dir/Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.c.obj
+.PHONY : Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.c.obj
+
+Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.i: Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.c.i
+
+.PHONY : Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.i
+
+# target to preprocess a source file
+Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\code.elf.dir\build.make CMakeFiles/code.elf.dir/Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.c.i
+.PHONY : Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.c.i
+
+Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.s: Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.c.s
+
+.PHONY : Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.s
+
+# target to generate assembly for a file
+Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\code.elf.dir\build.make CMakeFiles/code.elf.dir/Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.c.s
+.PHONY : Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.c.s
+
 Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.obj: Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c.obj
 
 .PHONY : Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.obj
@@ -3022,6 +3103,15 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... code.elf
+	@echo ... Applications/SCPI_Server/Src/scpi-def.obj
+	@echo ... Applications/SCPI_Server/Src/scpi-def.i
+	@echo ... Applications/SCPI_Server/Src/scpi-def.s
+	@echo ... Applications/SCPI_Server/Src/scpi_server.obj
+	@echo ... Applications/SCPI_Server/Src/scpi_server.i
+	@echo ... Applications/SCPI_Server/Src/scpi_server.s
+	@echo ... Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.obj
+	@echo ... Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.i
+	@echo ... Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.s
 	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.obj
 	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.i
 	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.s

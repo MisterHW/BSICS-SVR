@@ -41,8 +41,13 @@ set(CMAKE_ASM_TARGET_INCLUDE_PATH
   "../Middlewares/Third_Party/LwIP/src/include/posix/sys"
   "../Middlewares/Third_Party/LwIP/system/arch"
   "../Drivers/CMSIS/Include"
+  "../Applications/SCPI_Server/Inc"
+  "../Middlewares/Third_Party/libscpi/inc"
   )
 set(CMAKE_DEPENDS_CHECK_C
+  "S:/Projekte/20210201-BSICServer/Applications/SCPI_Server/Src/scpi-def.c" "S:/Projekte/20210201-BSICServer/cmake-build-debug/CMakeFiles/code.elf.dir/Applications/SCPI_Server/Src/scpi-def.c.obj"
+  "S:/Projekte/20210201-BSICServer/Applications/SCPI_Server/Src/scpi_server.c" "S:/Projekte/20210201-BSICServer/cmake-build-debug/CMakeFiles/code.elf.dir/Applications/SCPI_Server/Src/scpi_server.c.obj"
+  "S:/Projekte/20210201-BSICServer/Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.c" "S:/Projekte/20210201-BSICServer/cmake-build-debug/CMakeFiles/code.elf.dir/Drivers/BSP/STM32F7xx_Nucleo_144/stm32f7xx_nucleo_144.c.obj"
   "S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c" "S:/Projekte/20210201-BSICServer/cmake-build-debug/CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c.obj"
   "S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.c" "S:/Projekte/20210201-BSICServer/cmake-build-debug/CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.c.obj"
   "S:/Projekte/20210201-BSICServer/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma.c" "S:/Projekte/20210201-BSICServer/cmake-build-debug/CMakeFiles/code.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma.c.obj"
@@ -184,6 +189,8 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "../Middlewares/Third_Party/LwIP/src/include/posix/sys"
   "../Middlewares/Third_Party/LwIP/system/arch"
   "../Drivers/CMSIS/Include"
+  "../Applications/SCPI_Server/Inc"
+  "../Middlewares/Third_Party/libscpi/inc"
   )
 
 # Targets to which this target links.
