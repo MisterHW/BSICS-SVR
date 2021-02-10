@@ -59,7 +59,6 @@
 // #include "app_ethernet.h"
 // #include "httpserver-netconn.h"
 #include "scpi_server.h"
-#include "stdio.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -88,7 +87,7 @@ void StartDefaultTask(void const * argument);
 /* USER CODE BEGIN 0 */
 int __io_putchar(int ch)
 {
-    HAL_UART_Transmit(&huart3, (uint8_t *)&ch, 1, 0xFFFF);
+    HAL_UART_Transmit(&huart3, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
     return ch;
 }
 /* USER CODE END 0 */
@@ -119,7 +118,14 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+    /* FreeRTOS port.c: Priority grouping:
+        The interrupt controller (NVIC) allows the bits
+        that define each interrupt's priority to be split between bits that
+        define the interrupt's pre-emption priority bits and bits that define
+        the interrupt's sub-priority.  For simplicity all bits must be defined
+        to be pre-emption priority bits.
+    */
+    NVIC_SetPriorityGrouping( 0 );
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -138,7 +144,10 @@ int main(void)
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  /* USER CODE END 2 */
+  char buf[] = "UART OK\n";
+  HAL_UART_Transmit(&huart3, (uint8_t *)buf, 7, HAL_MAX_DELAY);
+
+    /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
@@ -204,12 +213,11 @@ void SystemClock_Config(void)
 
     /**Initializes the CPU, AHB and APB busses clocks 
     */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = 16;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = 8;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLM = 4;
   RCC_OscInitStruct.PLL.PLLN = 200;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 2;
@@ -370,15 +378,15 @@ void StartDefaultTask(void const * argument)
 
   /* USER CODE BEGIN 5 */
 
-    /* Create tcp_ip stack thread */
-    tcpip_init(NULL, NULL);
+  /* Create tcp_ip stack thread */
+  tcpip_init(NULL, NULL);
 
-    /* Initialize webserver demo */
-    //http_server_netconn_init();
+  /* Initialize webserver demo */
+  //http_server_netconn_init();
 
-    /* Initialize SCPI server. */
-    scpi_server_init();
-
+  /* Initialize SCPI server. */
+  scpi_server_init();
+  printf("SCPI initialized.");
 
     /* Notify user about the network interface config */
     //User_notification();
@@ -403,7 +411,7 @@ void MPU_Config(void)
     */
   MPU_InitStruct.Enable = MPU_REGION_ENABLE;
   MPU_InitStruct.Number = MPU_REGION_NUMBER0;
-  MPU_InitStruct.BaseAddress = 0x2004C000;
+  MPU_InitStruct.BaseAddress = SRAM2_BASE;
   MPU_InitStruct.Size = MPU_REGION_SIZE_16KB;
   MPU_InitStruct.SubRegionDisable = 0x0;
   MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL1;
@@ -419,7 +427,7 @@ void MPU_Config(void)
     */
   MPU_InitStruct.Enable = MPU_REGION_ENABLE;
   MPU_InitStruct.Number = MPU_REGION_NUMBER1;
-  MPU_InitStruct.BaseAddress = 0x2004C000;
+  MPU_InitStruct.BaseAddress = SRAM2_BASE;
   MPU_InitStruct.Size = MPU_REGION_SIZE_256B;
   MPU_InitStruct.SubRegionDisable = 0x0;
   MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
