@@ -1,3 +1,0 @@
-S:/Projekte/20210201-BSICServer/BSICS-SVR/cmake-build-debug/CMakeFiles/edit_cache.dir
-S:/Projekte/20210201-BSICServer/BSICS-SVR/cmake-build-debug/CMakeFiles/BSICS-SVR.elf.dir
-S:/Projekte/20210201-BSICServer/BSICS-SVR/cmake-build-debug/CMakeFiles/rebuild_cache.dir

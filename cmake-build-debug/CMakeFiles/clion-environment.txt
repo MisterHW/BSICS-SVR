@@ -1,4 +1,0 @@
-ToolSet: w64 5.0 (local)@C:\tools\mingw64
-Options: 
-
-Options:

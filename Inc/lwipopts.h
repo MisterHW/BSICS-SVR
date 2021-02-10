@@ -60,7 +60,7 @@
 
 /* Within 'USER CODE' section, code will be kept by default at each generation */
 /* USER CODE BEGIN 0 */
-
+#define LWIP_DEBUG 1
 /* USER CODE END 0 */
 
 #ifdef __cplusplus
@@ -137,8 +137,12 @@
 #define CHECKSUM_CHECK_ICMP6 0
 /*----- Default Value for NETIF_DEBUG: LWIP_DBG_OFF ---*/
 #define NETIF_DEBUG LWIP_DBG_ON
+/*----- Default Value for API_LIB_DEBUG: LWIP_DBG_OFF ---*/
+#define API_LIB_DEBUG LWIP_DBG_ON
 /*----- Default Value for SOCKETS_DEBUG: LWIP_DBG_OFF ---*/
 #define SOCKETS_DEBUG LWIP_DBG_ON
+/*----- Default Value for ICMP_DEBUG: LWIP_DBG_OFF ---*/
+#define ICMP_DEBUG LWIP_DBG_ON
 /*----- Default Value for IP_DEBUG: LWIP_DBG_OFF ---*/
 #define IP_DEBUG LWIP_DBG_ON
 /*----- Default Value for TCP_DEBUG: LWIP_DBG_OFF ---*/

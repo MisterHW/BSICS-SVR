@@ -85,6 +85,16 @@ void StartDefaultTask(void const * argument);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
+
+void disableStdioBuffering(void)
+{
+    // Enable flush after printf(): turn off buffers, so IO occurs immediately
+    // Otherwise printf() only flushes the buffer when it sees a "\n" or up to the last "\n".
+    setvbuf(stdin, NULL, _IONBF, 0);
+    setvbuf(stdout, NULL, _IONBF, 0);
+    setvbuf(stderr, NULL, _IONBF, 0);
+}
+
 int __io_putchar(int ch)
 {
     HAL_UART_Transmit(&huart3, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
@@ -100,7 +110,7 @@ int __io_putchar(int ch)
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  disableStdioBuffering();
   /* USER CODE END 1 */
 
   /* MPU Configuration----------------------------------------------------------*/
@@ -125,7 +135,7 @@ int main(void)
         the interrupt's sub-priority.  For simplicity all bits must be defined
         to be pre-emption priority bits.
     */
-    NVIC_SetPriorityGrouping( 0 );
+  // NVIC_SetPriorityGrouping( 0 );
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -145,9 +155,9 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   char buf[] = "UART OK\n";
-  HAL_UART_Transmit(&huart3, (uint8_t *)buf, 7, HAL_MAX_DELAY);
+  HAL_UART_Transmit(&huart3, (uint8_t *)buf, 8, HAL_MAX_DELAY);
 
-    /* USER CODE END 2 */
+  /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
@@ -386,7 +396,6 @@ void StartDefaultTask(void const * argument)
 
   /* Initialize SCPI server. */
   scpi_server_init();
-  printf("SCPI initialized.");
 
     /* Notify user about the network interface config */
     //User_notification();
@@ -473,7 +482,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 void _Error_Handler(char *file, int line)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
+  /* User can add their own implementation to report the HAL error return state */
+  printf("_Error_Handler called in line %d:\n", line);
+  printf(file);
+  printf("\n");
+
   while(1)
   {
   }
