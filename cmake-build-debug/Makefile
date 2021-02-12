@@ -358,6 +358,33 @@ Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_eth.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_eth.c.s
 .PHONY : Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_eth.c.s
 
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.obj: Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.c.obj
+
+.PHONY : Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.obj
+
+# target to build an object file
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.c.obj
+.PHONY : Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.c.obj
+
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.i: Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.c.i
+
+.PHONY : Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.i
+
+# target to preprocess a source file
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.c.i
+.PHONY : Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.c.i
+
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.s: Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.c.s
+
+.PHONY : Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.s
+
+# target to generate assembly for a file
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.c.s
+.PHONY : Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.c.s
+
 Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.obj: Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c.obj
 
 .PHONY : Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.obj
@@ -682,6 +709,33 @@ Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c.s
 .PHONY : Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c.s
 
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.obj: Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c.obj
+
+.PHONY : Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.obj
+
+# target to build an object file
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c.obj
+.PHONY : Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c.obj
+
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.i: Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c.i
+
+.PHONY : Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.i
+
+# target to preprocess a source file
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c.i
+.PHONY : Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c.i
+
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.s: Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c.s
+
+.PHONY : Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.s
+
+# target to generate assembly for a file
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c.s
+.PHONY : Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c.s
+
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.obj: Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c.obj
 
 .PHONY : Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.obj
@@ -871,6 +925,33 @@ Middlewares/Third_Party/FreeRTOS/Source/queue.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/queue.c.s
 .PHONY : Middlewares/Third_Party/FreeRTOS/Source/queue.c.s
 
+Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.obj: Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c.obj
+
+.PHONY : Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.obj
+
+# target to build an object file
+Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c.obj
+.PHONY : Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c.obj
+
+Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.i: Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c.i
+
+.PHONY : Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.i
+
+# target to preprocess a source file
+Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c.i
+.PHONY : Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c.i
+
+Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.s: Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c.s
+
+.PHONY : Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.s
+
+# target to generate assembly for a file
+Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c.s
+.PHONY : Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c.s
+
 Middlewares/Third_Party/FreeRTOS/Source/tasks.obj: Middlewares/Third_Party/FreeRTOS/Source/tasks.c.obj
 
 .PHONY : Middlewares/Third_Party/FreeRTOS/Source/tasks.obj
@@ -1005,6 +1086,33 @@ Middlewares/Third_Party/LwIP/src/api/err.s: Middlewares/Third_Party/LwIP/src/api
 Middlewares/Third_Party/LwIP/src/api/err.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/api/err.c.s
 .PHONY : Middlewares/Third_Party/LwIP/src/api/err.c.s
+
+Middlewares/Third_Party/LwIP/src/api/if_api.obj: Middlewares/Third_Party/LwIP/src/api/if_api.c.obj
+
+.PHONY : Middlewares/Third_Party/LwIP/src/api/if_api.obj
+
+# target to build an object file
+Middlewares/Third_Party/LwIP/src/api/if_api.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/api/if_api.c.obj
+.PHONY : Middlewares/Third_Party/LwIP/src/api/if_api.c.obj
+
+Middlewares/Third_Party/LwIP/src/api/if_api.i: Middlewares/Third_Party/LwIP/src/api/if_api.c.i
+
+.PHONY : Middlewares/Third_Party/LwIP/src/api/if_api.i
+
+# target to preprocess a source file
+Middlewares/Third_Party/LwIP/src/api/if_api.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/api/if_api.c.i
+.PHONY : Middlewares/Third_Party/LwIP/src/api/if_api.c.i
+
+Middlewares/Third_Party/LwIP/src/api/if_api.s: Middlewares/Third_Party/LwIP/src/api/if_api.c.s
+
+.PHONY : Middlewares/Third_Party/LwIP/src/api/if_api.s
+
+# target to generate assembly for a file
+Middlewares/Third_Party/LwIP/src/api/if_api.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/api/if_api.c.s
+.PHONY : Middlewares/Third_Party/LwIP/src/api/if_api.c.s
 
 Middlewares/Third_Party/LwIP/src/api/netbuf.obj: Middlewares/Third_Party/LwIP/src/api/netbuf.c.obj
 
@@ -1167,6 +1275,87 @@ Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.s: Middlewares/Third_Party/LwIP/
 Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.c.s
 .PHONY : Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.c.s
+
+Middlewares/Third_Party/LwIP/src/core/altcp.obj: Middlewares/Third_Party/LwIP/src/core/altcp.c.obj
+
+.PHONY : Middlewares/Third_Party/LwIP/src/core/altcp.obj
+
+# target to build an object file
+Middlewares/Third_Party/LwIP/src/core/altcp.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/core/altcp.c.obj
+.PHONY : Middlewares/Third_Party/LwIP/src/core/altcp.c.obj
+
+Middlewares/Third_Party/LwIP/src/core/altcp.i: Middlewares/Third_Party/LwIP/src/core/altcp.c.i
+
+.PHONY : Middlewares/Third_Party/LwIP/src/core/altcp.i
+
+# target to preprocess a source file
+Middlewares/Third_Party/LwIP/src/core/altcp.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/core/altcp.c.i
+.PHONY : Middlewares/Third_Party/LwIP/src/core/altcp.c.i
+
+Middlewares/Third_Party/LwIP/src/core/altcp.s: Middlewares/Third_Party/LwIP/src/core/altcp.c.s
+
+.PHONY : Middlewares/Third_Party/LwIP/src/core/altcp.s
+
+# target to generate assembly for a file
+Middlewares/Third_Party/LwIP/src/core/altcp.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/core/altcp.c.s
+.PHONY : Middlewares/Third_Party/LwIP/src/core/altcp.c.s
+
+Middlewares/Third_Party/LwIP/src/core/altcp_alloc.obj: Middlewares/Third_Party/LwIP/src/core/altcp_alloc.c.obj
+
+.PHONY : Middlewares/Third_Party/LwIP/src/core/altcp_alloc.obj
+
+# target to build an object file
+Middlewares/Third_Party/LwIP/src/core/altcp_alloc.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/core/altcp_alloc.c.obj
+.PHONY : Middlewares/Third_Party/LwIP/src/core/altcp_alloc.c.obj
+
+Middlewares/Third_Party/LwIP/src/core/altcp_alloc.i: Middlewares/Third_Party/LwIP/src/core/altcp_alloc.c.i
+
+.PHONY : Middlewares/Third_Party/LwIP/src/core/altcp_alloc.i
+
+# target to preprocess a source file
+Middlewares/Third_Party/LwIP/src/core/altcp_alloc.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/core/altcp_alloc.c.i
+.PHONY : Middlewares/Third_Party/LwIP/src/core/altcp_alloc.c.i
+
+Middlewares/Third_Party/LwIP/src/core/altcp_alloc.s: Middlewares/Third_Party/LwIP/src/core/altcp_alloc.c.s
+
+.PHONY : Middlewares/Third_Party/LwIP/src/core/altcp_alloc.s
+
+# target to generate assembly for a file
+Middlewares/Third_Party/LwIP/src/core/altcp_alloc.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/core/altcp_alloc.c.s
+.PHONY : Middlewares/Third_Party/LwIP/src/core/altcp_alloc.c.s
+
+Middlewares/Third_Party/LwIP/src/core/altcp_tcp.obj: Middlewares/Third_Party/LwIP/src/core/altcp_tcp.c.obj
+
+.PHONY : Middlewares/Third_Party/LwIP/src/core/altcp_tcp.obj
+
+# target to build an object file
+Middlewares/Third_Party/LwIP/src/core/altcp_tcp.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/core/altcp_tcp.c.obj
+.PHONY : Middlewares/Third_Party/LwIP/src/core/altcp_tcp.c.obj
+
+Middlewares/Third_Party/LwIP/src/core/altcp_tcp.i: Middlewares/Third_Party/LwIP/src/core/altcp_tcp.c.i
+
+.PHONY : Middlewares/Third_Party/LwIP/src/core/altcp_tcp.i
+
+# target to preprocess a source file
+Middlewares/Third_Party/LwIP/src/core/altcp_tcp.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/core/altcp_tcp.c.i
+.PHONY : Middlewares/Third_Party/LwIP/src/core/altcp_tcp.c.i
+
+Middlewares/Third_Party/LwIP/src/core/altcp_tcp.s: Middlewares/Third_Party/LwIP/src/core/altcp_tcp.c.s
+
+.PHONY : Middlewares/Third_Party/LwIP/src/core/altcp_tcp.s
+
+# target to generate assembly for a file
+Middlewares/Third_Party/LwIP/src/core/altcp_tcp.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/core/altcp_tcp.c.s
+.PHONY : Middlewares/Third_Party/LwIP/src/core/altcp_tcp.c.s
 
 Middlewares/Third_Party/LwIP/src/core/def.obj: Middlewares/Third_Party/LwIP/src/core/def.c.obj
 
@@ -2086,6 +2275,60 @@ Middlewares/Third_Party/LwIP/src/core/udp.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/core/udp.c.s
 .PHONY : Middlewares/Third_Party/LwIP/src/core/udp.c.s
 
+Middlewares/Third_Party/LwIP/src/netif/bridgeif.obj: Middlewares/Third_Party/LwIP/src/netif/bridgeif.c.obj
+
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/bridgeif.obj
+
+# target to build an object file
+Middlewares/Third_Party/LwIP/src/netif/bridgeif.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/netif/bridgeif.c.obj
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/bridgeif.c.obj
+
+Middlewares/Third_Party/LwIP/src/netif/bridgeif.i: Middlewares/Third_Party/LwIP/src/netif/bridgeif.c.i
+
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/bridgeif.i
+
+# target to preprocess a source file
+Middlewares/Third_Party/LwIP/src/netif/bridgeif.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/netif/bridgeif.c.i
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/bridgeif.c.i
+
+Middlewares/Third_Party/LwIP/src/netif/bridgeif.s: Middlewares/Third_Party/LwIP/src/netif/bridgeif.c.s
+
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/bridgeif.s
+
+# target to generate assembly for a file
+Middlewares/Third_Party/LwIP/src/netif/bridgeif.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/netif/bridgeif.c.s
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/bridgeif.c.s
+
+Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.obj: Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.c.obj
+
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.obj
+
+# target to build an object file
+Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.c.obj
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.c.obj
+
+Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.i: Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.c.i
+
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.i
+
+# target to preprocess a source file
+Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.c.i
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.c.i
+
+Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.s: Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.c.s
+
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.s
+
+# target to generate assembly for a file
+Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.c.s
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.c.s
+
 Middlewares/Third_Party/LwIP/src/netif/ethernet.obj: Middlewares/Third_Party/LwIP/src/netif/ethernet.c.obj
 
 .PHONY : Middlewares/Third_Party/LwIP/src/netif/ethernet.obj
@@ -2139,6 +2382,60 @@ Middlewares/Third_Party/LwIP/src/netif/lowpan6.s: Middlewares/Third_Party/LwIP/s
 Middlewares/Third_Party/LwIP/src/netif/lowpan6.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/netif/lowpan6.c.s
 .PHONY : Middlewares/Third_Party/LwIP/src/netif/lowpan6.c.s
+
+Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.obj: Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.c.obj
+
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.obj
+
+# target to build an object file
+Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.c.obj
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.c.obj
+
+Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.i: Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.c.i
+
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.i
+
+# target to preprocess a source file
+Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.c.i
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.c.i
+
+Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.s: Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.c.s
+
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.s
+
+# target to generate assembly for a file
+Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.c.s
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.c.s
+
+Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.obj: Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.c.obj
+
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.obj
+
+# target to build an object file
+Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.c.obj
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.c.obj
+
+Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.i: Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.c.i
+
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.i
+
+# target to preprocess a source file
+Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.c.i
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.c.i
+
+Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.s: Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.c.s
+
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.s
+
+# target to generate assembly for a file
+Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.c.s
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.c.s
 
 Middlewares/Third_Party/LwIP/src/netif/ppp/auth.obj: Middlewares/Third_Party/LwIP/src/netif/ppp/auth.c.obj
 
@@ -2842,6 +3139,33 @@ Middlewares/Third_Party/LwIP/src/netif/slipif.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/netif/slipif.c.s
 .PHONY : Middlewares/Third_Party/LwIP/src/netif/slipif.c.s
 
+Middlewares/Third_Party/LwIP/src/netif/zepif.obj: Middlewares/Third_Party/LwIP/src/netif/zepif.c.obj
+
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/zepif.obj
+
+# target to build an object file
+Middlewares/Third_Party/LwIP/src/netif/zepif.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/netif/zepif.c.obj
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/zepif.c.obj
+
+Middlewares/Third_Party/LwIP/src/netif/zepif.i: Middlewares/Third_Party/LwIP/src/netif/zepif.c.i
+
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/zepif.i
+
+# target to preprocess a source file
+Middlewares/Third_Party/LwIP/src/netif/zepif.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/netif/zepif.c.i
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/zepif.c.i
+
+Middlewares/Third_Party/LwIP/src/netif/zepif.s: Middlewares/Third_Party/LwIP/src/netif/zepif.c.s
+
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/zepif.s
+
+# target to generate assembly for a file
+Middlewares/Third_Party/LwIP/src/netif/zepif.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/src/netif/zepif.c.s
+.PHONY : Middlewares/Third_Party/LwIP/src/netif/zepif.c.s
+
 Middlewares/Third_Party/LwIP/system/OS/sys_arch.obj: Middlewares/Third_Party/LwIP/system/OS/sys_arch.c.obj
 
 .PHONY : Middlewares/Third_Party/LwIP/system/OS/sys_arch.obj
@@ -3004,32 +3328,32 @@ Src/stm32f7xx_hal_msp.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Src/stm32f7xx_hal_msp.c.s
 .PHONY : Src/stm32f7xx_hal_msp.c.s
 
-Src/stm32f7xx_hal_timebase_TIM.obj: Src/stm32f7xx_hal_timebase_TIM.c.obj
+Src/stm32f7xx_hal_timebase_tim.obj: Src/stm32f7xx_hal_timebase_tim.c.obj
 
-.PHONY : Src/stm32f7xx_hal_timebase_TIM.obj
+.PHONY : Src/stm32f7xx_hal_timebase_tim.obj
 
 # target to build an object file
-Src/stm32f7xx_hal_timebase_TIM.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Src/stm32f7xx_hal_timebase_TIM.c.obj
-.PHONY : Src/stm32f7xx_hal_timebase_TIM.c.obj
+Src/stm32f7xx_hal_timebase_tim.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Src/stm32f7xx_hal_timebase_tim.c.obj
+.PHONY : Src/stm32f7xx_hal_timebase_tim.c.obj
 
-Src/stm32f7xx_hal_timebase_TIM.i: Src/stm32f7xx_hal_timebase_TIM.c.i
+Src/stm32f7xx_hal_timebase_tim.i: Src/stm32f7xx_hal_timebase_tim.c.i
 
-.PHONY : Src/stm32f7xx_hal_timebase_TIM.i
+.PHONY : Src/stm32f7xx_hal_timebase_tim.i
 
 # target to preprocess a source file
-Src/stm32f7xx_hal_timebase_TIM.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Src/stm32f7xx_hal_timebase_TIM.c.i
-.PHONY : Src/stm32f7xx_hal_timebase_TIM.c.i
+Src/stm32f7xx_hal_timebase_tim.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Src/stm32f7xx_hal_timebase_tim.c.i
+.PHONY : Src/stm32f7xx_hal_timebase_tim.c.i
 
-Src/stm32f7xx_hal_timebase_TIM.s: Src/stm32f7xx_hal_timebase_TIM.c.s
+Src/stm32f7xx_hal_timebase_tim.s: Src/stm32f7xx_hal_timebase_tim.c.s
 
-.PHONY : Src/stm32f7xx_hal_timebase_TIM.s
+.PHONY : Src/stm32f7xx_hal_timebase_tim.s
 
 # target to generate assembly for a file
-Src/stm32f7xx_hal_timebase_TIM.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Src/stm32f7xx_hal_timebase_TIM.c.s
-.PHONY : Src/stm32f7xx_hal_timebase_TIM.c.s
+Src/stm32f7xx_hal_timebase_tim.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Src/stm32f7xx_hal_timebase_tim.c.s
+.PHONY : Src/stm32f7xx_hal_timebase_tim.c.s
 
 Src/stm32f7xx_it.obj: Src/stm32f7xx_it.c.obj
 
@@ -3154,6 +3478,9 @@ help:
 	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_eth.obj
 	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_eth.i
 	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_eth.s
+	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.obj
+	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.i
+	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.s
 	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.obj
 	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.i
 	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.s
@@ -3190,6 +3517,9 @@ help:
 	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.obj
 	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.i
 	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.s
+	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.obj
+	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.i
+	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.s
 	@echo ... Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.obj
 	@echo ... Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.i
 	@echo ... Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.s
@@ -3211,6 +3541,9 @@ help:
 	@echo ... Middlewares/Third_Party/FreeRTOS/Source/queue.obj
 	@echo ... Middlewares/Third_Party/FreeRTOS/Source/queue.i
 	@echo ... Middlewares/Third_Party/FreeRTOS/Source/queue.s
+	@echo ... Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.obj
+	@echo ... Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.i
+	@echo ... Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.s
 	@echo ... Middlewares/Third_Party/FreeRTOS/Source/tasks.obj
 	@echo ... Middlewares/Third_Party/FreeRTOS/Source/tasks.i
 	@echo ... Middlewares/Third_Party/FreeRTOS/Source/tasks.s
@@ -3226,6 +3559,9 @@ help:
 	@echo ... Middlewares/Third_Party/LwIP/src/api/err.obj
 	@echo ... Middlewares/Third_Party/LwIP/src/api/err.i
 	@echo ... Middlewares/Third_Party/LwIP/src/api/err.s
+	@echo ... Middlewares/Third_Party/LwIP/src/api/if_api.obj
+	@echo ... Middlewares/Third_Party/LwIP/src/api/if_api.i
+	@echo ... Middlewares/Third_Party/LwIP/src/api/if_api.s
 	@echo ... Middlewares/Third_Party/LwIP/src/api/netbuf.obj
 	@echo ... Middlewares/Third_Party/LwIP/src/api/netbuf.i
 	@echo ... Middlewares/Third_Party/LwIP/src/api/netbuf.s
@@ -3244,6 +3580,15 @@ help:
 	@echo ... Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.obj
 	@echo ... Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.i
 	@echo ... Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.s
+	@echo ... Middlewares/Third_Party/LwIP/src/core/altcp.obj
+	@echo ... Middlewares/Third_Party/LwIP/src/core/altcp.i
+	@echo ... Middlewares/Third_Party/LwIP/src/core/altcp.s
+	@echo ... Middlewares/Third_Party/LwIP/src/core/altcp_alloc.obj
+	@echo ... Middlewares/Third_Party/LwIP/src/core/altcp_alloc.i
+	@echo ... Middlewares/Third_Party/LwIP/src/core/altcp_alloc.s
+	@echo ... Middlewares/Third_Party/LwIP/src/core/altcp_tcp.obj
+	@echo ... Middlewares/Third_Party/LwIP/src/core/altcp_tcp.i
+	@echo ... Middlewares/Third_Party/LwIP/src/core/altcp_tcp.s
 	@echo ... Middlewares/Third_Party/LwIP/src/core/def.obj
 	@echo ... Middlewares/Third_Party/LwIP/src/core/def.i
 	@echo ... Middlewares/Third_Party/LwIP/src/core/def.s
@@ -3346,12 +3691,24 @@ help:
 	@echo ... Middlewares/Third_Party/LwIP/src/core/udp.obj
 	@echo ... Middlewares/Third_Party/LwIP/src/core/udp.i
 	@echo ... Middlewares/Third_Party/LwIP/src/core/udp.s
+	@echo ... Middlewares/Third_Party/LwIP/src/netif/bridgeif.obj
+	@echo ... Middlewares/Third_Party/LwIP/src/netif/bridgeif.i
+	@echo ... Middlewares/Third_Party/LwIP/src/netif/bridgeif.s
+	@echo ... Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.obj
+	@echo ... Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.i
+	@echo ... Middlewares/Third_Party/LwIP/src/netif/bridgeif_fdb.s
 	@echo ... Middlewares/Third_Party/LwIP/src/netif/ethernet.obj
 	@echo ... Middlewares/Third_Party/LwIP/src/netif/ethernet.i
 	@echo ... Middlewares/Third_Party/LwIP/src/netif/ethernet.s
 	@echo ... Middlewares/Third_Party/LwIP/src/netif/lowpan6.obj
 	@echo ... Middlewares/Third_Party/LwIP/src/netif/lowpan6.i
 	@echo ... Middlewares/Third_Party/LwIP/src/netif/lowpan6.s
+	@echo ... Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.obj
+	@echo ... Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.i
+	@echo ... Middlewares/Third_Party/LwIP/src/netif/lowpan6_ble.s
+	@echo ... Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.obj
+	@echo ... Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.i
+	@echo ... Middlewares/Third_Party/LwIP/src/netif/lowpan6_common.s
 	@echo ... Middlewares/Third_Party/LwIP/src/netif/ppp/auth.obj
 	@echo ... Middlewares/Third_Party/LwIP/src/netif/ppp/auth.i
 	@echo ... Middlewares/Third_Party/LwIP/src/netif/ppp/auth.s
@@ -3430,6 +3787,9 @@ help:
 	@echo ... Middlewares/Third_Party/LwIP/src/netif/slipif.obj
 	@echo ... Middlewares/Third_Party/LwIP/src/netif/slipif.i
 	@echo ... Middlewares/Third_Party/LwIP/src/netif/slipif.s
+	@echo ... Middlewares/Third_Party/LwIP/src/netif/zepif.obj
+	@echo ... Middlewares/Third_Party/LwIP/src/netif/zepif.i
+	@echo ... Middlewares/Third_Party/LwIP/src/netif/zepif.s
 	@echo ... Middlewares/Third_Party/LwIP/system/OS/sys_arch.obj
 	@echo ... Middlewares/Third_Party/LwIP/system/OS/sys_arch.i
 	@echo ... Middlewares/Third_Party/LwIP/system/OS/sys_arch.s
@@ -3448,9 +3808,9 @@ help:
 	@echo ... Src/stm32f7xx_hal_msp.obj
 	@echo ... Src/stm32f7xx_hal_msp.i
 	@echo ... Src/stm32f7xx_hal_msp.s
-	@echo ... Src/stm32f7xx_hal_timebase_TIM.obj
-	@echo ... Src/stm32f7xx_hal_timebase_TIM.i
-	@echo ... Src/stm32f7xx_hal_timebase_TIM.s
+	@echo ... Src/stm32f7xx_hal_timebase_tim.obj
+	@echo ... Src/stm32f7xx_hal_timebase_tim.i
+	@echo ... Src/stm32f7xx_hal_timebase_tim.s
 	@echo ... Src/stm32f7xx_it.obj
 	@echo ... Src/stm32f7xx_it.i
 	@echo ... Src/stm32f7xx_it.s
