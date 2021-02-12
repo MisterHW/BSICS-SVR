@@ -33,7 +33,8 @@
 ENTRY(Reset_Handler)
 
 /* Highest address of the user mode stack */
-_estack = 0x20080000;    /* end of RAM */
+_estack = 0x20078000;    /* end of RAM ( = 0x20080000 - RAM_NC LENGTH ) */
+
 /* Generate a link error if heap and stack don't fit into RAM */
 _Min_Heap_Size = 0x200;      /* required amount of heap  */
 _Min_Stack_Size = 0x400; /* required amount of stack */
@@ -41,7 +42,8 @@ _Min_Stack_Size = 0x400; /* required amount of stack */
 /* Specify the memory areas */
 MEMORY
 {
-RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 512K
+RAM (xrw)       : ORIGIN = 0x20000000, LENGTH =  480K /* 512K - 32K */
+RAM_NC (rw)     : ORIGIN = 0x20078000, LENGTH =   32K /* ORIGIN = 0x20000000 + 480 * 1024 */
 FLASH (rx)      : ORIGIN = 0x00200000, LENGTH = 2048K
 }
 
@@ -153,7 +155,23 @@ SECTIONS
     . = ALIGN(8);
   } >RAM
 
-  
+
+  /* Uninitialized data section into "RAM_NC" Ram type memory */
+  . = ALIGN(4);
+  .bss_nc :
+  {
+    /* This is used by the startup in order to initialize the .bss_nc section */
+    _sbss_nc = .;         /* define a global symbol at bss start */
+    __bss_nc_start__ = _sbss_nc;
+    *(.none_cached)
+    *(.none_cached*)
+    *(COMMON)
+
+    . = ALIGN(4);
+    _ebss_nc = .;         /* define a global symbol at bss end */
+    __bss_nc_end__ = _ebss_nc;
+  } >RAM_NC
+
 
   /* Remove information from the standard libraries */
   /DISCARD/ :

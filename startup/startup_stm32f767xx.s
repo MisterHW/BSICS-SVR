@@ -62,6 +62,11 @@ defined in linker script */
 .word  _ebss
 /* stack used for SystemInit_ExtMemCtl; always internal RAM used */
 
+/* start address for the .none_cached section. defined in linker script */
+.word  _sbss_nc
+/* end address for the .none_cached section. defined in linker script */
+.word  _ebss_nc
+
 /**
  * @brief  This is the code that gets called when the processor first
  *          starts execution following a reset event. Only the absolutely
@@ -104,6 +109,18 @@ LoopFillZerobss:
   ldr  r3, = _ebss
   cmp  r2, r3
   bcc  FillZerobss
+
+/* Zero fill the none_cache segment. */
+  ldr  r2, =_sbss_nc
+  b  LoopFillZerobssnc
+FillZerobssnc:
+  movs  r3, #0
+  str  r3, [r2], #4
+
+LoopFillZerobssnc:
+  ldr  r3, = _ebss_nc
+  cmp  r2, r3
+  bcc  FillZerobssnc
 
 /* Call the clock system initialization function.*/
   bl  SystemInit   
