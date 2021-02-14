@@ -30,7 +30,9 @@
 
 /* Within 'USER CODE' section, code will be kept by default at each generation */
 /* USER CODE BEGIN 0 */
+
 // #define LWIP_DEBUG 1
+
 /* USER CODE END 0 */
 
 #ifdef __cplusplus
@@ -41,8 +43,8 @@
 /* Parameters set in STM32CubeMX LwIP Configuration GUI -*/
 /*----- WITH_RTOS enabled (Since FREERTOS is set) -----*/
 #define WITH_RTOS 1
-/*----- CHECKSUM_BY_HARDWARE enabled -----*/
-#define CHECKSUM_BY_HARDWARE 1
+/*----- CHECKSUM_BY_HARDWARE disabled -----*/
+#define CHECKSUM_BY_HARDWARE 0
 /*-----------------------------------------------------------------------------*/
 
 /* LwIP Stack Parameters (modified compared to initialization value in opt.h) -*/
@@ -117,8 +119,16 @@
 #define ICMP_DEBUG LWIP_DBG_ON
 /*----- Default Value for IP_DEBUG: LWIP_DBG_OFF ---*/
 #define IP_DEBUG LWIP_DBG_ON
+/*----- Default Value for RAW_DEBUG: LWIP_DBG_OFF ---*/
+#define RAW_DEBUG LWIP_DBG_ON
+/*----- Default Value for MEM_DEBUG: LWIP_DBG_OFF ---*/
+#define MEM_DEBUG LWIP_DBG_ON
+/*----- Default Value for MEMP_DEBUG: LWIP_DBG_OFF ---*/
+#define MEMP_DEBUG LWIP_DBG_ON
 /*----- Default Value for TCP_DEBUG: LWIP_DBG_OFF ---*/
 #define TCP_DEBUG LWIP_DBG_ON
+/*----- Default Value for TCP_OUTPUT_DEBUG: LWIP_DBG_OFF ---*/
+#define TCP_OUTPUT_DEBUG LWIP_DBG_ON
 /*----- Default Value for TCPIP_DEBUG: LWIP_DBG_OFF ---*/
 #define TCPIP_DEBUG LWIP_DBG_ON
 /*-----------------------------------------------------------------------------*/
