@@ -38,7 +38,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "assert.h"
 
 #include "scpi/scpi.h"
 #include "scpi-def.h"
@@ -410,5 +410,10 @@ static void scpi_server_thread(void *arg) {
 }
 
 void scpi_server_init(void) {
-    sys_thread_new("SCPI", scpi_server_thread, NULL, 2 * DEFAULT_THREAD_STACKSIZE, SCPI_THREAD_PRIO);
+    osThreadId SCPIThreadID = sys_thread_new("SCPI", scpi_server_thread,NULL,
+        2 * DEFAULT_THREAD_STACKSIZE, SCPI_THREAD_PRIO);
+    /* osThreadCreate() returns 0 when stacksize * sizeof(StackType_t) < xFreeBytesRemaining
+     * see FreeRTOSConfig.h: #define configTOTAL_HEAP_SIZE ( ( size_t ) ( 25 * 1024 )
+     * or increase TOTAL_HEAP_SIZE in CubeMX > FreeRTOS > Memory management settings. */
+    assert(SCPIThreadID);
 }

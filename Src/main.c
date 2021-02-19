@@ -113,13 +113,15 @@ int main(void)
 
   /* USER CODE BEGIN Init */
     /* FreeRTOS port.c: Priority grouping:
-        The interrupt controller (NVIC) allows the bits
+        " The interrupt controller (NVIC) allows the bits
         that define each interrupt's priority to be split between bits that
         define the interrupt's pre-emption priority bits and bits that define
         the interrupt's sub-priority.  For simplicity all bits must be defined
-        to be pre-emption priority bits.
-    */
-  // NVIC_SetPriorityGrouping( 0 );
+        to be pre-emption priority bits. "
+        FreeRTOS assert suggests: NVIC_SetPriorityGrouping( 0 );
+        HAL_Init() suggests leaving at HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
+        which is 0 bit sub-priority, but 0x00000003U, not 0.
+  */
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -161,7 +163,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 768);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -364,8 +366,8 @@ void StartDefaultTask(void const * argument)
   /* Initialize webserver demo */
   //http_server_netconn_init();
 
-  /* Initialize SCPI server. */
-  scpi_server_init();
+    /* Initialize SCPI server. */
+    scpi_server_init();
 
     /* Notify user about the network interface config */
     //User_notification();
@@ -373,7 +375,7 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+      osDelay(1);
   }
   /* USER CODE END 5 */
 }
@@ -449,7 +451,7 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add their own implementation to report the HAL error return state */
-  printf("_Error_Handler called\n");
+  printf("main.c Error_Handler called\n");
 
   while(1)
   {
