@@ -161,14 +161,14 @@ SECTIONS
   .bss_nc :
   {
     /* This is used by the startup in order to initialize the .bss_nc section */
-    _sbss_nc = .;         /* define a global symbol at bss start */
+    _sbss_nc = .;         /* define a global symbol at bss_nc start */
     __bss_nc_start__ = _sbss_nc;
-    *(.none_cached)
-    *(.none_cached*)
+    *(.nc_bss)
+    *(.nc_bss*)
     *(COMMON)
 
     . = ALIGN(4);
-    _ebss_nc = .;         /* define a global symbol at bss end */
+    _ebss_nc = .;         /* define a global symbol at bss_nc end */
     __bss_nc_end__ = _ebss_nc;
   } >RAM_NC
 

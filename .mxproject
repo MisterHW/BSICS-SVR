@@ -14,8 +14,8 @@ SourceFiles=Src\main.c;Src\freertos.c;Src\lwip.c;Src\ethernetif.c;Src\syscalls.c
 HeaderPath=Middlewares\Third_Party\LwIP\src\include;Middlewares\Third_Party\LwIP\system;Drivers\STM32F7xx_HAL_Driver\Inc;Drivers\STM32F7xx_HAL_Driver\Inc\Legacy;Middlewares\Third_Party\FreeRTOS\Source\portable\GCC\ARM_CM7\r0p1;Middlewares\Third_Party\LwIP\src\include\netif\ppp;Drivers\CMSIS\Device\ST\STM32F7xx\Include;Middlewares\Third_Party\FreeRTOS\Source\include;Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS;Middlewares\Third_Party\LwIP\src\include\lwip;Middlewares\Third_Party\LwIP\src\include\lwip\apps;Middlewares\Third_Party\LwIP\src\include\lwip\priv;Middlewares\Third_Party\LwIP\src\include\lwip\prot;Middlewares\Third_Party\LwIP\src\include\netif;Middlewares\Third_Party\LwIP\src\include\posix;Middlewares\Third_Party\LwIP\src\include\posix\sys;Middlewares\Third_Party\LwIP\system\arch;Drivers\CMSIS\Include;Inc;
 
 [PreviousGenFiles]
-HeaderPath=S:/Projekte/20210201-BSICServer/BSICS-SVR/Inc
+HeaderPath=S:/repos/BSICS/BSICS-Controller/BSICS-SVR/Inc
 HeaderFiles=FreeRTOSConfig.h;lwip.h;lwipopts.h;ethernetif.h;stm32f7xx_it.h;stm32f7xx_hal_conf.h;main.h;
-SourcePath=S:/Projekte/20210201-BSICServer/BSICS-SVR/Src
+SourcePath=S:/repos/BSICS/BSICS-Controller/BSICS-SVR/Src
 SourceFiles=freertos.c;lwip.c;ethernetif.c;stm32f7xx_it.c;stm32f7xx_hal_msp.c;stm32f7xx_hal_timebase_tim.c;main.c;
 

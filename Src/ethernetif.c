@@ -71,10 +71,10 @@ __ALIGN_BEGIN uint8_t Rx_Buff[ETH_RXBUFNB][ETH_RX_BUF_SIZE] __ALIGN_END; /* Ethe
 __ALIGN_BEGIN uint8_t Tx_Buff[ETH_TXBUFNB][ETH_TX_BUF_SIZE] __ALIGN_END; /* Ethernet Transmit Buffer */
 
 /* USER CODE BEGIN 2 */
-extern ETH_DMADescTypeDef DMARxDscrTab[ETH_RXBUFNB] __attribute__((section(".none_cached")));
-extern ETH_DMADescTypeDef DMATxDscrTab[ETH_TXBUFNB] __attribute__((section(".none_cached")));
-extern uint8_t Rx_Buff[ETH_RXBUFNB][ETH_RX_BUF_SIZE] __attribute__((section(".none_cached*")));
-extern uint8_t Tx_Buff[ETH_TXBUFNB][ETH_TX_BUF_SIZE] __attribute__((section(".none_cached*")));
+extern ETH_DMADescTypeDef DMARxDscrTab[ETH_RXBUFNB] __attribute__((section(".nc_bss")));
+extern ETH_DMADescTypeDef DMATxDscrTab[ETH_TXBUFNB] __attribute__((section(".nc_bss")));
+extern uint8_t Rx_Buff[ETH_RXBUFNB][ETH_RX_BUF_SIZE] __attribute__((section(".nc_bss*")));
+extern uint8_t Tx_Buff[ETH_TXBUFNB][ETH_TX_BUF_SIZE] __attribute__((section(".nc_bss*")));
 /* USER CODE END 2 */
 
 /* Semaphore to signal incoming packets */
