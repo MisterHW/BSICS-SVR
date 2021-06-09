@@ -1,8 +1,15 @@
 ## BSICS-SVR: Creating This Project
 
-The log below described how the basic project was created using CLion and STM32CubeMX.
+The log below described how the basic project was created using CLion and STM32CubeMX. The strategy is to
 
-### Creating a New STM32CubeMX Project With CLion
+1. create a new CLion embedded project, use STM32CubeMX to generate code with default initialization for Nucleo-F767ZI in SW4STM32 flavor
+3. modify CMakeLists_template.txt for hardware floating point support and additional files to be included, compiled and linked
+4. establish non-cached memory for ETH buffers: modify linker script and startup code to partition RAM, creating a 32 kB non-cached (NC) segment for ethernet RX/TX buffers and associated DMA descriptors
+5. set up STM32F7 core, peripherals and middlewares
+6. adding libscpi and SCPI\_Server
+7. copying and modifying additional code
+
+### 1. Creating a New STM32CubeMX Project With CLion
 
 Using New Project > Embedded > STM32CubeMX, a new project corresponding .ioc file are created. In STM32CubeMX, select the Nucleo-F767ZI board and confirm use of its default peripheral initialization.
 
@@ -14,10 +21,10 @@ Make sure Toolchain/IDE is set to "SW4STM32".
 
 You can return to STM32CubeMX at any point in time and modify the configuration. CLion will reload files and regenerate the CMake project (unless there are problems with the CMakelists.txt file or its CMakelists_template.txt source). 
 
-**Note: CLion expects project files to be newer than the .ioc timestamp. To avoid CLion nagging about "outdated" files, 1) save changes in STM32CubeMX, 2) GENERATE CODE, 3) close STM32CubeMX declining to "save changes". ** 
+**Note: CLion expects project files to be newer than the .ioc timestamp. To avoid CLion nagging about "outdated" files, 1) save changes in STM32CubeMX, 2) GENERATE CODE, 3) close STM32CubeMX declining to "save changes".** 
 
 
-#### CMakelists_template.txt
+### 2. Changes To CMakeLists_template.txt
 
 CLion 2021.1 does not provide FPU configuration options in the UI, so compile options have to be set in CMakeLists_template.txt to enable hardware FPU support. Without add\_compile\_options and add\_link\_options below, a [compile-time error](https://youtrack.jetbrains.com/issue/CPP-18629) will occur (see FreeRTOS.h configUSE \_TASK\_FPU\_SUPPORT 1)
 
@@ -42,7 +49,7 @@ CLion 2021.1 does not provide FPU configuration options in the UI, so compile op
 	# Uncomment for software floating point
 	#add_compile_options(-mfloat-abi=soft)
 
-To compile and link Applications/SCPI\_Server/ and libscpi, include\_directories, file() and target\_link\_libraries instructions have to be added: 
+To compile and link Applications/SCPI\_Server/ and libscpi, include\_directories(), file() and target\_link\_libraries() instructions have to be added: 
 
 	include_directories(${includes} Applications/SCPI_Server/Inc)
 	include_directories(Applications/SCPI_Server/Inc Middlewares/Third_Party/libscpi/inc) # added
@@ -58,41 +65,25 @@ To compile and link Applications/SCPI\_Server/ and libscpi, include\_directories
 	target_link_libraries(${PROJECT_NAME}.elf ${CMAKE_SOURCE_DIR}/Middlewares/Third_Party/libscpi/dist/libscpi.a) # added
 
 
-include\_directories appends paths, while file() sets the SOURCES variable, so ${SROUCES} has to prepend any subsequent assignment.
+include\_directories() appends paths, while file() sets the SOURCES variable, so ${SROUCES} has to prepend any subsequent assignment.
 
-----
-#### GPIO Configuration
-
-The default Nucleo-144 I/O configuration takes care of most of the settings required for ethernet use. 
-
-The project currently does not use the USB peripheral (USB\_OTG\_HS).
-
-USART3 on PD8, PD9 is added for 115200 Baud 8N1 debug output.
-
-Peripherals will be added later as needed.
-
-![](img/Nucleo-F767ZI_pinoutConfig.png)
+CLion automatically detects files, and after finding paths and names occurring in .idea files it is not necessarily clear what to edit. Presumably everything is regenerated from CMake output, making the CMakeLists_template.txt the appropriate place to include and configure dependencies.
 
 
 ----
-#### Clock Settings
-
-As per UM1974 "6.8.1 OSC clock supply", STM32F767ZI uses the 8.000 MHz clock from the STM32F103 STLink v2 controller via PH0 RCC\_OSC\_IN. While it's possible to supply an external clock to LAN8742A, the board comes with a dedicated 25.000 MHz crystal.
-
-![](img/STM32CubeMX_clock_config.PNG)
+### 3. Establishing A Non-Cached Memory Region
 
 
----- 
-#### Linker Script
+#### Changes To STM32F767ZITx_FLASH.ld
 
-Some changes to *STM32F767ZITx_FLASH.ld* are required in conjunction with subsequent settings in MPU and ETH. The thought process is also outlined in [community.st.com: memory layout and MPU configuration](https://community.st.com/s/question/0D50X0000C4Nk4GSQS/bug-missing-compiler-and-cpu-memory-barriers).
+Some changes to the *STM32F767ZITx_FLASH.ld* linker script are required in conjunction with subsequent settings in MPU and ETH. The thought process is also outlined in [community.st.com: missing compiler and cpu memory barriers](https://community.st.com/s/question/0D50X0000C4Nk4GSQS/bug-missing-compiler-and-cpu-memory-barriers).
 
 In short, the following changes are made to establish a 32 kB non-cached (NC) memory region *RAM\_NC* exclusive to ethernet RX /TX buffers and their associated DMA descriptors:
 
 * the \_estack pointer is lowered by 32 kB
 * a new memory region *RAM_NC* is added to the *MEMORY* specification at the position of the modified stack pointer, with *LENGTH = 32K*
 * definitions for a *.bss_nc* data section placed in *>RAM_NC* which introduces \*(.nc\_bss)
-  and \*(.nc\_bss\*) section. The section names will re-occur in *ethernetif.c* variables with  *\_\_attribute\_\_((section(".nc\_bss")))* and *\_\_attribute\_\_((section(".nc\_bss\*")))*
+  and \*(.nc\_bss\*) sections. The section names will re-occur in *ethernetif.c* variables with  *\_\_attribute\_\_((section(".nc\_bss")))* and *\_\_attribute\_\_((section(".nc\_bss\*")))*
 * _sbss\_nc and _ebss\_nc symbols are also added as pointers for memory initialization (zero fill) in *startup\_stm32F767xx.s*.
 
 
@@ -118,9 +109,13 @@ STM32F746 (320 kB): initially \_estack = 0x20050000, new \_estack and RAM\_NC st
 	FLASH (rx)      : ORIGIN = 0x00200000, LENGTH = 2048K
 	}
 
-To define memory sections the linker will use to place the ethernet RX/TX buffers and DMA descriptors, one adds the new segment below .\_user_heap\_stack {...} >RAM:
+
+To define memory sections the linker will use to place the ethernet RX/TX buffers and DMA descriptors, a new section .bss_nc will follow the same pattern as .bss, so a copy of the .bss definition can be pasted edited.
+
+One adds the new section below .\_user_heap\_stack {...} >RAM:
 
 	  /* Uninitialized data section into "RAM_NC" Ram type memory */
+
 	  . = ALIGN(4);
 	  .bss_nc :
 	  {
@@ -136,7 +131,9 @@ To define memory sections the linker will use to place the ethernet RX/TX buffer
 	    __bss_nc_end__ = _ebss_nc;
 	  } >RAM_NC
 
-.bss_nc follows the same pattern as .bss, so the existing data section code can be copied and renamed accordingly.
+Section attributes *\_\_attribute\_\_((section(".nc\_bss")))* and *\_\_attribute\_\_((section(".nc\_bss\*")))* added to variable declarations instruct the linker to allocate these in the RAM\_NC segment. After compilation, the .map file will show successful allocation, e.g. based on the changes in *ethernetif.c* made later on.
+
+Hint: Variables are generally allocated in their order of appearance in the code, so explicitly ordering them by using both *\*(.nc\_bss)* and  *\*(.nc\_bss\*)* is not strictly necessary. However, overlapping memory protection unit (MPU) regions will require the DMA descriptors to be exactly at the beginning of *RAM\_NC* (they're 2x 128 Bytes and the MPU region covers 256 Bytes). Using two sub-sections instead of *\*(.nc\_bss)* alone, and exclusively using *\*(.nc\_bss)* for the DMA descriptors guarantees proper allocation independent of the order of variable declarations and definitions.
 
 ----
 #### Startup/startup_stm32f767xx.s
@@ -158,7 +155,8 @@ While .bss and .nc\_bss are contiguous and one could zero-fill all memory betwee
 	  cmp  r2, r3
 	  bcc  FillZerobss
 	  
-is implemented to zero-fill the new bss regment (now reduced in size and no longer coinsiding with RAM extents). Right below one adds:
+
+is already implemented to zero-fill the (now-modified) bss memory segment (now reduced in size and no longer coinciding with RAM extents). Right below one adds:
 	
 	/* Zero fill the bss_nc segment. */
 	ldr  r2, =_sbss_nc
@@ -176,6 +174,33 @@ is implemented to zero-fill the new bss regment (now reduced in size and no long
 as the linker guarantees consistency of the \_sbss\_nc and \_ebss\_nc symbols.
 
 **After making these modifications, it's good practice to store a copy of the modified .ld and .s files in an archive. Currently STM32CubeMX does not appear to remove or overwrite these files unless the processor is changed, but this is a good time to archive them.**
+
+
+----
+### 4. Set Up Core, Peripherals And Middlewares
+
+
+
+#### GPIO Configuration
+
+The default Nucleo-144 I/O configuration takes care of most of the settings required for ethernet use. 
+
+The project currently does not use the USB peripheral (USB\_OTG\_HS).
+
+USART3 on PD8, PD9 is added for 115200 Baud 8N1 debug output.
+
+Peripherals will be added later as needed.
+
+![](img/Nucleo-F767ZI_pinoutConfig.png)
+
+
+----
+#### Clock Settings
+
+As per UM1974 "6.8.1 OSC clock supply", STM32F767ZI uses the 8.000 MHz clock from the STM32F103 STLink v2 controller via PH0 RCC\_OSC\_IN. While it's possible to supply an external clock to LAN8742A, the board comes with a dedicated 25.000 MHz crystal.
+
+![](img/STM32CubeMX_clock_config.PNG)
+
 
 ---- 
 #### Cortex_M7 and MPU
