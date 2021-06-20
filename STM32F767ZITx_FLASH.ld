@@ -33,7 +33,7 @@
 ENTRY(Reset_Handler)
 
 /* Highest address of the user mode stack */
-_estack = 0x20078000;    /* end of RAM ( = 0x20080000 - RAM_NC LENGTH ) */
+_estack = 0x2007C000;    /* end of RAM ( = 0x20080000 - RAM_NC LENGTH ) */
 
 /* Generate a link error if heap and stack don't fit into RAM */
 _Min_Heap_Size = 0x200;      /* required amount of heap  */
@@ -42,8 +42,8 @@ _Min_Stack_Size = 0x400; /* required amount of stack */
 /* Specify the memory areas */
 MEMORY
 {
-RAM (xrw)       : ORIGIN = 0x20000000, LENGTH =  480K /* 512K - 32K */
-RAM_NC (rw)     : ORIGIN = 0x20078000, LENGTH =   32K /* ORIGIN = 0x20000000 + 480 * 1024 */
+RAM (xrw)       : ORIGIN = 0x20000000, LENGTH =  496K /* 512K - 16K */
+RAM_NC (rw)     : ORIGIN = 0x2007C000, LENGTH =   16K /* ORIGIN = 0x20000000 + 496 * 1024 */
 FLASH (rx)      : ORIGIN = 0x00200000, LENGTH = 2048K
 }
 
