@@ -284,8 +284,12 @@ as the linker guarantees consistency of the \_sbss\_nc and \_ebss\_nc symbols.
 
 
 ----
-#### Ensuring Data Coherency
+#### MPU configuration: Ensuring Data Coherency
 
+Please see the [detailed description of the Cortex-M7 MPU](readme_mpu.md) for an attempt to elucidate the MPU attributes and terminology. The focus on the sub-section below will be on the practical use for this project.
+
+
+##### MPU configuration
 
 
 
@@ -302,6 +306,7 @@ The default Nucleo-144 I/O configuration takes care of most of the settings requ
 The project currently does not use the USB peripheral (USB\_OTG\_HS).
 
 USART3 on PD8, PD9 is added for 115200 Baud 8N1 debug output.
+
 
 Peripherals will be added later as needed.
 
