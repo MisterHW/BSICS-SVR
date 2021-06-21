@@ -22,11 +22,11 @@ The following diagram only goes so far, but serves as an introductory visual ide
 ![](img/Cortex-M7_Core_architecture_overview.PNG)
 
  
-[AN4838 - Managing memory protection unit in STM32 MCU](pdf/AN4838 - Managing memory protection unit in STM32 MCUs.pdf) :
+[AN4838 - Managing memory protection unit in STM32 MCU](pdf/AN4838%20-%20Managing%20memory%20protection%20unit%20in%20STM32%20MCUs.pdf) :
 [Table 6](img/AN4838_Table6_Cortex-M_MPU_differences.png) lists MPU features. Cortex-M3, Cortex-M4 and Cortex-M7 feature sets are basically identical, and it's here where the reader is first confronted with a set of capabilities and memory region attributes:
 
 ----
-#### MPU_RASR attributes and 
+#### MPU_RASR attributes and parameters
 
 * **Execute Never (XN) : MPU\_INSTRUCTION\_ACCESS\_DISABLE** prevents code execution and disables Instruction Cache. A MemManage [fault exception handler](img/AN209_-_Using Cortex-M3_M4_M7_Fault_Exceptions.PNG) is triggered upon violation if enabled. By
 default, the MemManage fault is disabled so that the HardFault handler is executed. 
@@ -69,7 +69,7 @@ default, the MemManage fault is disabled so that the HardFault handler is execut
 		- On hits it writes to the cache setting dirty bit for the block, the main memory is not updated
 		- On misses it updates the block in the main memory *and brings the block to the cache*
 		
-	Caveat: as per [MPU tips 1: MPU usage in STM32 with ARM cortex-M7](pdf/STM32 MPU tips - 1 MPU usage in STM32 with ARM Cortex M7_with_notes.pdf), **do not use Write-Through due to a data corruption issue**: " in STM32F7 microcontrollers and some older STM32H7 microcontrollers, older revision of ARM Cortex-M7 is used, and this older version of Cortex-M7 has Errata for data cache usage when configured with write-through policy ."
+	Caveat: as per [MPU tips 1: MPU usage in STM32 with ARM cortex-M7](pdf/STM32%20MPU%20tips%20-%201%20MPU%20usage%20in%20STM32%20with%20ARM%20Cortex%20M7_with_notes.pdf), **do not use Write-Through due to a data corruption issue**: " in STM32F7 microcontrollers and some older STM32H7 microcontrollers, older revision of ARM Cortex-M7 is used, and this older version of Cortex-M7 has Errata for data cache usage when configured with write-through policy ."
 
 * **Cacheable (C) : MPU\_ACCESS\_NOT\_CACHEABLE** explicitly disables I-Cache and D-Cache. [AN4839 recommends always disabling](img/AN4839_Mistakes_to_avoid.PNG) cachability in regions accessed by CPU and DMA, as well as memory blocks extensively used by DMA alone. In the [AN4839 Example for cache maintenance and data coherency](img/AN4839_cache_coherency.png), the challenge of having CPU and DMA access the same region in SRAM1 is outlined, and multiple solutions are outlined. Without limiting generality, I-Cache can be ignored here and statuted via XN. Four solutions are proposed:
 
@@ -107,7 +107,7 @@ execute the next instruction even if the transfer takes a number of clock cycles
 	Ultimately, the [last row in table 91 reworked to list the substitutions](img/inner and outer policies.png) (TEX values 0b100 thru 0b111) seem to lead to contradicting assumptions about TEX[0] and TEX[1] meanings. Add to that the fact that the table is vendor- and family-specific, it's ok to stop looking for answers where there may be none, even though AM4829 claims, "Using the cache is simple at the most basic level."
 	
 	
-* **Sub-Region Disable (SRD)**: for Cortex-M7, this option is provided to sub-divide an MPU region address range into 8 equal parts. Setting a corresponding bit removes that sub-region from the region. [MPU tips 1: MPU usage in STM32 with ARM cortex-M7](pdf/STM32 MPU tips - 1 MPU usage in STM32 with ARM Cortex M7_with_notes.pdf) has a nice graphic to illustrate it on page 16.
+* **Sub-Region Disable (SRD)**: for Cortex-M7, this option is provided to sub-divide an MPU region address range into 8 equal parts. Setting a corresponding bit removes that sub-region from the region. [MPU tips 1: MPU usage in STM32 with ARM cortex-M7](pdf/STM32%20MPU%20tips%20-%201%20MPU%20usage%20in%20STM32%20with%20ARM%20Cortex%20M7_with_notes.pdf) has a nice graphic to illustrate it on page 16.
 
 * **SIZE**: This value is obvious: Note however that an MPU\_REGION\_SIZE\_16KB needs to start at a 16 kB-aligned base address (aligned by the size of the MPU region).
 
@@ -116,7 +116,7 @@ execute the next instruction even if the transfer takes a number of clock cycles
  
 #### Memory Types
 
-as per [MPU tips 1: MPU usage in STM32 with ARM cortex-M7](pdf/STM32 MPU tips - 1 MPU usage in STM32 with ARM Cortex M7_with_notes.pdf):
+as per [MPU tips 1: MPU usage in STM32 with ARM cortex-M7](pdf/STM32%20MPU%20tips%20-%201%20MPU%20usage%20in%20STM32%20with%20ARM%20Cortex%20M7_with_notes.pdf):
 * Normal
 	* The processor can perform speculative reads or re-order transactions for efficiency
 * Device
