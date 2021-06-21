@@ -18,20 +18,20 @@ As per PM0214, the MPU attributes don't affect DMA data accesses to the memory/p
 
 The following diagram only goes so far, but serves as an introductory visual idea:
 
-![](img/Cortex-M7 Core architecture overview.png)
+![](img/Cortex-M7_Core_architecture_overview.png)
  
 [AN4838 - Managing memory protection unit in STM32 MCU](pdf/AN4838 - Managing memory protection unit in STM32 MCUs.pdf) :
-[Table 6](img/AN4838 Table6 Cortex-M MPU differences.png) lists MPU features. Cortex-M3, Cortex-M4 and Cortex-M7 feature sets are basically identical, and it's here where the reader is first confronted with a set of capabilities and memory region attributes:
+[Table 6](img/AN4838_Table6_Cortex-M_MPU_differences.png) lists MPU features. Cortex-M3, Cortex-M4 and Cortex-M7 feature sets are basically identical, and it's here where the reader is first confronted with a set of capabilities and memory region attributes:
 
 ----
 #### MPU_RASR attributes and 
 
-* **Execute Never (XN) : MPU\_INSTRUCTION\_ACCESS\_DISABLE** prevents code execution and disables Instruction Cache. A MemManage [fault exception handler](img/AN209 - Using Cortex-M3+M4+M7 Fault Exceptions.PNG) is triggered upon violation if enabled. By
+* **Execute Never (XN) : MPU\_INSTRUCTION\_ACCESS\_DISABLE** prevents code execution and disables Instruction Cache. A MemManage [fault exception handler](img/AN209_-_Using Cortex-M3_M4_M7_Fault_Exceptions.PNG) is triggered upon violation if enabled. By
 default, the MemManage fault is disabled so that the HardFault handler is executed. 
 
 * **Access Permissions (AP)**: Cortex-M7 processors have a Handler mode (reset state, privileged access applies) and a Thread mode (unprivileged / user access applies). For both modes, Read/Write, Read-Only and No Access permissions can be selected:
 
-	![](img/PM0253 Cortex-M7 Accesss Permissions.PNG)
+	![](img/PM0253_Cortex-M7_Accesss_Permissions.PNG)
 	
 	Again, a MemManage fault exception should be raised upon violation.
 
@@ -69,7 +69,7 @@ default, the MemManage fault is disabled so that the HardFault handler is execut
 		
 	Caveat: as per [MPU tips 1: MPU usage in STM32 with ARM cortex-M7](pdf/STM32 MPU tips - 1 MPU usage in STM32 with ARM Cortex M7_with_notes.pdf), **do not use Write-Through due to a data corruption issue**: " in STM32F7 microcontrollers and some older STM32H7 microcontrollers, older revision of ARM Cortex-M7 is used, and this older version of Cortex-M7 has Errata for data cache usage when configured with write-through policy ."
 
-* **Cacheable (C) : MPU\_ACCESS\_NOT\_CACHEABLE** explicitly disables I-Cache and D-Cache. [AN4839 recommends always disabling](img/AN4839 Mistakes to avoid.PNG) cachability in regions accessed by CPU and DMA, as well as memory blocks extensively used by DMA alone. In the [AN4839 Example for cache maintenance and data coherency](img/AN4839 cache coherency.png), the challenge of having CPU and DMA access the same region in SRAM1 is outlined, and multiple solutions are outlined. Without limiting generality, I-Cache can be ignored here and statuted via XN. Four solutions are proposed:
+* **Cacheable (C) : MPU\_ACCESS\_NOT\_CACHEABLE** explicitly disables I-Cache and D-Cache. [AN4839 recommends always disabling](img/AN4839_Mistakes_to_avoid.PNG) cachability in regions accessed by CPU and DMA, as well as memory blocks extensively used by DMA alone. In the [AN4839 Example for cache maintenance and data coherency](img/AN4839_cache_coherency.png), the challenge of having CPU and DMA access the same region in SRAM1 is outlined, and multiple solutions are outlined. Without limiting generality, I-Cache can be ignored here and statuted via XN. Four solutions are proposed:
 
 	- **make SRAM1 region not cacheable ( chosen for this project )**	
 
@@ -94,9 +94,9 @@ execute the next instruction even if the transfer takes a number of clock cycles
 	- "For normal memory, the interpretation of TEX:S:C:B is a bit different (a bit confusing I know). When C is 1 and B is 0, effectively the memory is setup as Write Through cacheable. In this case, from memory, the internal write buffer is used (in other word, the write buffer is used if either C or B is set to 1). However, as the memory attribute from MPU is exported to the bus, and might or might not be used by the design of ST's SRAM interface, there might be performance different."
 
  
-* **Type Extension (TEX)** : From a programming perspective, the TEX field is set as [per PM0253 table 91](img/PM0253 Cortex-M7 Accesss Permissions_T91T92T93.PNG) with valid combinations of (TEX, C, B) to obtain the desired memory type and cache policy. Not all combinations are allowed - some are marked "reserved" and "unpredictable". 
+* **Type Extension (TEX)** : From a programming perspective, the TEX field is set as [per PM0253 table 91](img/PM0253_Cortex-M7_Accesss_Permissions_T91T92T93.PNG) with valid combinations of (TEX, C, B) to obtain the desired memory type and cache policy. Not all combinations are allowed - some are marked "reserved" and "unpredictable". 
 	
-	![](img/AN4839 Table 4 allowed MPU configurations.PNG)
+	![](img/AN4839_Table_4_allowed_MPU_configurations.PNG)
 	
 	It's not necessarily clear what the TEX bits mean. Table 91 lists a case where the TEX\[1:0\] denote an outer policy, while C and S encode an inner policy.  
 
