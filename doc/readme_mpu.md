@@ -18,7 +18,9 @@ As per PM0214, the MPU attributes don't affect DMA data accesses to the memory/p
 
 The following diagram only goes so far, but serves as an introductory visual idea:
 
-![](img/Cortex-M7_Core_architecture_overview.png)
+
+![](img/Cortex-M7_Core_architecture_overview.PNG)
+
  
 [AN4838 - Managing memory protection unit in STM32 MCU](pdf/AN4838 - Managing memory protection unit in STM32 MCUs.pdf) :
 [Table 6](img/AN4838_Table6_Cortex-M_MPU_differences.png) lists MPU features. Cortex-M3, Cortex-M4 and Cortex-M7 feature sets are basically identical, and it's here where the reader is first confronted with a set of capabilities and memory region attributes:
