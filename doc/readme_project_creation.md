@@ -291,7 +291,81 @@ Please see the [detailed description of the Cortex-M7 MPU](readme_mpu.md) for an
 
 ##### MPU configuration
 
+Three regions are defined. When regions overlap, the region with the highest number defines the attributes at the evaluated address.
 
+* Region 0: Safe Background region
+	- Strongly Ordered type memory
+	- no read and write access, in both Handler and Thread mode
+	- prevents speculative access and speculative execution of external RAM address range
+* Region 1: 
+	- Normal type memory in SRAM2 (all 16 kB of SRAM2)
+	- no code execution, not cacheable; Shareable has no effect on Cortex-M7 due to lack of cache coherency logic - STM32F7/H7 NOT_SHAREABLE means D-Cache is disabled. Can also be set to MPU\_ACCESS\_NOT\_SHAREABLE
+* Region 2:
+	- Device type memory in SRAM2, same Base Address as Region 1 (nested, 256 Bytes at the beginning, 0x2007C000). 
+	- no code execution, not cacheable, not shareable
+
+MPU\_Config() is generated from the [corresponding STM32CubeMX Cortex-M7 Mode and Configuration](img/MPU_eth_regions_with_safe_background.png).
+
+
+	  /* Disables the MPU */
+	  HAL_MPU_Disable();
+	  /** Initializes and configures the Region and the memory to be protected
+	  */
+	  MPU_InitStruct.Enable = MPU_REGION_ENABLE;
+	  MPU_InitStruct.Number = MPU_REGION_NUMBER0;
+	  MPU_InitStruct.BaseAddress = 0x0;
+	  MPU_InitStruct.Size = MPU_REGION_SIZE_4GB;
+	  MPU_InitStruct.SubRegionDisable = 0x87;
+	  MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
+	  MPU_InitStruct.AccessPermission = MPU_REGION_NO_ACCESS;
+	  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;
+	  MPU_InitStruct.IsShareable = MPU_ACCESS_SHAREABLE;
+	  MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
+	  MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;
+	  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+	  
+	  /** Initializes and configures the Region and the memory to be protected
+	  */
+	  MPU_InitStruct.Enable = MPU_REGION_ENABLE;
+	  MPU_InitStruct.Number = MPU_REGION_NUMBER1;
+	  MPU_InitStruct.BaseAddress = (uint32_t) &_sbss_nc;
+	  MPU_InitStruct.Size = MPU_REGION_SIZE_16KB;
+	  MPU_InitStruct.SubRegionDisable = 0x0;
+	  MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL1;
+	  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
+	  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;
+	  MPU_InitStruct.IsShareable = MPU_ACCESS_SHAREABLE;
+	  MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
+	  MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;
+	  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+	  
+	  /** Initializes and configures the Region and the memory to be protected
+	  */
+	  MPU_InitStruct.Enable = MPU_REGION_ENABLE;
+	  MPU_InitStruct.Number = MPU_REGION_NUMBER2;
+	  MPU_InitStruct.BaseAddress = (uint32_t) &_sbss_nc;
+	  MPU_InitStruct.Size = MPU_REGION_SIZE_256B;
+	  MPU_InitStruct.SubRegionDisable = 0x0;
+	  MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
+	  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
+	  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;
+	  MPU_InitStruct.IsShareable = MPU_ACCESS_SHAREABLE;
+	  MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
+	  MPU_InitStruct.IsBufferable = MPU_ACCESS_BUFFERABLE;
+	  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+	  
+	  /* Enables the MPU */
+	  HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
+
+
+The author does not know of a way to consistently induce speculative access faults, but reads to external RAM range or attempts for code execution to trigger a HardFault (or MemManage fault if enabled, default: not enabled).
+
+Stack pointer: were \_estack to remain at the end of SRAM2, it would be in a non-cached SRAM2 region accessed over the bus matrix, and competing with DMA and processor access. Here, \_estack is moved to the end of SRAM1, which has its own access path trough the bus matrix and can be in L1 cache. A better option would be to enable and move \_estack to zero-waitstate DTCM.
+
+
+Further reading:
+
+[DMA is not working on STM32H7 devices, handling DMA buffers with D-Cache enabled](https://community.st.com/s/article/FAQ-DMA-is-not-working-on-STM32H7-devices)
 
 ----
 ### 4. Set Up Core, Peripherals And Middlewares
