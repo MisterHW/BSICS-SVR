@@ -210,7 +210,7 @@ Unlike the external RAM region, both Code and SRAM region are safe to access. Mi
   
 * A 4 GB MPU region 0 is defined using SubRegionDisable = 0x87 (0b10000111), selecting four 0x20000000 wide sub-region address ranges.
 
-* MPU Region 0 settings for 0x000000000 - 0x1FFFFFFF and 0xE0000000 - 0xFFFFFFFF are disabled, leaving Code, SRAM as well as higher memory ranges already configured as Device or Strongly Ordered unaffected.
+* MPU Region 0 settings for 0x000000000 - 0x5FFFFFFF and 0xE0000000 - 0xFFFFFFFF are disabled, leaving Code, SRAM as well as higher memory ranges already configured as Device or Strongly Ordered unaffected.
 
 * Range 0x60000000 - 0xDFFFFFFFF is configured according to the code below
 
