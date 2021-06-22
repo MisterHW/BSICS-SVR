@@ -236,9 +236,9 @@ Safe-Background MPU region 0 initialization:
 	HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
 
 
-MPU\_INSTRUCTION\_ACCESS\_DISABLE removes program access permissions (no read or write permissions, in both Handler and Thread modes). 
+MPU\_REGION\_NO\_ACCESS removes program access permissions (no read or write permissions, in both Handler and Thread modes). 
 
-Code execution is prohibited via MPU\_REGION\_NO\_ACCESS. 
+Code execution is prohibited via MPU\_INSTRUCTION\_ACCESS\_DISABLE. 
 
 TEX=0, C=0, B=0 would make this region Strongly Ordered, which is always shareable, so MPU\_ACCESS\_SHAREABLE has no effect, but also does not cause confusion by claiming the opposite while being ignored.
 
