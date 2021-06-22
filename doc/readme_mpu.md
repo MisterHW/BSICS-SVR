@@ -199,8 +199,8 @@ Unlike the external RAM region, both Code and SRAM region are safe to access. Mi
 * If no external RAM is connected, or external RAM is not used for code execution, **set external RAM address range 0x60000000 - 0x9FFFFFFF as Execute Never**. Speculative instruction fetches are never made to memory addresses in an Execute Never region.
 
 * To prevent speculative access issue, **all addresses not safe to access shall be changed to memory type**
-	* **Device** or
- 	* **Strongly Ordered** **AND** have **Execute Never** attribute set.	
+	* **Device** or **Strongly Ordered** 
+	* **AND** have **Execute Never** attribute set.	
  
  After that device cannot be locked by speculative memory access.
  
