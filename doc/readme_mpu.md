@@ -92,7 +92,7 @@ default, the MemManage fault is disabled so that the HardFault handler is execut
 * **Bufferable (B)**: "When the processor writes data to a bufferable address, the processor can proceed to
 execute the next instruction even if the transfer takes a number of clock cycles to complete." [\*](https://community.st.com/s/question/0D50X00009XkbVb/imprecise-bus-faults-and-write-buffer)
 
-	When accessing internal SRAM, the impact of Bufferable seems to be subtle, and RX+TX buffers and descriptor tables region can be set to NOT_BUFFERABLE. For regions not explicitly set non-cacheable, Bufferable helps determine whether Write-Back or Write-Through policy is used. TEX, C and B must be a selected from the list of allowed MPU configurations ([AN4838: Table 4](pdf/AN4839 - Level 1 cache on STM32F7 Series and STM32H7 Series.pdf)). 
+	When accessing internal SRAM, the impact of Bufferable seems to be subtle, and RX+TX buffers and descriptor tables region can be set to NOT_BUFFERABLE. For regions not explicitly set non-cacheable, Bufferable helps determine whether Write-Back or Write-Through policy is used. TEX, C and B must be a selected from the list of allowed MPU configurations ([AN4838: Table 4](pdf/AN4839%20-%20Level%201%20cache%20on%20STM32F7%20Series%20and%20STM32H7%20Series.pdf)). 
 
 	Another [forum reply on Cortex-M4 behavior](https://community.arm.com/developer/ip-products/processors/f/cortex-m-forum/9006/cm4-write-buffer-with-enabled-mpu) summarizes:
 	
