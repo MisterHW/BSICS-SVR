@@ -231,7 +231,7 @@ can also be seen. With MPU settings in place, a fault can occur, terminating the
 
 	The linker will process the section normally, but will mark it so that a program loader will not load it into memory. 
 
-As the terminology isn't an exact match (no bootloader, but code execution from flash) when it comes to [NOLOAD sections in embedded software](https://stackoverflow.com/questions/57181652/understanding-linker-script-noload-sections-in-embedded-software), the meaning here is no attempt will be made to download a RAM section marked NOLOAD into flash memory.
+As the terminology isn't an exact match (no bootloader, but code execution from flash) when it comes to [NOLOAD sections in embedded software](https://stackoverflow.com/questions/57181652/understanding-linker-script-noload-sections-in-embedded-software), the meaning here is: no attempt will be made to download a RAM section marked NOLOAD into flash memory.
 
 
 **Order of declaration**
