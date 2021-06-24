@@ -94,7 +94,18 @@ int __io_putchar(int ch)
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  // disableStdioBuffering();
+
+    //disableStdioBuffering();
+
+    /* Activate MPU-related fault handlers:
+    * Set all three (USGFAULTENA, BUSFAULTENA, and MEMFAULTENA) fault enable bits
+    * in the System Control Block, System Handler Control and State Register.
+    * Otherwise these faults are handled as hard faults by HardFault_Handler().
+    */
+    SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk // will also be set by HAL_MPU_Enable()
+                  | SCB_SHCSR_BUSFAULTENA_Msk
+                  | SCB_SHCSR_USGFAULTENA_Msk;
+
   /* USER CODE END 1 */
 
   /* MPU Configuration--------------------------------------------------------*/
@@ -112,6 +123,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
+
     /* FreeRTOS port.c: Priority grouping:
         " The interrupt controller (NVIC) allows the bits
         that define each interrupt's priority to be split between bits that
@@ -392,8 +404,23 @@ void MPU_Config(void)
   */
   MPU_InitStruct.Enable = MPU_REGION_ENABLE;
   MPU_InitStruct.Number = MPU_REGION_NUMBER0;
+  MPU_InitStruct.BaseAddress = 0x0;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_4GB;
+  MPU_InitStruct.SubRegionDisable = 0x87;
+  MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
+  MPU_InitStruct.AccessPermission = MPU_REGION_NO_ACCESS;
+  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;
+  MPU_InitStruct.IsShareable = MPU_ACCESS_SHAREABLE;
+  MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
+  MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;
+
+  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+  /** Initializes and configures the Region and the memory to be protected
+  */
+  MPU_InitStruct.Enable = MPU_REGION_ENABLE;
+  MPU_InitStruct.Number = MPU_REGION_NUMBER1;
   MPU_InitStruct.BaseAddress = (uint32_t) &_sbss_nc;
-  MPU_InitStruct.Size = MPU_REGION_SIZE_32KB;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_16KB;
   MPU_InitStruct.SubRegionDisable = 0x0;
   MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL1;
   MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
@@ -406,7 +433,7 @@ void MPU_Config(void)
   /** Initializes and configures the Region and the memory to be protected
   */
   MPU_InitStruct.Enable = MPU_REGION_ENABLE;
-  MPU_InitStruct.Number = MPU_REGION_NUMBER1;
+  MPU_InitStruct.Number = MPU_REGION_NUMBER2;
   MPU_InitStruct.BaseAddress = (uint32_t) &_sbss_nc;
   MPU_InitStruct.Size = MPU_REGION_SIZE_256B;
   MPU_InitStruct.SubRegionDisable = 0x0;

@@ -158,7 +158,7 @@ SECTIONS
 
   /* Uninitialized data section into "RAM_NC" Ram type memory */
   . = ALIGN(4);
-  .bss_nc :
+  .bss_nc (NOLOAD) :
   {
     /* This is used by the startup in order to initialize the .bss_nc section */
     _sbss_nc = .;         /* define a global symbol at bss_nc start */

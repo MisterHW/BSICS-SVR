@@ -286,7 +286,7 @@ as the linker guarantees consistency of the \_sbss\_nc and \_ebss\_nc symbols.
 ----
 #### MPU configuration: Ensuring Data Coherency
 
-Please see the [detailed description of the Cortex-M7 MPU](readme_mpu.md) for an attempt to elucidate the MPU attributes and terminology. The focus on the sub-section below will be on the practical use for this project.
+Please see the [**detailed description of the Cortex-M7 MPU**](readme_mpu.md) for an attempt to elucidate the MPU attributes and terminology. The focus on the sub-section below will be on the practical use for this project.
 
 
 ##### MPU configuration
@@ -362,8 +362,36 @@ The author does not know of a way to consistently induce speculative access faul
 
 Stack pointer: were \_estack to remain at the end of SRAM2, it would be in a non-cached SRAM2 region accessed over the bus matrix, and competing with DMA and processor access. Here, \_estack is moved to the end of SRAM1, which has its own access path trough the bus matrix and can be in L1 cache. A better option would be to enable and move \_estack to zero-waitstate DTCM.
 
+**Enabling interrupts**
 
-Further reading:
+in *stm32f7xxit.c*, there are
+
+	void HardFault_Handler(void); // This function handles Hard fault interrupt.
+	void MemManage_Handler(void); // This function handles Memory management fault.
+	void BusFault_Handler(void); // This function handles Pre-fetch fault, memory access fault.
+	void UsageFault_Handler(void); // This function handles Undefined instruction or illegal state.
+
+which need to be enabled in the STM32CubeMX project under NVIC, and have user code sections for printf() output generation or other reporting.
+
+In *main.c*, SCB->SHCSR interrupt bits are set:
+
+	/* USER CODE BEGIN 1 */
+	
+	/ * Set all three (USGFAULTENA, BUSFAULTENA, and MEMFAULTENA) fault enable bits
+	* in the System Control Block, System Handler Control and State Register.
+	* Otherwise these faults are handled as hard faults by HardFault_Handler().
+	*/
+	SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk // will also be set by HAL_MPU_Enable() below
+	              | SCB_SHCSR_BUSFAULTENA_Msk
+	              | SCB_SHCSR_USGFAULTENA_Msk;
+	
+	/* USER CODE END 1 */
+	
+	/* MPU Configuration--------------------------------------------------------*/
+	MPU_Config();
+
+
+**Further reading**
 
 [DMA is not working on STM32H7 devices, handling DMA buffers with D-Cache enabled](https://community.st.com/s/article/FAQ-DMA-is-not-working-on-STM32H7-devices)
 
