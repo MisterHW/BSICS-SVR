@@ -203,7 +203,7 @@ One adds the new section below .\_user_heap\_stack {...} >RAM:
 	  /* Uninitialized data section into "RAM_NC" Ram type memory */
 
 	  . = ALIGN(4);
-	  .bss_nc :
+	  .bss_nc (NOLOAD) :
 	  {
 	    /* This is used by the startup in order to initialize the .bss_nc section */
 	    _sbss_nc = .;   /* define a global symbol at bss_nc start */
@@ -219,7 +219,26 @@ One adds the new section below .\_user_heap\_stack {...} >RAM:
 
 Section attributes *\_\_attribute\_\_((section(".nc\_bss")))* and *\_\_attribute\_\_((section(".nc\_bss\*")))* added to variable declarations instruct the linker to allocate these in the RAM\_NC segment. After compilation, the .map file will show successful allocation, e.g. based on the changes in *ethernetif.c* made later on.
 
-Hint: Variables are generally allocated in their order of appearance in the code, so explicitly ordering them by using both *\*(.nc\_bss)* and  *\*(.nc\_bss\*)* is not strictly necessary. However, overlapping memory protection unit (MPU) regions will require the DMA descriptors to be exactly at the beginning of *RAM\_NC* (they're 2x 128 Bytes and the MPU region covers 256 Bytes). Using two sub-sections instead of *\*(.nc\_bss)* alone, and exclusively using *\*(.nc\_bss)* for the DMA descriptors guarantees proper allocation independent of the order of variable declarations and definitions.
+**NOLOAD**
+
+Without *(NOLOAD)*, the linker will treat the new memory section as flash, and the .bin file will cover the entire range from 0x00200000 to 0x20080000. The problems this causes manifest in multiple ways. Not only is the .bin file larger than 520 MB, but in debug sessions, a warning
+
+    Warn : no flash bank found for address 0x2007C000
+    ...
+    shutdown command invoked
+
+can also be seen. With MPU settings in place, a fault can occur, terminating the debug session. One can use *objcopy --remove-section <..>* to remove sections from .elf files. NOLOAD as per [GNU ld documentation](https://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_node/ld_21.html) means
+
+	The linker will process the section normally, but will mark it so that a program loader will not load it into memory. 
+
+As the terminology isn't an exact match (no bootloader, but code execution from flash) when it comes to [NOLOAD sections in embedded software](https://stackoverflow.com/questions/57181652/understanding-linker-script-noload-sections-in-embedded-software), the meaning here is no attempt will be made to download a RAM section marked NOLOAD into flash memory.
+
+
+**Order of declaration**
+
+Variables are generally allocated in their order of appearance in the code, so explicitly ordering them by using both *\*(.nc\_bss)* and  *\*(.nc\_bss\*)* is not strictly necessary. However, overlapping memory protection unit (MPU) regions will require the DMA descriptors to be exactly at the beginning of *RAM\_NC* (they're 2x 128 Bytes and the MPU region covers 256 Bytes). Using two sub-sections instead of *\*(.nc\_bss)* alone, and exclusively using *\*(.nc\_bss)* for the DMA descriptors guarantees proper allocation independent of the order of variable declarations and definitions. One practical benefit would be the ability to re-organize SRAM2 when *ETH\_RXBUFNB* and *ETH\_TXBUFNB* were to be changed, e.g. prompting the need to expand to a 512 Byte region for DMA descriptor tables.
+
+**Checking the .map file**
 
 To verify the success of the section organization above, linker decisions can be inspected in the cmake-build-xxx/BSIS-SVR.map files:
 
