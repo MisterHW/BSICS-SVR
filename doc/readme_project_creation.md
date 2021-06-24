@@ -113,22 +113,22 @@ The *nc\_* prefix is an advance mention of the need to set both buffer and DMA d
 
 Next, the  internal RAM address ranges for are specified for these *nc\_* sections. The decision is microcontroller-dependent: total RAM size varies, and memories are non-contiguous. To highlight the diversity, here's a comparison between F4 and F7 controllers with Ethernet MAC between which project code might eventually need to be ported: 
 
-* [STM32F4xx](STM32F4 memory organization.jpg) has 112 kB SRAM1 at 0x20000000, contiguous 16 kB SRAM2 at 0x2001C000 and another 64 kB CCM (core-coupled memory) RAM at 0x10000000, 
-* [STM32F74xx](pdf/RM0385 STM32F74xx memory map.png) has 16 kB ITCM RAM at 0x00000000, 64 kB DTCM RAM at 0x20000000, contiguous 240 kB SRAM1 at 0x20010000 and contiguous to that 16 kB SRAM2 at 0x2004C000.
+* [STM32F4xx](img/STM32F4_memory_organization.jpg) has 112 kB SRAM1 at 0x20000000, contiguous 16 kB SRAM2 at 0x2001C000 and another 64 kB CCM (core-coupled memory) RAM at 0x10000000, 
+* [STM32F74xx](img/RM0385_STM32F74xx_memory_map.png) has 16 kB ITCM RAM at 0x00000000, 64 kB DTCM RAM at 0x20000000, contiguous 240 kB SRAM1 at 0x20010000 and contiguous to that 16 kB SRAM2 at 0x2004C000.
 * **STM32F76xx** in turn has 16 kB ITCM RAM at 0x00000000, 128 kB DTCM RAM at 0x20000000, contiguous 368 kB at 0x20020000 and contiguous to that **16 kB SRAM2 at 0x2007C0000**.
 
 Instruction and Data Tightly Coupled Memory (ITCM, DTCM) allow time critical execution of ISR code (12 cycles ISR latency). The [STM32F7 System Core presentation](pdf/STM32F7_System_Core_Presentation.pdf) gives a motivational overview. 
 
 For the the purpose of this project though it suffices to note that ITCM is not connected to the AHB bus matrix and not relevant yet, and that DTCM - unlike SRAM1 - is connected to the AHB bus matrix, but accesses are performed through an AHBS slave interface, with the option for CPU priority. 
 
-Of key interest however is the way ETH DMA and the processor core connect to SRAM1 and SRAM2, as shown in the figure below. When comparing to the [STM32F42xxx system architecture](img/STM32F42xxx system architecture.png), one notes that Cortex-M7 differs substantially, introducing a 64 bit AHB to internal flash, and turning the dedicated I-Bus, D-Bus and S-Bus (instruction, data, system) processor masters into AHB1, AHB2, AHB3. 
+Of key interest however is the way ETH DMA and the processor core connect to SRAM1 and SRAM2, as shown in the figure below. When comparing to the [STM32F42xxx system architecture](img/STM32F42xxx_system_architecture.png), one notes that Cortex-M7 differs substantially, introducing a 64 bit AHB to internal flash, and turning the dedicated I-Bus, D-Bus and S-Bus (instruction, data, system) processor masters into AHB1, AHB2, AHB3. 
 
 What STM32F4 and STM32F7 system architectures have in common is also the take-away message from Figure 3 below: **ETH DMA <-> SRAM2 and processor core <-> SRAM1 access can happen simultaneously**.  
 
 
 ![](img/Cortex_M7_AHB_bus_matrix_to_SRAM.png)
 
-( source: [AN4667 STM32F7 Series system architecture overview](pdf/AN4667 - STM32F7 Series system architecture and performance.pdf). )
+( source: [AN4667 STM32F7 Series system architecture overview](pdf/AN4667%20-%20STM32F7%20Series%20system%20architecture%20and%20performance.pdf). )
 
 
 To improve performance, it's thus desirable to utilize concurrent DMA operation and program execution according to Cortex-M7 microcontroller capabilities, in short
@@ -144,7 +144,7 @@ STM32 ethernet code examples usually also do not elaborate on what changing Memo
 
 Please note that some examples will place RAM\_NC in SRAM2, but then specify the memory area LENGTH or MPU region size as 32 kB. STM32F4 and STM32F7 microcontrollers do not have 32 kB size SRAM2 - this only applies to STM32H7. When placing STM32F767 ethernet data structures at 0x20078000, they will reside entirely in SRAM1, which might work with accompanying MPU settings, but without any performance benefits.
 
-**Further Reading**
+**Further reading**
 
 Finally, Cliffe's write-up on [VGA signal generation using GPDMA2 fittingly titled "A Glitch in the Matrix"](http://cliffle.com/blog/glitch-in-the-matrix/) for a Cortex-M4 adventure in ensuring time-accurate data transfers is also insightful.
 
@@ -231,7 +231,7 @@ can also be seen. With MPU settings in place, a fault can occur, terminating the
 
 	The linker will process the section normally, but will mark it so that a program loader will not load it into memory. 
 
-As the terminology isn't an exact match (no bootloader, but code execution from flash) when it comes to [NOLOAD sections in embedded software](https://stackoverflow.com/questions/57181652/understanding-linker-script-noload-sections-in-embedded-software), the meaning here is no attempt will be made to download a RAM section marked NOLOAD into flash memory.
+As the terminology isn't an exact match (no bootloader, but code execution from flash) when it comes to [NOLOAD sections in embedded software](https://stackoverflow.com/questions/57181652/understanding-linker-script-noload-sections-in-embedded-software), the meaning here is: no attempt will be made to download a RAM section marked NOLOAD into flash memory.
 
 
 **Order of declaration**
