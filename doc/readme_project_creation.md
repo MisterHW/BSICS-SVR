@@ -196,7 +196,7 @@ The [Cortex-M7 memory map](img/CM7_memory_model.png) shows the SRAM address rang
 	}
 
 
-To define memory sections the linker will use to place the ethernet RX/TX buffers and DMA descriptors, a new section .bss_nc will follow the same pattern as .bss, so a copy of the .bss definition can be pasted edited.
+To define memory sections the linker will use to place the ethernet RX/TX buffers and DMA descriptors, a new section .bss_nc will follow the same pattern as .bss, so a copy of the .bss definition can be pasted & edited.
 
 One adds the new section below .\_user_heap\_stack {...} >RAM:
 
@@ -240,7 +240,7 @@ Variables are generally allocated in their order of appearance in the code, so e
 
 **Checking the .map file**
 
-To verify the success of the section organization above, linker decisions can be inspected in the cmake-build-xxx/BSIS-SVR.map files:
+To verify the success of the section organization above, linker decisions can be inspected in the *cmake-build-xxx/BSIS-SVR.map* files:
 
 	.bss_nc         0x2007c000     0x30a0
 	                0x2007c000                _sbss_nc = .
@@ -266,7 +266,7 @@ To verify the success of the section organization above, linker decisions can be
 
 The startup assembly implements stack pointer and memory initialization, followed by calls to *SystemInit* and ultimately *main()*.
 
-While .bss and .nc\_bss are contiguous and one could zero-fill all memory between \_sbss and \_ebss_nc, it's a worthwhile investment to not make this assumption to avoid running into obscure problems later on.
+While .bss and .nc\_bss are contiguous (STM32F7 and STM32H7, but check memory organization) and one could zero-fill all memory between \_sbss and \_ebss_nc, it's a worthwhile investment to not make this assumption to avoid running into obscure problems later on.
 
 	ldr  r2, =_sbss
 	b  LoopFillZerobss
@@ -383,7 +383,7 @@ Stack pointer: were \_estack to remain at the end of SRAM2, it would be in a non
 
 **Enabling interrupts**
 
-in *stm32f7xxit.c*, there are
+in *stm32f7xx\_it.c*, there are
 
 	void HardFault_Handler(void); // This function handles Hard fault interrupt.
 	void MemManage_Handler(void); // This function handles Memory management fault.

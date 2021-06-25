@@ -92,7 +92,7 @@ default, the MemManage fault is disabled so that the HardFault handler is execut
 * **Bufferable (B)**: "When the processor writes data to a bufferable address, the processor can proceed to
 execute the next instruction even if the transfer takes a number of clock cycles to complete." [\*](https://community.st.com/s/question/0D50X00009XkbVb/imprecise-bus-faults-and-write-buffer)
 
-	When accessing internal SRAM, the impact of Bufferable seems to be subtle, and RX+TX buffers and descriptor tables region can be set to NOT_BUFFERABLE. For regions not explicitly set non-cacheable, Bufferable helps determine whether Write-Back or Write-Through policy is used. TEX, C and B must be a selected from the list of allowed MPU configurations ([AN4838: Table 4](pdf/AN4838%20-%20Managing%20memory%20protection%20unit%20in%20STM32%20MCUs.pdf)). 
+	When accessing internal SRAM, the impact of Bufferable seems to be subtle, and RX+TX buffers and descriptor tables region can be set to NOT_BUFFERABLE. For regions not explicitly set non-cacheable, Bufferable helps determine whether Write-Back or Write-Through policy is used. TEX, C and B must be a tuple selected from the list of allowed MPU configurations ([AN4838: Table 4](pdf/AN4838%20-%20Managing%20memory%20protection%20unit%20in%20STM32%20MCUs.pdf)). 
 
 	Another [forum reply on Cortex-M4 behavior](https://community.arm.com/developer/ip-products/processors/f/cortex-m-forum/9006/cm4-write-buffer-with-enabled-mpu) summarizes:
 	
@@ -110,7 +110,7 @@ execute the next instruction even if the transfer takes a number of clock cycles
 
 	Inversely, an explanation can be found for cases that lack TEX: "The MPU memory attributes in ARMv6-M only support one level of cache policy. Therefore the TEX field is always 0 in the Cortex-M0+ processor \[AN4838: ST Cortex-M0+ TEX field not available\]. On the ARMv7-M architecture, the TEX can be set to non-zero value and enable separated inner and outer cache schemes." (Yiu, 9780128032787).
 	
-	Ultimately, the [last row in table 91 reworked to list the substitutions](img/inner and outer policies.png) (TEX values 0b100 thru 0b111) seem to lead to contradicting assumptions about TEX[0] and TEX[1] meanings. Add to that the fact that the table is vendor- and family-specific, it's ok to stop looking for answers where there may be none, even though AM4829 claims, "Using the cache is simple at the most basic level."
+	Ultimately, the [last row in table 91 reworked to list the substitutions](img/inner_and_outer_policies.png) (TEX values 0b100 thru 0b111) seem to lead to contradicting assumptions about TEX[0] and TEX[1] meanings. Add to that the fact that the table is vendor- and family-specific, it's ok to stop looking for answers where there may be none, even though AN4839 claims, "Using the cache is simple at the most basic level."
 	
 	
 * **Sub-Region Disable (SRD)**: for Cortex-M7, this option is provided to sub-divide an MPU region address range into 8 equal parts. Setting a corresponding bit removes that sub-region from the region. [MPU tips 1: MPU usage in STM32 with ARM cortex-M7](pdf/STM32%20MPU%20tips%20-%201%20MPU%20usage%20in%20STM32%20with%20ARM%20Cortex%20M7_with_notes.pdf) has a nice graphic to illustrate it on page 16.
