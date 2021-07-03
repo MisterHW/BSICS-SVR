@@ -151,7 +151,7 @@ The default memory region types, shareability and cache policies are given in mu
 ---
 #### Safe Background Region
 
-[MPU tips 1: MPU usage in STM32 with ARM cortex-M7](pdf/STM32%20MPU%20tips%20-%201%20MPU%20usage%20in%20STM32%20with%20ARM%20Cortex%20M7_with_notes.pdf) emphasizes the issue of speculative data. The most relevant passages are quoted below. It's relevant to all Cortex-M7 projects.
+[MPU tips 1: MPU usage in STM32 with ARM cortex-M7](pdf/STM32%20MPU%20tips%20-%201%20MPU%20usage%20in%20STM32%20with%20ARM%20Cortex%20M7_with_notes.pdf) emphasizes the issue of speculative data read operations. The most relevant passages are quoted below. It's relevant to all Cortex-M7 projects.
 
 
 ##### Sources of the problem
