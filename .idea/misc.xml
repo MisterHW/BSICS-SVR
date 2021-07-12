@@ -8,6 +8,7 @@
       <file path="$PROJECT_DIR$/lib/libscpi/inc" />
     </sourceRoots>
     <excludeRoots>
+      <file path="$PROJECT_DIR$/Drivers/ssd1306-stm32HAL/example" />
       <file path="$PROJECT_DIR$/Middlewares/Third_Party/libscpi/Third_Party" />
       <file path="$PROJECT_DIR$/Middlewares/Third_Party/libscpi/obj" />
       <file path="$PROJECT_DIR$/Middlewares/Third_Party/libscpi/src" />

@@ -30,6 +30,8 @@
 // #include "app_ethernet.h"
 // #include "httpserver-netconn.h"
 #include "scpi_server.h"
+#include "devices.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -56,6 +58,7 @@ UART_HandleTypeDef huart3;
 osThreadId defaultTaskHandle;
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
+
 
 /* USER CODE END PV */
 
@@ -161,6 +164,8 @@ int main(void)
 
   char buf[] = "UART OK\n";
   HAL_UART_Transmit(&huart3, (uint8_t *)buf, 8, HAL_MAX_DELAY);
+
+  Devices_Init();
 
   /* USER CODE END 2 */
 

@@ -735,6 +735,60 @@ Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c.s
 .PHONY : Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c.s
 
+Drivers/ssd1306-stm32HAL/lib/fonts.obj: Drivers/ssd1306-stm32HAL/lib/fonts.c.obj
+
+.PHONY : Drivers/ssd1306-stm32HAL/lib/fonts.obj
+
+# target to build an object file
+Drivers/ssd1306-stm32HAL/lib/fonts.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Drivers/ssd1306-stm32HAL/lib/fonts.c.obj
+.PHONY : Drivers/ssd1306-stm32HAL/lib/fonts.c.obj
+
+Drivers/ssd1306-stm32HAL/lib/fonts.i: Drivers/ssd1306-stm32HAL/lib/fonts.c.i
+
+.PHONY : Drivers/ssd1306-stm32HAL/lib/fonts.i
+
+# target to preprocess a source file
+Drivers/ssd1306-stm32HAL/lib/fonts.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Drivers/ssd1306-stm32HAL/lib/fonts.c.i
+.PHONY : Drivers/ssd1306-stm32HAL/lib/fonts.c.i
+
+Drivers/ssd1306-stm32HAL/lib/fonts.s: Drivers/ssd1306-stm32HAL/lib/fonts.c.s
+
+.PHONY : Drivers/ssd1306-stm32HAL/lib/fonts.s
+
+# target to generate assembly for a file
+Drivers/ssd1306-stm32HAL/lib/fonts.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Drivers/ssd1306-stm32HAL/lib/fonts.c.s
+.PHONY : Drivers/ssd1306-stm32HAL/lib/fonts.c.s
+
+Drivers/ssd1306-stm32HAL/lib/ssd1306.obj: Drivers/ssd1306-stm32HAL/lib/ssd1306.c.obj
+
+.PHONY : Drivers/ssd1306-stm32HAL/lib/ssd1306.obj
+
+# target to build an object file
+Drivers/ssd1306-stm32HAL/lib/ssd1306.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Drivers/ssd1306-stm32HAL/lib/ssd1306.c.obj
+.PHONY : Drivers/ssd1306-stm32HAL/lib/ssd1306.c.obj
+
+Drivers/ssd1306-stm32HAL/lib/ssd1306.i: Drivers/ssd1306-stm32HAL/lib/ssd1306.c.i
+
+.PHONY : Drivers/ssd1306-stm32HAL/lib/ssd1306.i
+
+# target to preprocess a source file
+Drivers/ssd1306-stm32HAL/lib/ssd1306.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Drivers/ssd1306-stm32HAL/lib/ssd1306.c.i
+.PHONY : Drivers/ssd1306-stm32HAL/lib/ssd1306.c.i
+
+Drivers/ssd1306-stm32HAL/lib/ssd1306.s: Drivers/ssd1306-stm32HAL/lib/ssd1306.c.s
+
+.PHONY : Drivers/ssd1306-stm32HAL/lib/ssd1306.s
+
+# target to generate assembly for a file
+Drivers/ssd1306-stm32HAL/lib/ssd1306.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Drivers/ssd1306-stm32HAL/lib/ssd1306.c.s
+.PHONY : Drivers/ssd1306-stm32HAL/lib/ssd1306.c.s
+
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.obj: Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c.obj
 
 .PHONY : Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.obj
@@ -3192,6 +3246,33 @@ Middlewares/Third_Party/LwIP/system/OS/sys_arch.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Middlewares/Third_Party/LwIP/system/OS/sys_arch.c.s
 .PHONY : Middlewares/Third_Party/LwIP/system/OS/sys_arch.c.s
 
+Src/devices.obj: Src/devices.cpp.obj
+
+.PHONY : Src/devices.obj
+
+# target to build an object file
+Src/devices.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Src/devices.cpp.obj
+.PHONY : Src/devices.cpp.obj
+
+Src/devices.i: Src/devices.cpp.i
+
+.PHONY : Src/devices.i
+
+# target to preprocess a source file
+Src/devices.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Src/devices.cpp.i
+.PHONY : Src/devices.cpp.i
+
+Src/devices.s: Src/devices.cpp.s
+
+.PHONY : Src/devices.s
+
+# target to generate assembly for a file
+Src/devices.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\BSICS-SVR.elf.dir\build.make CMakeFiles/BSICS-SVR.elf.dir/Src/devices.cpp.s
+.PHONY : Src/devices.cpp.s
+
 Src/ethernetif.obj: Src/ethernetif.c.obj
 
 .PHONY : Src/ethernetif.obj
@@ -3519,6 +3600,12 @@ help:
 	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.obj
 	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.i
 	@echo ... Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.s
+	@echo ... Drivers/ssd1306-stm32HAL/lib/fonts.obj
+	@echo ... Drivers/ssd1306-stm32HAL/lib/fonts.i
+	@echo ... Drivers/ssd1306-stm32HAL/lib/fonts.s
+	@echo ... Drivers/ssd1306-stm32HAL/lib/ssd1306.obj
+	@echo ... Drivers/ssd1306-stm32HAL/lib/ssd1306.i
+	@echo ... Drivers/ssd1306-stm32HAL/lib/ssd1306.s
 	@echo ... Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.obj
 	@echo ... Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.i
 	@echo ... Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.s
@@ -3792,6 +3879,9 @@ help:
 	@echo ... Middlewares/Third_Party/LwIP/system/OS/sys_arch.obj
 	@echo ... Middlewares/Third_Party/LwIP/system/OS/sys_arch.i
 	@echo ... Middlewares/Third_Party/LwIP/system/OS/sys_arch.s
+	@echo ... Src/devices.obj
+	@echo ... Src/devices.i
+	@echo ... Src/devices.s
 	@echo ... Src/ethernetif.obj
 	@echo ... Src/ethernetif.i
 	@echo ... Src/ethernetif.s
