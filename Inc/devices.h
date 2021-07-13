@@ -38,6 +38,7 @@ typedef TPeripheralDeviceGroup* hPeripheralDeviceGroup;
 /* Functions -----------------------------------------------------------------*/
 
 bool Devices_Init(void);
+void Devices_Update(void);
 
 /* ---------------------------------------------------------------------------*/
 #ifdef __cplusplus

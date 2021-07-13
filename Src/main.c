@@ -200,13 +200,14 @@ int main(void)
   /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  const TickType_t xDelay = 100 / portTICK_PERIOD_MS;
   while (1)
   {
+      vTaskDelay( xDelay );
 
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
   }
   /* USER CODE END 3 */
 }

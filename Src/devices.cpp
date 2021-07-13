@@ -22,3 +22,8 @@ bool Devices_Init(void) {
     res &= DeviceGroups[1].init(hi2c2);
     return res;
 };
+
+
+void Devices_Update(void) {
+
+}
