@@ -4,8 +4,10 @@
   <component name="CidrRootsConfiguration">
     <sourceRoots>
       <file path="$PROJECT_DIR$/Applications/SCPI_Server" />
-      <file path="$PROJECT_DIR$/Src/test" />
       <file path="$PROJECT_DIR$/lib/libscpi/inc" />
+      <file path="$PROJECT_DIR$/Drivers/ssd1306-stm32HAL/lib" />
+      <file path="$PROJECT_DIR$/Drivers/HW/ADG715/Lib" />
+      <file path="$PROJECT_DIR$/Drivers/HW/PCA953x/Lib" />
     </sourceRoots>
     <excludeRoots>
       <file path="$PROJECT_DIR$/Drivers/ssd1306-stm32HAL/example" />

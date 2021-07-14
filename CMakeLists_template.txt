@@ -59,9 +59,9 @@ else ()
     add_compile_options(-Og -g)
 endif ()
 
-include_directories(${includes} Applications/SCPI_Server/Inc)
+include_directories(${includes})
 include_directories(Applications/SCPI_Server/Inc Middlewares/Third_Party/libscpi/inc) # added
-include_directories(Drivers/ssd1306-stm32HAL/lib) # added
+include_directories(Drivers/HW/ADG715/Lib Drivers/HW/PCA953x/Lib) # added
 
 add_definitions(${defines})
 
