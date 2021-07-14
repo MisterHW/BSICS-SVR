@@ -82,7 +82,7 @@ bool PCA953x<PCA953x_address, PCA953x_register>::init(I2C_peripheral _hI2C, PCA9
 
 template<typename PCA953x_address, typename PCA953x_register>
 bool PCA953x<PCA953x_address, PCA953x_register>::isReady( ) {
-    return false;
+    return true;
 }
 
 template<typename PCA953x_address, typename PCA953x_register>

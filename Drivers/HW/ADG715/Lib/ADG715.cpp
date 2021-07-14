@@ -12,7 +12,7 @@ bool ADG715::init(I2C_peripheral _hI2C, ADG715_address addr) {
 }
 
 bool ADG715::isReady( ) {
-    return false;
+    return true;
 }
 
 bool ADG715::writeSwitchStates(uint8_t states) {

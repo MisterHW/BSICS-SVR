@@ -61,7 +61,7 @@ endif ()
 
 include_directories(${includes})
 include_directories(Applications/SCPI_Server/Inc Middlewares/Third_Party/libscpi/inc) # added
-include_directories(Drivers/HW/ADG715/Lib Drivers/HW/PCA953x/Lib) # added
+include_directories(Drivers/HW/ADG715/Lib Drivers/HW/PCA953x/Lib Drivers/HW/MCP342x/Lib Drivers/HW/MCP9808/Lib Drivers/HW/MP8862/Lib) # added
 
 add_definitions(${defines})
 
