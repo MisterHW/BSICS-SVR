@@ -28,18 +28,20 @@ enum MCP3423_address {
 
 template < typename MCP342x_address >
 class MCP342x {
-    I2C_peripheral hI2C;
-    MCP342x_address deviceAddress;
+    I2C_MASTER_IF* I2CM = nullptr;
+    I2C_peripheral hI2C{};
+    MCP342x_address deviceAddress{};
 public:
-    bool init(I2C_peripheral _hI2C, MCP342x_address addr );
+    bool init(I2C_MASTER_IF &I2C_master, I2C_peripheral _hI2C, MCP342x_address addr);
     bool isReady( );
 };
 
 template<typename MCP342x_address>
-bool MCP342x<MCP342x_address>::init(I2C_peripheral _hI2C, MCP342x_address addr) {
+bool MCP342x<MCP342x_address>::init(I2C_MASTER_IF &I2C_master, I2C_peripheral _hI2C, MCP342x_address addr) {
+    I2CM = &I2C_master;
     hI2C = _hI2C;
     deviceAddress = addr;
-    return isReady( );
+    return isReady();
 }
 
 template<typename MCP342x_address>
@@ -48,8 +50,8 @@ bool MCP342x<MCP342x_address>::isReady() {
 }
 
 
-using MCP3422 = MCP342x <MCP3422_address>;
-using MCP3423 = MCP342x <MCP3423_address>;
-using MCP3424 = MCP342x <MCP3423_address>;
+using MCP3422 = MCP342x < MCP3422_address >;
+using MCP3423 = MCP342x < MCP3423_address >;
+using MCP3424 = MCP342x < MCP3423_address >;
 
 #endif //HW_MCP342X_H

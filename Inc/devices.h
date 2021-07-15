@@ -22,19 +22,19 @@
 
 class PeripheralDeviceGroup {
 public:
-    I2C_HandleTypeDef* hI2C;
+    I2C_HandleTypeDef* hI2C = nullptr;
 
     // common devices
-    PCA9536 gpio_exp;
-    MP8862 dcdc_hi;
-    MP8862 dcdc_lo;
+    PCA9536 gpio_exp{};
+    MP8862 dcdc_hi{};
+    MP8862 dcdc_lo{};
     // SSD1306 status_display;
     // 24CXX eeprom;
 
     // per-channel devices (CH1, CH2, CH3)
-    ADG715  octal_spst[3];
-    MCP9808 temp_sensor[3];
-    MCP3423 adc[3]; // MCP3423 dual-channel 18 bit ADC
+    ADG715  octal_spst[3]{};
+    MCP9808 temp_sensor[3]{};
+    MCP3423 adc[3]{}; // MCP3423 dual-channel 18 bit ADC
 
     bool init(I2C_HandleTypeDef* _hI2C);
 };

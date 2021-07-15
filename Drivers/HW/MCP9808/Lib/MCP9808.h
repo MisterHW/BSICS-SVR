@@ -1,5 +1,5 @@
 //
-// MCP9808
+// MCP9808 : Digital Temperature Sensor
 //
 
 #ifndef HW_MCP9808_H
@@ -19,7 +19,7 @@ enum MCP9808_address {
     MCP9808_ADDR_0x1E = 0x1E,
     MCP9808_ADDR_0x1F = 0x1F,
     // special order type
-    MCP9808_ALT_ADDR_0x48 = 0x18,
+    MCP9808_ALT_ADDR_0x48 = 0x48,
     MCP9808_ALT_ADDR_0x49 = 0x49,
     MCP9808_ALT_ADDR_0x4A = 0x4A,
     MCP9808_ALT_ADDR_0x4B = 0x4B,
@@ -30,10 +30,11 @@ enum MCP9808_address {
 };
 
 class MCP9808 {
-    I2C_peripheral hI2C;
-    MCP9808_address deviceAddress;
+    I2C_MASTER_IF* I2CM = nullptr;
+    I2C_peripheral hI2C{};
+    MCP9808_address deviceAddress{};
 public:
-    bool init(I2C_peripheral _hI2C, MCP9808_address addr);
+    bool init(I2C_MASTER_IF &I2C_master, I2C_peripheral _hI2C, MCP9808_address addr);
     bool isReady( );
 };
 

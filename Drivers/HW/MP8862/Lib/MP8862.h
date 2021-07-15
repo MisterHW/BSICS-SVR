@@ -16,10 +16,11 @@ enum MP8862_address {
 };
 
 class MP8862 {
-    I2C_peripheral hI2C;
-    MP8862_address deviceAddress;
+    I2C_MASTER_IF* I2CM = nullptr;
+    I2C_peripheral hI2C{};
+    MP8862_address deviceAddress{};
 public:
-    bool init(I2C_peripheral _hI2C, MP8862_address addr);
+    bool init(I2C_MASTER_IF &I2C_master, I2C_peripheral _hI2C, MP8862_address addr);
     bool isReady( );
 };
 

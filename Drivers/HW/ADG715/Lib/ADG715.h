@@ -34,10 +34,11 @@ enum ADG715_switch {
 
 
 class ADG715 {
-    I2C_peripheral hI2C;
-    ADG715_address deviceAddress;
+    I2C_MASTER_IF* I2CM = nullptr;
+    I2C_peripheral hI2C{};
+    ADG715_address deviceAddress{};
 public:
-    bool init(I2C_peripheral _hI2C, ADG715_address addr);
+    bool init(I2C_MASTER_IF &I2C_master, I2C_peripheral _hI2C, ADG715_address addr);
     bool isReady( );
     bool writeSwitchStates(uint8_t states );
     uint8_t readSwitchStates( );

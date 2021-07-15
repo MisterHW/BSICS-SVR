@@ -57,10 +57,11 @@ enum PCA9536_register {
 
 template < typename PCA953x_address, typename PCA953x_register >
 class PCA953x {
-    I2C_peripheral hI2C;
-    PCA953x_address deviceAddress;
+    I2C_MASTER_IF* I2CM = nullptr;
+    I2C_peripheral hI2C{};
+    PCA953x_address deviceAddress{};
 public:
-    bool init(I2C_peripheral _hI2C, PCA953x_address addr );
+    bool init(I2C_MASTER_IF &I2C_master, I2C_peripheral _hI2C, PCA953x_address addr);
     bool isReady( );
     bool write( const uint8_t* data, unsigned int len );
     bool read(PCA953x_register reg, uint8_t &data, unsigned int len);
@@ -76,8 +77,12 @@ public:
 };
 
 template<typename PCA953x_address, typename PCA953x_register>
-bool PCA953x<PCA953x_address, PCA953x_register>::init(I2C_peripheral _hI2C, PCA953x_address addr) {
-    return false;
+bool PCA953x<PCA953x_address, PCA953x_register>::init(I2C_MASTER_IF &I2C_master, I2C_peripheral _hI2C,
+                                                      PCA953x_address addr) {
+    I2CM = &I2C_master;
+    hI2C = _hI2C;
+    deviceAddress = addr;
+    return isReady();
 }
 
 template<typename PCA953x_address, typename PCA953x_register>
