@@ -6,7 +6,7 @@
 #ifndef HW_MCP342X_H
 #define HW_MCP342X_H
 
-#include "i2c_def.h"
+#include "stm32f7xx_hal.h"
 
 // MCP3422 A0 address (default, others only available on request)
 enum MCP3422_address {
@@ -95,19 +95,17 @@ typedef union MCP342x_config_ {
 
 template < typename MCP342x_address , typename MP342x_channel>
 class MCP342x {
-    I2C_MASTER_IF* I2CM = nullptr;
-    I2C_peripheral hI2C{};
+    I2C_HandleTypeDef* hI2C {nullptr};
     MCP342x_address deviceAddress{};
     MCP342x_config cfg[4]{};
 public:
-    bool init(I2C_MASTER_IF &I2C_master, I2C_peripheral _hI2C, MCP342x_address addr);
+    bool init(I2C_HandleTypeDef *_hI2C, MCP342x_address addr);
     bool isReady( );
 };
 
 template<typename MCP342x_address, typename MP342x_channel>
 bool
-MCP342x<MCP342x_address, MP342x_channel>::init(I2C_MASTER_IF &I2C_master, I2C_peripheral _hI2C, MCP342x_address addr) {
-    I2CM = &I2C_master;
+MCP342x<MCP342x_address, MP342x_channel>::init(I2C_HandleTypeDef *_hI2C, MCP342x_address addr) {
     hI2C = _hI2C;
     deviceAddress = addr;
     return isReady();
@@ -115,7 +113,7 @@ MCP342x<MCP342x_address, MP342x_channel>::init(I2C_MASTER_IF &I2C_master, I2C_pe
 
 template<typename MCP342x_address, typename MP342x_channel>
 bool MCP342x<MCP342x_address, MP342x_channel>::isReady() {
-    return true;
+    return HAL_OK == HAL_I2C_IsDeviceReady(hI2C, deviceAddress << 1, 3, 5);
 }
 
 

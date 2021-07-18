@@ -5,7 +5,7 @@
 #ifndef HW_MCP9808_H
 #define HW_MCP9808_H
 
-#include "i2c_def.h"
+#include "stm32f7xx_hal.h"
 
 // MCP9808 addresses (ALT block: "contact factory for this address code.")
 enum MCP9808_address {
@@ -30,11 +30,10 @@ enum MCP9808_address {
 };
 
 class MCP9808 {
-    I2C_MASTER_IF* I2CM = nullptr;
-    I2C_peripheral hI2C{};
+    I2C_HandleTypeDef* hI2C {nullptr};
     MCP9808_address deviceAddress{};
 public:
-    bool init(I2C_MASTER_IF &I2C_master, I2C_peripheral _hI2C, MCP9808_address addr);
+    bool init(I2C_HandleTypeDef* _hI2C, MCP9808_address addr);
     bool isReady( );
 };
 

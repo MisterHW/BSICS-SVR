@@ -5,9 +5,7 @@
 #ifndef HW_ADG715_H
 #define HW_ADG715_H
 
-#include <cstdint>
-#include "i2c_def.h"
-
+#include "stm32f7xx_hal.h"
 
 /* ADG715 non-shifted device addresses.
  * HAL UM1905: "device 7 bits address value in datasheet must be shift at right before call."
@@ -31,17 +29,16 @@ enum ADG715_switch {
     ADG715_S7 = 0x40,
     ADG715_S8 = 0x80,
 };
-
+using ADG715_switches = uint8_t;
 
 class ADG715 {
-    I2C_MASTER_IF* I2CM = nullptr;
-    I2C_peripheral hI2C{};
+    I2C_HandleTypeDef*  hI2C {nullptr};
     ADG715_address deviceAddress{};
 public:
-    bool init(I2C_MASTER_IF &I2C_master, I2C_peripheral _hI2C, ADG715_address addr);
+    bool init(I2C_HandleTypeDef *_hI2C, ADG715_address addr);
     bool isReady( );
-    bool writeSwitchStates(uint8_t states );
-    uint8_t readSwitchStates( );
+    bool writeSwitchStates( ADG715_switches states );
+    bool readSwitchStates( ADG715_switches& states );
 };
 
 #endif //HW_ADG715_H

@@ -5,7 +5,7 @@
 #ifndef HW_MP8862_H
 #define HW_MP8862_H
 
-#include "i2c_def.h"
+#include "stm32f7xx_hal.h"
 
 // MP8862 device addresses
 enum MP8862_address {
@@ -16,11 +16,10 @@ enum MP8862_address {
 };
 
 class MP8862 {
-    I2C_MASTER_IF* I2CM = nullptr;
-    I2C_peripheral hI2C{};
+    I2C_HandleTypeDef* hI2C {nullptr};
     MP8862_address deviceAddress{};
 public:
-    bool init(I2C_MASTER_IF &I2C_master, I2C_peripheral _hI2C, MP8862_address addr);
+    bool init(I2C_HandleTypeDef *_hI2C, MP8862_address addr);
     bool isReady( );
 };
 

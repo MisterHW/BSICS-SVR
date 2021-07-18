@@ -37,6 +37,7 @@ public:
     MCP3423 adc[3]{}; // MCP3423 dual-channel 18 bit ADC
 
     bool init(I2C_HandleTypeDef* _hI2C);
+    bool configureDefaults( );
 };
 
 /* --------------------------------------------------------------------------- */
@@ -49,8 +50,9 @@ extern "C" {
 #include <stdbool.h>
 #endif
 
-bool Devices_Init( );
-void Devices_Update( );
+bool Devices_init( );
+void Devices_update( );
+bool Devices_configure_defaults();
 
 #ifdef __cplusplus
 }

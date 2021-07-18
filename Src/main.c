@@ -165,8 +165,8 @@ int main(void)
   char buf[] = "UART OK\n";
   HAL_UART_Transmit(&huart3, (uint8_t *)buf, 8, HAL_MAX_DELAY);
 
-  Devices_Init();
-
+  Devices_init();
+  Devices_configure_defaults();
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
