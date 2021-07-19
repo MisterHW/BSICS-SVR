@@ -48,10 +48,10 @@ enum PCA9535_register {
 
 // registers applicable to PCA9536
 enum PCA9536_register {
-    PCA9536_PORT0_INPUT     = (uint8_t) 0x00,
-    PCA9536_PORT0_OUTPUT    = (uint8_t) 0x01,
-    PCA9536_PORT0_INVERT    = (uint8_t) 0x02, // invert read-back bits
-    PCA9536_PORT0_DIRECTION = (uint8_t) 0x03,
+    PCA9536_PORT0_INPUT     = 0x00,
+    PCA9536_PORT0_OUTPUT    = 0x01,
+    PCA9536_PORT0_INVERT    = 0x02, // invert read-back bits
+    PCA9536_PORT0_DIRECTION = 0x03,
 };
 
 
@@ -63,15 +63,14 @@ public:
     bool init(I2C_HandleTypeDef *_hI2C, PCA953x_address addr);
     bool isReady( );
     bool write(PCA953x_register reg, uint8_t *data, unsigned int len );
-    bool read( PCA953x_register reg, uint8_t &data, unsigned int len );
+    bool read(PCA953x_register reg, uint8_t *data, unsigned int len );
 
-    inline bool writeRegister( PCA953x_register reg, uint8_t value ) {
-        uint8_t data[2] = { (const uint8_t) reg, value };
-        return write(reg, &data[0], 2);
+    bool writeRegister( PCA953x_register reg, uint8_t value ) {
+        return write( reg, &value, 1);
     }
-    inline uint8_t readRegister( PCA953x_register reg ) {
+    uint8_t readRegister( PCA953x_register reg ) {
         uint8_t data;
-        read( (const uint8_t) reg, &data, 1 );
+        read( reg, &data, 1 );
         return data;
     }
 
@@ -96,13 +95,21 @@ bool PCA953x<PCA953x_address, PCA953x_register>::isReady( ) {
 }
 
 template<typename PCA953x_address, typename PCA953x_register>
-bool
-PCA953x<PCA953x_address, PCA953x_register>::write(PCA953x_register reg, uint8_t *data, unsigned int len ) {
+bool PCA953x<PCA953x_address, PCA953x_register>::write(PCA953x_register reg, uint8_t *data, unsigned int len ) {
+    // S
+    // deviceAddress << 1 | 0 : ACK : ADDR : ACK
+    // BYTE0 : ACK [ : BYTE1 : ACK [ : ... ]]
+    // P
     return HAL_OK == HAL_I2C_Mem_Write( hI2C, deviceAddress << 1, reg, 1, data, len, 5 );
 }
 
 template<typename PCA953x_address, typename PCA953x_register>
-bool PCA953x<PCA953x_address, PCA953x_register>::read( PCA953x_register reg, uint8_t &data, unsigned int len ) {
+bool PCA953x<PCA953x_address, PCA953x_register>::read(PCA953x_register reg, uint8_t *data, unsigned int len ) {
+    // S
+    // deviceAddress << 1 | 0 : ACK : ADDR : ACK
+    // S
+    // deviceAddress << 1 | 1 : ACK : BYTE0 : ACK [ : BYTE1 : ACK [ : ... ]]
+    // P
     return HAL_OK == HAL_I2C_Mem_Read( hI2C, deviceAddress << 1, reg, 1, data, len, 5 );
 }
 

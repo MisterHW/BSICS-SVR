@@ -56,10 +56,10 @@ enum MCP3424_channel {
  * 18-bit has a max sample rate of   3.75sps (MCP3421, MCP3422, MCP3423, MCP3424 only)
  */
 enum MCP342x_resolution {
-    MCP342X_RES_12BIT = 0x00,
-    MCP342X_RES_14BIT = 0x04,
-    MCP342X_RES_16BIT = 0x08,
-    MCP342X_RES_18BIT = 0x0C,
+    MCP342X_RES_12BIT = 0 << 2,
+    MCP342X_RES_14BIT = 1 << 2,
+    MCP342X_RES_16BIT = 2 << 2,
+    MCP342X_RES_18BIT = 3 << 2,
 };
 
 // Programmable Gain definitions
@@ -74,7 +74,20 @@ enum MCP342x_bit_mask {
     MCP342X_RDY          = 0x80, // RDY flag
     MCP342X_GAIN_MASK    = 0x03,
     MCP342X_CHANNEL_MASK = 0x60,
-    MCP342X_SIZE_MASK    = 0x0C,
+    MCP342X_RES_MASK     = 0x0C,
+};
+
+/* MCP342x_rx_bytes : number of bytes to be read back from MCP342x.
+ * 2 or 3 data bytes are followed by the config byte, which keeps repeating.
+ * For decoding without knowledge of the last config sent to the device,
+ * 4 bytes need to be read. Data alignment is inferred from S1:0 bits
+ * ("Sample Rate" -> number of bits, 12 .. 18).
+ */
+enum MCP342x_rx_bytes {
+    MCP342x_rx_lte16bit_no_status   = 2, // <= 16 bit resolution, no status byte
+    MCP342x_rx_lte16bit_plus_status = 3, // <= 16 bit resolution, last byte = status byte
+    MCP342x_rx_18bit_no_status      = 3, // 18 bit resolution, no status byte
+    MCP342x_rx_18bit_plus_status    = 4, // 18 bit resolution, last byte = status byte
 };
 
 typedef union MCP342x_config_ {
@@ -101,11 +114,14 @@ class MCP342x {
 public:
     bool init(I2C_HandleTypeDef *_hI2C, MCP342x_address addr);
     bool isReady( );
+
+    bool writeConfig( MCP342x_config cfg );
+    bool read( uint8_t *data, MCP342x_rx_bytes len );
+    bool readConvResult(int32_t& value);
 };
 
 template<typename MCP342x_address, typename MP342x_channel>
-bool
-MCP342x<MCP342x_address, MP342x_channel>::init(I2C_HandleTypeDef *_hI2C, MCP342x_address addr) {
+bool MCP342x<MCP342x_address, MP342x_channel>::init( I2C_HandleTypeDef *_hI2C, MCP342x_address addr ) {
     hI2C = _hI2C;
     deviceAddress = addr;
     return isReady();
@@ -114,6 +130,46 @@ MCP342x<MCP342x_address, MP342x_channel>::init(I2C_HandleTypeDef *_hI2C, MCP342x
 template<typename MCP342x_address, typename MP342x_channel>
 bool MCP342x<MCP342x_address, MP342x_channel>::isReady() {
     return HAL_OK == HAL_I2C_IsDeviceReady(hI2C, deviceAddress << 1, 3, 5);
+}
+
+template<typename MCP342x_address, typename MP342x_channel>
+bool MCP342x<MCP342x_address, MP342x_channel>::writeConfig(MCP342x_config data) {
+    // S
+    // deviceAddress << 1 | 0 : ACK : ADDR : ACK : CONFIG
+    // P
+    cfg[data.bits.channel] = data; // update shadow copy
+    return HAL_OK == HAL_I2C_Master_Transmit( hI2C, deviceAddress << 1, data, 1, 5 );
+}
+
+template<typename MCP342x_address, typename MP342x_channel>
+bool MCP342x<MCP342x_address, MP342x_channel>::read(uint8_t *data, MCP342x_rx_bytes len) {
+    // S
+    // deviceAddress << 1 | 1 : ACK [ : DATA2 : ACK ] : DATA1 : ACK : DATA0 : ACK [ : CFG : ACK [ : CFG : ACK [ : ... ]]
+    // P
+    return HAL_OK == HAL_I2C_Master_Receive( hI2C, deviceAddress << 1, data, len, 5 );
+}
+
+template<typename MCP342x_address, typename MP342x_channel>
+bool MCP342x<MCP342x_address, MP342x_channel>::readConvResult(int32_t &value) {
+    uint8_t data[4] {};
+    bool success = read(data, MCP342x_rx_18bit_plus_status);
+    success = success && (data[3] & MCP342X_RDY);
+    uint8_t  res = data[3] & MCP342X_RES_MASK;
+    uint32_t tmp = data[0] << 24 | data[1] << 16;
+    if(res == MCP342X_RES_18BIT)
+    {
+        value = (int32_t)((tmp << 6) | (data[2] << 14));
+        return success;
+    } else if (res == MCP342X_RES_16BIT) {
+        value = (int32_t)(tmp);
+        return success;
+    } else if (res == MCP342X_RES_14BIT) {
+        value = (int32_t)(tmp << 2);
+        return success;
+    } else {
+        value = (int32_t)(tmp << 4);
+        return success;
+    }
 }
 
 

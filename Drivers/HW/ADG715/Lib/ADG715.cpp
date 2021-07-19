@@ -15,10 +15,18 @@ bool ADG715::isReady( ) {
 }
 
 bool ADG715::writeSwitchStates(uint8_t states) {
+    // S
+    // deviceAddress << 1 | 0 : ACK : STATES
+    // P
     return HAL_OK == HAL_I2C_Master_Transmit(hI2C, deviceAddress << 1, &states, 1, 5);
 }
 
 bool ADG715::readSwitchStates( uint8_t& states ) {
+    // S
+    // deviceAddress << 1 | 1 : ACK : STATES
+    // P
     return HAL_OK == HAL_I2C_Master_Receive(hI2C, deviceAddress << 1, &states, 1, 5);
 }
+
+
 

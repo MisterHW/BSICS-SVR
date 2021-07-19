@@ -11,33 +11,23 @@ bool PeripheralDeviceGroup::init(I2C_HandleTypeDef* _hI2C)
     hI2C = _hI2C;
 
     res &= gpio_exp.init(hI2C, PCA9536_ADDR_0x41);
-    res &= gpio_exp.isReady();
 
     // res &= dcdc_hi.init(I2C_handler, hI2C, MP8862_ADDR_0x6D);
     // res &= dcdc_lo.init(I2C_handler, hI2C, MP8862_ADDR_0x6F);
-    // res &= dcdc_hi.isReady();
-    // res &= dcdc_lo.isReady();
 
     res &= octal_spst[0].init(hI2C, ADG715_ADDR_0x49);
     res &= octal_spst[1].init(hI2C, ADG715_ADDR_0x4A);
     res &= octal_spst[2].init(hI2C, ADG715_ADDR_0x4B);
-    res &= octal_spst[0].isReady();
-    res &= octal_spst[1].isReady();
-    res &= octal_spst[2].isReady();
 
     res &= temp_sensor[0].init(hI2C, MCP9808_ADDR_0x19);
     res &= temp_sensor[1].init(hI2C, MCP9808_ADDR_0x1A);
     res &= temp_sensor[2].init(hI2C, MCP9808_ADDR_0x1B);
-    res &= temp_sensor[0].isReady();
-    res &= temp_sensor[1].isReady();
-    res &= temp_sensor[2].isReady();
 
     res &= adc[0].init(hI2C, MCP342x_ADDR_0x6C);
     res &= adc[1].init(hI2C, MCP342x_ADDR_0x6A);
     res &= adc[2].init(hI2C, MCP342x_ADDR_0x6E);
-    res &= adc[0].isReady();
-    res &= adc[1].isReady();
-    res &= adc[2].isReady();
+
+    // res &= disp.init(I2C_handler, hI2C, SSD1306_ADDR_0x3C);
 
     return res;
 }
