@@ -103,7 +103,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 
-    //disableStdioBuffering();
+    disableStdioBuffering();
 
     /* Activate MPU-related fault handlers:
     * Set all three (USGFAULTENA, BUSFAULTENA, and MEMFAULTENA) fault enable bits
@@ -163,7 +163,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   char buf[] = "UART OK\n";
-  HAL_UART_Transmit(&huart3, (uint8_t *)buf, 8, HAL_MAX_DELAY);
+  HAL_UART_Transmit(&huart3, buf, 8, HAL_MAX_DELAY);
 
   Devices_init();
   Devices_configure_defaults();
@@ -203,8 +203,6 @@ int main(void)
   const TickType_t xDelay = 100 / portTICK_PERIOD_MS;
   while (1)
   {
-      vTaskDelay( xDelay );
-
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
