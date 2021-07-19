@@ -1,8 +1,11 @@
 #include "devices.h"
 
+#include "stdio.h"
+#include "stm32f7xx_hal.h"
+
 /* ---------------------------------------------------------------------------*/
 
-
+extern UART_HandleTypeDef huart3;
 
 bool PeripheralDeviceGroup::init(I2C_HandleTypeDef* _hI2C)
 {
@@ -10,24 +13,24 @@ bool PeripheralDeviceGroup::init(I2C_HandleTypeDef* _hI2C)
 
     hI2C = _hI2C;
 
-    res &= gpio_exp.init(hI2C, PCA9536_ADDR_0x41);
+    res &= report(gpio_exp.init(hI2C, PCA9536_ADDR_0x41) , "0x41 PCA9536" );
 
-    // res &= dcdc_hi.init(I2C_handler, hI2C, MP8862_ADDR_0x6D);
-    // res &= dcdc_lo.init(I2C_handler, hI2C, MP8862_ADDR_0x6F);
+    // res &= report( dcdc_hi.init(I2C_handler, hI2C, MP8862_ADDR_0x6D), "0x6D MP8862" );
+    // res &= report( dcdc_lo.init(I2C_handler, hI2C, MP8862_ADDR_0x6F), "0x6F MP8862" );
 
-    res &= octal_spst[0].init(hI2C, ADG715_ADDR_0x49);
-    res &= octal_spst[1].init(hI2C, ADG715_ADDR_0x4A);
-    res &= octal_spst[2].init(hI2C, ADG715_ADDR_0x4B);
+    res &= report( octal_spst[0].init(hI2C, ADG715_ADDR_0x49) , "0x49 ADG715" );
+    res &= report( octal_spst[1].init(hI2C, ADG715_ADDR_0x4A) , "0x4A ADG715" );
+    res &= report( octal_spst[2].init(hI2C, ADG715_ADDR_0x4B) , "0x4B ADG715" );
 
-    res &= temp_sensor[0].init(hI2C, MCP9808_ADDR_0x19);
-    res &= temp_sensor[1].init(hI2C, MCP9808_ADDR_0x1A);
-    res &= temp_sensor[2].init(hI2C, MCP9808_ADDR_0x1B);
+    res &= report( temp_sensor[0].init(hI2C, MCP9808_ADDR_0x19) , "0x19 MCP9808" );
+    res &= report( temp_sensor[1].init(hI2C, MCP9808_ADDR_0x1A) , "0x1A MCP9808" );
+    res &= report( temp_sensor[2].init(hI2C, MCP9808_ADDR_0x1B) , "0x1B MCP9808" );
 
-    res &= adc[0].init(hI2C, MCP342x_ADDR_0x6C);
-    res &= adc[1].init(hI2C, MCP342x_ADDR_0x6A);
-    res &= adc[2].init(hI2C, MCP342x_ADDR_0x6E);
+    res &= report( adc[0].init(hI2C, MCP342x_ADDR_0x6C) , "0x6C MCP3423" );
+    res &= report( adc[1].init(hI2C, MCP342x_ADDR_0x6A) , "0x6A MCP3423" );
+    res &= report( adc[2].init(hI2C, MCP342x_ADDR_0x6E) , "0x6E MCP3423" );
 
-    // res &= disp.init(I2C_handler, hI2C, SSD1306_ADDR_0x3C);
+    // res &= report( disp.init(I2C_handler, hI2C, SSD1306_ADDR_0x3C), "0x3C SSD1306" );
 
     return res;
 }
@@ -44,6 +47,13 @@ bool PeripheralDeviceGroup::configureDefaults() {
     return res;
 }
 
+bool PeripheralDeviceGroup::report(bool success, const char *s) {
+    printf(success ? "[x] " : "[_] ");
+    printf(s);
+    printf("\n");
+    return success;
+}
+
 /* ---------------------------------------------------------------------------*/
 
 extern I2C_HandleTypeDef hi2c1;
@@ -53,7 +63,9 @@ PeripheralDeviceGroup DeviceGroups[2];
 
 bool Devices_init( ) {
     bool res;
+    printf("I2C1 :\n");
     res  = DeviceGroups[0].init(&hi2c1);
+    printf("I2C2 :\n");
     res &= DeviceGroups[1].init(&hi2c2);
     return res;
 };

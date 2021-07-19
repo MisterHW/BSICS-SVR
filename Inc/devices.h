@@ -21,6 +21,8 @@
 #include "MP8862.h"
 
 class PeripheralDeviceGroup {
+private:
+    static bool report(bool success, const char *s);
 public:
     I2C_HandleTypeDef* hI2C = nullptr;
 
