@@ -1,3 +1,0 @@
-[submodule "Drivers/ssd1306-stm32HAL"]
-	path = Drivers/ssd1306-stm32HAL
-	url = https://github.com/MisterHW/ssd1306-stm32HAL.git
