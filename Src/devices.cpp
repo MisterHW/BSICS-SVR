@@ -18,17 +18,17 @@ bool PeripheralDeviceGroup::init(I2C_HandleTypeDef* _hI2C)
     // res &= report( dcdc_hi.init(I2C_handler, hI2C, MP8862_ADDR_0x6D), "0x6D MP8862" );
     // res &= report( dcdc_lo.init(I2C_handler, hI2C, MP8862_ADDR_0x6F), "0x6F MP8862" );
 
-    res &= report( octal_spst[0].init(hI2C, ADG715_ADDR_0x49) , "0x49 ADG715" );
-    res &= report( octal_spst[1].init(hI2C, ADG715_ADDR_0x4A) , "0x4A ADG715" );
-    res &= report( octal_spst[2].init(hI2C, ADG715_ADDR_0x4B) , "0x4B ADG715" );
+    res &= report( octal_spst[0].init(hI2C, ADG715_ADDR_0x49) , "0x49 CH1 ADG715" );
+    res &= report( octal_spst[1].init(hI2C, ADG715_ADDR_0x4A) , "0x4A CH2 ADG715" );
+    res &= report( octal_spst[2].init(hI2C, ADG715_ADDR_0x4B) , "0x4B CH3 ADG715" );
 
-    res &= report( temp_sensor[0].init(hI2C, MCP9808_ADDR_0x19) , "0x19 MCP9808" );
-    res &= report( temp_sensor[1].init(hI2C, MCP9808_ADDR_0x1A) , "0x1A MCP9808" );
-    res &= report( temp_sensor[2].init(hI2C, MCP9808_ADDR_0x1B) , "0x1B MCP9808" );
+    res &= report( temp_sensor[0].init(hI2C, MCP9808_ADDR_0x19) , "0x19 CH1 MCP9808" );
+    res &= report( temp_sensor[1].init(hI2C, MCP9808_ADDR_0x1A) , "0x1A CH2 MCP9808" );
+    res &= report( temp_sensor[2].init(hI2C, MCP9808_ADDR_0x1B) , "0x1B CH3 MCP9808" );
 
-    res &= report( adc[0].init(hI2C, MCP342x_ADDR_0x6C) , "0x6C MCP3423" );
-    res &= report( adc[1].init(hI2C, MCP342x_ADDR_0x6A) , "0x6A MCP3423" );
-    res &= report( adc[2].init(hI2C, MCP342x_ADDR_0x6E) , "0x6E MCP3423" );
+    res &= report( adc[0].init(hI2C, MCP342x_ADDR_0x6C) , "0x6C CH1 MCP3423" );
+    res &= report( adc[1].init(hI2C, MCP342x_ADDR_0x6A) , "0x6A CH2 MCP3423" );
+    res &= report( adc[2].init(hI2C, MCP342x_ADDR_0x6E) , "0x6E CH3 MCP3423" );
 
     // res &= report( disp.init(I2C_handler, hI2C, SSD1306_ADDR_0x3C), "0x3C SSD1306" );
 
