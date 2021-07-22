@@ -118,6 +118,18 @@ public:
     bool writeConfig( MCP342x_config cfg );
     bool read( uint8_t *data, MCP342x_rx_bytes len );
     bool readConvResult(int32_t& value);
+
+    // Convert MCP342x raw values scaled by coef = -4.095 .. +4.095 (default: 1.0). Returns scaled uV.
+    static int32_t raw_to_uV( int32_t adc_raw, int16_t coef_x4000 = 4000 )
+    {
+        return ( ( adc_raw >> 14 ) * coef_x4000 ) >> 8 ;
+    };
+
+    // Convert MCP342x raw values scaled by coef = -16.383 .. +16.383 (default: 1.0). Returns scaled mV.
+    static int32_t raw_to_mV( int32_t adc_raw, int16_t coef_x1024 = 1024 )
+    {
+        return ( ( adc_raw >> 14 ) * coef_x1024 ) >> 16 ;
+    };
 };
 
 template<typename MCP342x_address, typename MP342x_channel>
