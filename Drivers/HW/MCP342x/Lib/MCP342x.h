@@ -163,7 +163,7 @@ bool MCP342x<MCP342x_address, MP342x_channel>::read(uint8_t *data, MCP342x_rx_by
 
 template<typename MCP342x_address, typename MP342x_channel>
 bool MCP342x<MCP342x_address, MP342x_channel>::readConvResult(int32_t &value) {
-    uint8_t data[4] {};
+    uint8_t data[MCP342x_rx_18bit_plus_status] {};
     bool success = read(data, MCP342x_rx_18bit_plus_status);
     success = success && (data[3] & MCP342X_RDY);
     uint8_t  res = data[3] & MCP342X_RES_MASK;
