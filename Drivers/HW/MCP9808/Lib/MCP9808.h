@@ -30,12 +30,13 @@ enum MCP9808_address {
 };
 
 enum MCP9808_register {
-    MCP9808_REG16_config     = 0x01 ,
-    MCP9808_REG16_T_upper    = 0x02 ,
-    MCP9808_REG16_T_lower    = 0x03 ,
-    MCP9808_REG16_T_critical = 0x04 ,
-    MCP9808_REG16_T_ambient  = 0x05 ,
-    MCP9808_REG16_mfr_ID     = 0x06 , // default x0054
+    MCP9808_REG16_RFU        = 0x00 , // Reserved ( read-only, default 0x001F )
+    MCP9808_REG16_config     = 0x01 , // default 0x0000
+    MCP9808_REG16_T_upper    = 0x02 , // default 0x0000
+    MCP9808_REG16_T_lower    = 0x03 , // default 0x0000
+    MCP9808_REG16_T_critical = 0x04 , // default 0x0000
+    MCP9808_REG16_T_ambient  = 0x05 , // conversion results and comparator flags
+    MCP9808_REG16_mfr_ID     = 0x06 , // default 0x0054
     MCP9808_REG16_dev_ID     = 0x07 , // default 0x0400
     MCP9808_REG8_resolution  = 0x08 , // default 0x03
 };
@@ -90,6 +91,41 @@ enum MCP9808_config_attr {
     MCP9808_CFG_hyst_6p0degC = 3 << 9,
 };
 
+enum MCP9808_T_mask {
+    MCP9808_T_abs_temp_mask = 0x0FFF,
+    MCP9808_T_sign_bit_mask = 0x1000,
+    MCP9808_T_Tlow_mask     = 0x2000,
+    MCP9808_T_Thigh_mask    = 0x4000,
+    MCP9808_T_Tcrit_mask    = 0x8000,
+};
+
+typedef union MCP9808_T_ {
+    uint16_t val;
+    struct __attribute__ ((__packed__)) {
+        // lo byte
+        uint16_t abs_temp  : 12;
+        uint8_t sign       :  1;
+        uint8_t comp_Tlo   :  1; // T_ambient only - otherwise reads as 0, read-only
+        uint8_t comp_Thi   :  1; // T_ambient only - otherwise reads as 0, read-only
+        uint8_t comp_Tcrit :  1; // T_ambient only - otherwise reads as 0, read-only
+    } bits;
+    // assignment operator to treat MCP9808_T as an int type
+    inline MCP9808_T_& operator= (const uint16_t rhs) {
+        val = rhs;
+        return *this;
+    };
+    // int conversion operator to use MCP9808_T in algebraic expressions.
+#if defined(__cplusplus) && (__cplusplus >= 201103L) // require C++11 or later for "explicit"
+    inline explicit operator uint16_t() const {
+        return val;
+    };
+#else
+    inline operator uint16_t() const {
+            return val;
+    };
+#endif
+} MCP9808_T;
+
 
 class MCP9808 {
     I2C_HandleTypeDef* hI2C {nullptr};
@@ -102,8 +138,21 @@ public:
     bool read ( MCP9808_register reg, uint8_t* data, unsigned int len );
     bool writeReg16( MCP9808_register reg, uint16_t value );
     bool writeReg8 ( MCP9808_register reg, uint8_t value );
-    bool readReg16(MCP9808_register reg, uint16_t &value);
-    bool readReg8(MCP9808_register reg, uint8_t &value);
+    bool readReg16( MCP9808_register reg, uint16_t &value );
+    bool readReg8 ( MCP9808_register reg, uint8_t &value );
+
+    static int32_t raw_to_millidegC( MCP9808_T raw_temp )
+    {
+        int32_t tmp = (raw_temp.bits.abs_temp * 131) >> 1;
+        return raw_temp.bits.sign ? -tmp : tmp;
+
+    };
+
+    static int16_t raw_to_degC( MCP9808_T raw_temp )
+    {
+        uint16_t tmp = raw_temp.bits.abs_temp >> 4;
+        return raw_temp.bits.sign ? -tmp : tmp;
+    };
 };
 
 #endif //HW_MCP9808_H
