@@ -172,8 +172,8 @@ public:
 
     static int16_t raw_to_degC( MCP9808_T raw_temp )
     {
-        uint16_t tmp = raw_temp.bits.abs_temp >> 4;
-        return raw_temp.bits.sign ? -tmp : tmp;
+        int16_t tmp = (int16_t)(raw_temp.bits.abs_temp >> 4);
+        return raw_temp.bits.sign ? (int16_t)-tmp : tmp;
     };
 };
 
