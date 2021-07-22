@@ -93,7 +93,7 @@ enum MCP9808_config_attr {
 };
 
 enum MCP9808_T_mask {
-    MCP9808_T_abs_temp_mask = 0x0FFF,
+    MCP9808_T_temp_mask     = 0x0FFF,
     MCP9808_T_sign_bit_mask = 0x1000,
     MCP9808_T_Tlow_mask     = 0x2000,
     MCP9808_T_Thigh_mask    = 0x4000,
@@ -104,7 +104,8 @@ typedef union MCP9808_T_ {
     uint16_t val;
     struct __attribute__ ((__packed__)) {
         // lo byte
-        uint16_t temp      : 13; // signed 13 bit two's complement (1 LSB = 62.5 mK)
+        uint16_t raw_temp  : 12; // two's complement
+        uint8_t sign       :  1; //
         uint8_t comp_Tlo   :  1; // T_ambient only - otherwise reads as 0, read-only
         uint8_t comp_Thi   :  1; // T_ambient only - otherwise reads as 0, read-only
         uint8_t comp_Tcrit :  1; // T_ambient only - otherwise reads as 0, read-only
@@ -140,6 +141,45 @@ public:
     bool writeReg8 ( MCP9808_register reg, uint8_t value );
     bool readReg16( MCP9808_register reg, uint16_t &value );
     bool readReg8 ( MCP9808_register reg, uint8_t &value );
+
+    // Conversion to raw units. Note T_low, T_high and T_crit only have 0.25°C resolution (bits 1:0 are ignored)
+    static MCP9808_T millidegC_to_raw( int32_t temp )
+    {
+        MCP9808_T raw {};
+        raw.bits.sign = temp < 0 ? 1 : 0;
+        if(temp < 0)
+        {
+            raw.bits.raw_temp = 0; // TODO
+            return raw;
+        } else {
+            raw.bits.raw_temp = 0; // TODO
+            return raw;
+        }
+    };
+
+    int32_t raw_to_millidegC( MCP9808_T T )
+    {
+        int16_t tmp = T.bits.raw_temp;
+        if(T.bits.sign)
+        {
+            return ((tmp - (1 << 12)) * 125) >> 1;
+        } else {
+            return (tmp * 125) >> 1;
+        }
+
+    };
+
+    int16_t raw_to_degC( MCP9808_T T )
+    {
+        int16_t tmp = (int16_t)T.bits.raw_temp;
+        if(T.bits.sign)
+        {
+            return (int16_t)((tmp - ((1 << 12) - 8)) >> 4);
+        } else {
+            return (int16_t)((tmp + 8) >> 4);
+        }
+
+    };
 
 };
 
