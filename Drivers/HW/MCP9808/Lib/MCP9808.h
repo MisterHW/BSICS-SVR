@@ -104,8 +104,7 @@ typedef union MCP9808_T_ {
     uint16_t val;
     struct __attribute__ ((__packed__)) {
         // lo byte
-        uint16_t abs_temp  : 12;
-        uint8_t sign       :  1;
+        uint16_t temp      : 13; // signed 13 bit two's complement (1 LSB = 62.5 mK)
         uint8_t comp_Tlo   :  1; // T_ambient only - otherwise reads as 0, read-only
         uint8_t comp_Thi   :  1; // T_ambient only - otherwise reads as 0, read-only
         uint8_t comp_Tcrit :  1; // T_ambient only - otherwise reads as 0, read-only
@@ -142,39 +141,6 @@ public:
     bool readReg16( MCP9808_register reg, uint16_t &value );
     bool readReg8 ( MCP9808_register reg, uint8_t &value );
 
-    // Conversion to raw units. Note T_low, T_high and T_crit only have 0.25°C resolution (bits 1:0 are ignored)
-    static MCP9808_T millidegC_to_raw( int32_t T )
-    {
-        MCP9808_T raw {};
-        if(T < 0){
-            T = -T;
-            raw.bits.sign = 1;
-        }
-        // ensure <= 2^12 - 1
-        if(T < 256019 ){
-            // divide by 62.5 (multiply by ~2097(.152)/(1 << 17))
-            raw.bits.abs_temp = (T * 2097) >> 17;
-            return raw;
-        } else {
-            // maximum = 0x0FFF
-            raw.bits.abs_temp = (1 << 12) - 1;
-            return raw;
-        }
-
-    };
-
-    static int32_t raw_to_millidegC( MCP9808_T raw_temp )
-    {
-        int32_t tmp = (raw_temp.bits.abs_temp * 131) >> 1;
-        return raw_temp.bits.sign ? -tmp : tmp;
-
-    };
-
-    static int16_t raw_to_degC( MCP9808_T raw_temp )
-    {
-        int16_t tmp = (int16_t)(raw_temp.bits.abs_temp >> 4);
-        return raw_temp.bits.sign ? (int16_t)-tmp : tmp;
-    };
 };
 
 #endif //HW_MCP9808_H
