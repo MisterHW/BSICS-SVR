@@ -44,6 +44,16 @@ bool PeripheralDeviceGroup::configureDefaults() {
 
     res &= gpio_exp.writeRegister( PCA9536_PORT0_DIRECTION, PCA9536::REG_VALUE_SET_AS_INPUTS(0xF) );
 
+    res &= temp_sensor[0].writeReg16(MCP9808_REG16_config, MP9808_CFG_default);
+    res &= temp_sensor[1].writeReg16(MCP9808_REG16_config, MP9808_CFG_default);
+    res &= temp_sensor[1].writeReg16(MCP9808_REG16_config, MP9808_CFG_default);
+
+    MCP342x_config adc_startup_cfg;
+    adc_startup_cfg = MCP342X_RES_16BIT | MCP342X_GAIN_1X | MCP342x_MODE_ONESHOT | MCP3423_CHANNEL_1;
+    res &= adc[0].writeConfig( adc_startup_cfg );
+    res &= adc[1].writeConfig( adc_startup_cfg );
+    res &= adc[2].writeConfig( adc_startup_cfg );
+
     return res;
 }
 

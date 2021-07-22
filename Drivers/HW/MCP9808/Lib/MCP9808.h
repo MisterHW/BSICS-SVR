@@ -65,6 +65,7 @@ typedef union MCP9808_config_ {
 } MCP9808_config;
 
 enum MCP9808_config_attr {
+    MP9808_CFG_default = 0x0000,
     // lo byte
     MCP9808_CFG_alert_mode_comparator = 0 << 0, // (default)
     MCP9808_CFG_alert_mode_interrupt  = 1 << 0,
@@ -140,6 +141,27 @@ public:
     bool writeReg8 ( MCP9808_register reg, uint8_t value );
     bool readReg16( MCP9808_register reg, uint16_t &value );
     bool readReg8 ( MCP9808_register reg, uint8_t &value );
+
+    // Conversion to raw units. Note T_low, T_high and T_crit only have 0.25°C resolution (bits 1:0 are ignored)
+    static MCP9808_T millidegC_to_raw( int32_t T )
+    {
+        MCP9808_T raw {};
+        if(T < 0){
+            T = -T;
+            raw.bits.sign = 1;
+        }
+        // ensure <= 2^12 - 1
+        if(T < 256019 ){
+            // divide by 62.5 (multiply by ~2097(.152)/(1 << 17))
+            raw.bits.abs_temp = (T * 2097) >> 17;
+            return raw;
+        } else {
+            // maximum = 0x0FFF
+            raw.bits.abs_temp = (1 << 12) - 1;
+            return raw;
+        }
+
+    };
 
     static int32_t raw_to_millidegC( MCP9808_T raw_temp )
     {

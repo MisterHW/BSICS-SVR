@@ -25,28 +25,12 @@ enum MCP342x_address {
     MCP342x_ADDR_0x6F = 0x6F, // ADR0 = Float, ADR1 = 1
 };
 
-enum MCP342x_conversion_mode {
-    MCP342x_CONV_MODE_ONESHOT    = 0x00,
-    MCP342x_CONV_MODE_CONTINUOUS = 0x10,
-};
-
-/* Channel definitions
- * MCP3421 & MCP3425 have only the one channel and ignore this param
- * MCP3422, MCP3423, MCP3426 & MCP3427 have two channels and treat 3 & 4 as repeats of 1 & 2 respectively
- * MCP3424 & MCP3428 have all four channels
- */
-enum MCP3422_channel {
-    MCP3422_CHANNEL_1 = 0x00,
-};
-enum MCP3423_channel {
-    MCP3423_CHANNEL_1 = 0x00,
-    MCP3423_CHANNEL_2 = 0x20,
-};
-enum MCP3424_channel {
-    MCP3424_CHANNEL_1 = 0x00,
-    MCP3424_CHANNEL_2 = 0x20,
-    MCP3424_CHANNEL_3 = 0x40,
-    MCP3424_CHANNEL_4 = 0x60,
+// Programmable Gain definitions
+enum MCP342x_PGA {
+    MCP342X_GAIN_1X = 0 << 0,
+    MCP342X_GAIN_2X = 1 << 0,
+    MCP342X_GAIN_4X = 2 << 0,
+    MCP342X_GAIN_8X = 3 << 0,
 };
 
 /* Sample size definitions - these also affect the sampling rate
@@ -62,12 +46,9 @@ enum MCP342x_resolution {
     MCP342X_RES_18BIT = 3 << 2,
 };
 
-// Programmable Gain definitions
-enum MCP342x_PGA {
-    MCP342X_GAIN_1X = 0x00,
-    MCP342X_GAIN_2X = 0x01,
-    MCP342X_GAIN_4X = 0x02,
-    MCP342X_GAIN_8X = 0x03,
+enum MCP342x_conversion_mode {
+    MCP342x_MODE_ONESHOT    = 0 << 4,
+    MCP342x_MODE_CONTINUOUS = 1 << 4,
 };
 
 enum MCP342x_bit_mask {
@@ -75,6 +56,25 @@ enum MCP342x_bit_mask {
     MCP342X_GAIN_MASK    = 0x03,
     MCP342X_CHANNEL_MASK = 0x60,
     MCP342X_RES_MASK     = 0x0C,
+};
+
+/* Channel definitions
+ * MCP3421 & MCP3425 have only the one channel and ignore this param
+ * MCP3422, MCP3423, MCP3426 & MCP3427 have two channels and treat 3 & 4 as repeats of 1 & 2 respectively
+ * MCP3424 & MCP3428 have all four channels
+ */
+enum MCP3422_channel {
+    MCP3422_CHANNEL_1 = 0 << 5,
+};
+enum MCP3423_channel {
+    MCP3423_CHANNEL_1 = 0 << 5,
+    MCP3423_CHANNEL_2 = 1 << 5,
+};
+enum MCP3424_channel {
+    MCP3424_CHANNEL_1 = 0 << 5,
+    MCP3424_CHANNEL_2 = 1 << 5,
+    MCP3424_CHANNEL_3 = 2 << 5,
+    MCP3424_CHANNEL_4 = 3 << 5,
 };
 
 /* MCP342x_rx_bytes : number of bytes to be read back from MCP342x.
@@ -103,6 +103,16 @@ typedef union MCP342x_config_ {
         val = rhs;
         return *this;
     };
+    // int conversion operator to use MCP342x_config in algebraic expressions.
+#if defined(__cplusplus) && (__cplusplus >= 201103L) // require C++11 or later for "explicit"
+    inline explicit operator uint8_t() const {
+        return val;
+    };
+#else
+    inline operator uint8_t() const {
+            return val;
+    };
+#endif
 } MCP342x_config;
 
 
@@ -119,13 +129,21 @@ public:
     bool read( uint8_t *data, MCP342x_rx_bytes len );
     bool readConvResult(int32_t& value);
 
-    // Convert MCP342x raw values scaled by coef = -4.095 .. +4.095 (default: 1.0). Returns scaled uV.
+    /* Convert MCP342x raw values scaled by coef = -4.095 .. +4.095 (default: 1.0). Returns scaled uV.
+     * abs(coef_x4000) must be < 2^14. If too large, divide by 10 (100) to obtain result in x10 uV (x100 uV).
+     * Assumes MCP342X_GAIN_1X. To generalize, multiply coefficient coef_x4000 by (1 << config_byte.bits.pga)
+     * or use raw_to_uV(...) << config_byte.bits.pga.
+     */
     static int32_t raw_to_uV( int32_t adc_raw, int16_t coef_x4000 = 4000 )
     {
         return ( ( adc_raw >> 14 ) * coef_x4000 ) >> 8 ;
     };
 
-    // Convert MCP342x raw values scaled by coef = -16.383 .. +16.383 (default: 1.0). Returns scaled mV.
+    /* Convert MCP342x raw values scaled by coef = -16.383 .. +16.383 (default: 1.0). Returns scaled mV.
+     * abs(coef_x1024) must be < 2^14. If too large, divide by 10 (100) to obtain result in x10 uV (x100 uV).
+     * Assumes MCP342X_GAIN_1X. To generalize, multiply coefficient coef_x4000 by (1 << config_byte.bits.pga)
+     * or raw_to_uV(...) << config_byte.bits.pga.
+     */
     static int32_t raw_to_mV( int32_t adc_raw, int16_t coef_x1024 = 1024 )
     {
         return ( ( adc_raw >> 14 ) * coef_x1024 ) >> 16 ;
@@ -150,7 +168,8 @@ bool MCP342x<MCP342x_address, MP342x_channel>::writeConfig(MCP342x_config data) 
     // deviceAddress << 1 | 0 : ACK : ADDR : ACK : CONFIG
     // P
     cfg[data.bits.channel] = data; // update shadow copy
-    return HAL_OK == HAL_I2C_Master_Transmit( hI2C, deviceAddress << 1, data, 1, 5 );
+    uint8_t txbuf = (uint8_t)data;
+    return HAL_OK == HAL_I2C_Master_Transmit( hI2C, deviceAddress << 1, &txbuf, 1, 5 );
 }
 
 template<typename MCP342x_address, typename MP342x_channel>
@@ -178,7 +197,7 @@ bool MCP342x<MCP342x_address, MP342x_channel>::readConvResult(int32_t &value) {
     } else if (res == MCP342X_RES_14BIT) {
         value = (int32_t)(tmp << 2);
         return success;
-    } else {
+    } else { // MCP342X_RES_12BIT
         value = (int32_t)(tmp << 4);
         return success;
     }
