@@ -136,7 +136,7 @@ public:
      */
     static int32_t raw_to_uV( int32_t adc_raw, int16_t coef_x4000 = 4000 )
     {
-        return ( ( adc_raw >> 14 ) * coef_x4000 ) >> 8 ;
+        return ( adc_raw * coef_x4000 ) >> 8 ;
     };
 
     /* Convert MCP342x raw values scaled by coef = -16.383 .. +16.383 (default: 1.0). Returns scaled mV.
@@ -146,7 +146,7 @@ public:
      */
     static int32_t raw_to_mV( int32_t adc_raw, int16_t coef_x1024 = 1024 )
     {
-        return ( ( adc_raw >> 14 ) * coef_x1024 ) >> 16 ;
+        return ( adc_raw * coef_x1024 ) >> 16 ;
     };
 };
 
@@ -189,16 +189,16 @@ bool MCP342x<MCP342x_address, MP342x_channel>::readConvResult(int32_t &value) {
     uint32_t tmp = data[0] << 24 | data[1] << 16;
     if(res == MCP342X_RES_18BIT)
     {
-        value = (int32_t)((tmp << 6) | (data[2] << 14));
+        value = ((int32_t)(((tmp^(1<<25)) << 6) | (data[2] << 14)) - (1 << 31)) >> 14;
         return success;
     } else if (res == MCP342X_RES_16BIT) {
-        value = (int32_t)(tmp);
+        value = ((int32_t)(tmp^(1<<31)) - (1 << 31)) >> 14;
         return success;
     } else if (res == MCP342X_RES_14BIT) {
-        value = (int32_t)(tmp << 2);
+        value = ((int32_t)((tmp^(1<<29)) << 2) - (1 << 31)) >> 14;
         return success;
     } else { // MCP342X_RES_12BIT
-        value = (int32_t)(tmp << 4);
+        value = ((int32_t)((tmp^(1<<27)) << 4) - (1 << 31)) >> 14;
         return success;
     }
 }
