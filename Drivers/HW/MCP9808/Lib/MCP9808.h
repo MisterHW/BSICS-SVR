@@ -142,41 +142,34 @@ public:
     bool readReg16( MCP9808_register reg, uint16_t &value );
     bool readReg8 ( MCP9808_register reg, uint8_t &value );
 
-    // Conversion to raw units. Note T_low, T_high and T_crit only have 0.25°C resolution (bits 1:0 are ignored)
-    static MCP9808_T millidegC_to_raw( int32_t temp )
+    /* (Approximate) conversion to raw units.
+     * Note T_low, T_high and T_crit only have 0.25°C resolution (bits 1:0 are ignored) */
+    static uint16_t millidegC_to_raw( int32_t temp )
     {
-        MCP9808_T raw {};
-        raw.bits.sign = temp < 0 ? 1 : 0;
-        if(temp < 0)
-        {
-            raw.bits.raw_temp = 0; // TODO
-            return raw;
-        } else {
-            raw.bits.raw_temp = 0; // TODO
-            return raw;
-        }
+        /* (256000 - 62.5)-> 0x7FFFxxxx -> 0x0FFF
+         * -256000 -> 0x1000 */
+        uint16_t raw = (uint32_t)((temp * 8390)) >> 19;
+        return raw;
     };
 
     int32_t raw_to_millidegC( MCP9808_T T )
     {
-        int16_t tmp = T.bits.raw_temp;
-        if(T.bits.sign)
-        {
-            return ((tmp - (1 << 12)) * 125) >> 1;
+        int16_t raw = (int16_t)T.bits.raw_temp;
+        if(T.bits.sign == 0) {
+            return (raw * 125) >> 1;
         } else {
-            return (tmp * 125) >> 1;
+            return ( (raw - (1<<12)) * 125 ) >> 1;
         }
-
     };
 
     int16_t raw_to_degC( MCP9808_T T )
     {
-        int16_t tmp = (int16_t)T.bits.raw_temp;
-        if(T.bits.sign)
+        int16_t raw = (int16_t)T.bits.raw_temp;
+        if(T.bits.sign == 0)
         {
-            return (int16_t)((tmp - ((1 << 12) - 8)) >> 4);
+            return (int16_t)((raw + 8) >> 4);
         } else {
-            return (int16_t)((tmp + 8) >> 4);
+            return (int16_t)((raw - ((1<<12)-8)) >> 4);
         }
 
     };

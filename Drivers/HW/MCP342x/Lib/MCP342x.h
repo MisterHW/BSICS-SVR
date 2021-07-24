@@ -189,16 +189,16 @@ bool MCP342x<MCP342x_address, MP342x_channel>::readConvResult(int32_t &value) {
     uint32_t tmp = data[0] << 24 | data[1] << 16;
     if(res == MCP342X_RES_18BIT)
     {
-        value = ((int32_t)(((tmp^(1<<25)) << 6) | (data[2] << 14)) - (1 << 31)) >> 14;
+        value = ( (int32_t)( ((tmp<<6)^(1<<31)) | (data[2]<<14) ) - (1<<31) ) >> 14;
         return success;
     } else if (res == MCP342X_RES_16BIT) {
-        value = ((int32_t)(tmp^(1<<31)) - (1 << 31)) >> 14;
+        value = ( (int32_t)((tmp   )^(1<<31)) - (1<<31) ) >> 14;
         return success;
     } else if (res == MCP342X_RES_14BIT) {
-        value = ((int32_t)((tmp^(1<<29)) << 2) - (1 << 31)) >> 14;
+        value = ( (int32_t)((tmp<<2)^(1<<31)) - (1<<31) ) >> 14;
         return success;
     } else { // MCP342X_RES_12BIT
-        value = ((int32_t)((tmp^(1<<27)) << 4) - (1 << 31)) >> 14;
+        value = ( (int32_t)((tmp<<4)^(1<<31)) - (1<<31) ) >> 14;
         return success;
     }
 }
