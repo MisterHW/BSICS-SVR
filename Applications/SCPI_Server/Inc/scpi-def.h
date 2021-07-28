@@ -33,8 +33,8 @@
 
 #define SCPI_INPUT_BUFFER_LENGTH 256
 #define SCPI_ERROR_QUEUE_SIZE 17
-#define SCPI_IDN1 "MANUFACTURE"
-#define SCPI_IDN2 "INSTR2013"
+#define SCPI_IDN1 "IPE Test&Measurement Devices"
+#define SCPI_IDN2 "BSICS-SVR DRV2A"
 #define SCPI_IDN3 NULL
 #define SCPI_IDN4 "01-02"
 

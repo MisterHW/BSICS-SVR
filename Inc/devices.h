@@ -19,18 +19,20 @@
 #include "MCP9808.h"
 #include "MCP342x.h"
 #include "MP8862.h"
+#include "SSD1306.h"
 
 class PeripheralDeviceGroup {
 private:
     static bool report(bool success, const char *s);
 public:
+    bool initialized = false;
     I2C_HandleTypeDef* hI2C = nullptr;
 
     // common devices
     PCA9536 gpio_exp{};
-    MP8862 dcdc_hi{};
-    MP8862 dcdc_lo{};
-    // SSD1306 status_display;
+    // MP8862 dcdc_hi{};
+    // MP8862 dcdc_lo{};
+    SSD1306_128x32 status_display;
     // 24CXX eeprom;
 
     // per-channel devices (CH1, CH2, CH3)
@@ -41,6 +43,10 @@ public:
     bool init(I2C_HandleTypeDef* _hI2C);
     bool configureDefaults( );
 };
+
+#define DeviceGroupCount 2
+extern PeripheralDeviceGroup DeviceGroups[DeviceGroupCount];
+extern uint8_t DeviceGroupIndex;
 
 /* --------------------------------------------------------------------------- */
 #endif

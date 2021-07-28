@@ -50,7 +50,7 @@
 extern "C" {
 #endif
 
-#if !HAVE_STDBOOL
+#if (!HAVE_STDBOOL) && (!_GLIBCXX_HAVE_STDBOOL_H)
     typedef unsigned char bool;
 #endif
 

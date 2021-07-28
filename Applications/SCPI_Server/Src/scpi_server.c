@@ -1,3 +1,4 @@
+#include <sys/cdefs.h>
 /*-
  * BSD 2-Clause License
  *
@@ -51,8 +52,8 @@
 #include "lwip/inet.h"
 #include "lwip/api.h"
 
-#define DEVICE_PORT 5025
-#define CONTROL_PORT 5026
+#define DEVICE_PORT  5025 // scpi-raw standard port
+#define CONTROL_PORT 5026 // libscpi control port (not part of the standard)
 
 #define SCPI_THREAD_PRIO (tskIDLE_PRIORITY + 2)
 
@@ -352,7 +353,7 @@ fail1:
 /*
  *
  */
-static void scpi_server_thread(void *arg) {
+_Noreturn static void scpi_server_thread(void *arg) {
     queue_event_t evt;
 
     (void) arg;

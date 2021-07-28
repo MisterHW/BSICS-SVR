@@ -32,6 +32,7 @@ bool PeripheralDeviceGroup::init(I2C_HandleTypeDef* _hI2C)
 
     // res &= report( disp.init(I2C_handler, hI2C, SSD1306_ADDR_0x3C), "0x3C SSD1306" );
 
+    initialized = res;
     return res;
 }
 
@@ -69,7 +70,8 @@ bool PeripheralDeviceGroup::report(bool success, const char *s) {
 extern I2C_HandleTypeDef hi2c1;
 extern I2C_HandleTypeDef hi2c2;
 
-PeripheralDeviceGroup DeviceGroups[2];
+PeripheralDeviceGroup DeviceGroups[DeviceGroupCount];
+uint8_t DeviceGroupIndex = 0;
 
 bool Devices_init( ) {
     bool res;

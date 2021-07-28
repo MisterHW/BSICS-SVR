@@ -65,14 +65,14 @@ endif ()
 
 include_directories(Inc Middlewares/Third_Party/LwIP/src/include Middlewares/Third_Party/LwIP/system Drivers/STM32F7xx_HAL_Driver/Inc Drivers/STM32F7xx_HAL_Driver/Inc/Legacy Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1 Middlewares/Third_Party/LwIP/src/include/netif/ppp Drivers/CMSIS/Device/ST/STM32F7xx/Include Middlewares/Third_Party/FreeRTOS/Source/include Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS Middlewares/Third_Party/LwIP/src/include/lwip Middlewares/Third_Party/LwIP/src/include/lwip/apps Middlewares/Third_Party/LwIP/src/include/lwip/priv Middlewares/Third_Party/LwIP/src/include/lwip/prot Middlewares/Third_Party/LwIP/src/include/netif Middlewares/Third_Party/LwIP/src/include/compat/posix Middlewares/Third_Party/LwIP/src/include/compat/posix/arpa Middlewares/Third_Party/LwIP/system/arch Drivers/CMSIS/Include Middlewares/Third_Party/LwIP/src/include/compat/posix/net Middlewares/Third_Party/LwIP/src/include/compat/posix/sys Middlewares/Third_Party/LwIP/src/include/compat/stdc)
 include_directories(Applications/SCPI_Server/Inc Middlewares/Third_Party/libscpi/inc) # added
-include_directories(Drivers/HW/ADG715/Lib Drivers/HW/PCA953x/Lib Drivers/HW/MCP342x/Lib Drivers/HW/MCP9808/Lib Drivers/HW/MP8862/Lib) # added
+include_directories(Drivers/HW/ADG715/Lib Drivers/HW/PCA953x/Lib Drivers/HW/MCP342x/Lib Drivers/HW/MCP9808/Lib Drivers/HW/MP8862/Lib Drivers/HW/SSD1306/Lib) # added
 
 add_definitions(-DUSE_HAL_DRIVER -DSTM32F767xx)
 
 set(EXCLUDE_DIR "/example/") # added
 
 file(GLOB_RECURSE SOURCES "startup/*.*" "Middlewares/*.*" "Drivers/*.*" "Src/*.*" "Inc/*.*")
-file(GLOB_RECURSE SOURCES ${SOURCES} "Applications/*.*") # added
+file(GLOB_RECURSE SOURCES ${SOURCES} "Applications/SCPI_Server/Src/*.*") # added
 
 # see https://stackoverflow.com/questions/24491129/excluding-directory-somewhere-in-file-structure-from-cmake-sourcefile-list
 foreach (TMP_PATH ${SOURCES})  # added
