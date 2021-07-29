@@ -28,14 +28,27 @@
 
 #ifndef _SCPI_SERVER_H_
 #define _SCPI_SERVER_H_
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include <stdint.h>
 
 void scpi_server_init(void);
 
 void SCPI_AddError(int16_t err);
+
 void SCPI_RequestControl(void);
 
+/*  // forward-declared in scpi-def.h:
+    size_t SCPI_Write(scpi_t * context, const char * data, size_t len);
+    scpi_result_t SCPI_Flush(scpi_t * context);
+    int SCPI_Error(scpi_t * context, int_fast16_t err);
+    scpi_result_t SCPI_Control(scpi_t * context, scpi_ctrl_name_t ctrl, scpi_reg_val_t val);
+    scpi_result_t SCPI_Reset(scpi_t * context);
+*/
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* _SCPI_SERVER_H_ */
