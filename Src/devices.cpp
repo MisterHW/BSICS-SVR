@@ -106,7 +106,7 @@ bool PeripheralDeviceGroup::refresh() {
         if(temp_sensor[i].initialized){
             if(temp_sensor[i].readReg16(MCP9808_REG16_T_ambient, temp_sensor_data[i].T_raw)){
                 temp_sensor_data[i].T_mdegC = MCP9808::raw_to_millidegC(temp_sensor_data[i].T_raw);
-                // printf("T%d=%d\t", i, temp_sensor_data[i].T_mdegC);
+                printf("T%d=%.1f\t", i, temp_sensor_data[i].T_mdegC / 1000.0);
             } else {
                 temp_sensor[i].initialized = false;
                 res = false;
