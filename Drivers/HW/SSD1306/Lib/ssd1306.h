@@ -54,13 +54,13 @@ enum SSD1306_colors {
     white = 0x01,   // Pixel is set. Color depends on LCD
 };
 
-template <size_t _width , size_t _height>
+template <size_t disp_width , size_t disp_height>
 class SSD1306 {
     I2C_HandleTypeDef*  hI2C {};
     SSD1306_address deviceAddress;
-	uint16_t width  = _width;
-	uint16_t height = _height;
-    uint8_t buffer[_width * (_height >> 3)];
+	uint16_t width  = disp_width;
+	uint16_t height = disp_height;
+    uint8_t buffer[disp_width * (disp_height >> 3)];
 	uint8_t rotation = 0;
 	bool inverted = false;
     uint16_t currentX;
@@ -71,8 +71,11 @@ class SSD1306 {
 	void send_data(uint8_t byte);
 	bool send_data(uint8_t* bytes, uint16_t len);
 public:
+    bool initialized {false};
+
     bool init(I2C_HandleTypeDef *_hI2C, SSD1306_address addr);
     bool isReady();
+
     void clearBuffer();
     bool updateDisplay();
 	void displayFullyOn(bool on = true);
@@ -86,79 +89,82 @@ public:
 
 };
 
-template<size_t _width, size_t _height>
-void SSD1306<_width, _height>::send_command(SSD1306_command cmd) {
+template <size_t disp_width , size_t disp_height>
+void SSD1306<disp_width, disp_height>::send_command(SSD1306_command cmd) {
 
 }
 
-template<size_t _width, size_t _height>
-void SSD1306<_width, _height>::send_command(SSD1306_command cmd, uint8_t data) {
+template <size_t disp_width , size_t disp_height>
+void SSD1306<disp_width, disp_height>::send_command(SSD1306_command cmd, uint8_t data) {
 
 }
 
-template<size_t _width, size_t _height>
-void SSD1306<_width, _height>::send_data(uint8_t byte) {
+template <size_t disp_width , size_t disp_height>
+void SSD1306<disp_width, disp_height>::send_data(uint8_t byte) {
 
 }
 
-template<size_t _width, size_t _height>
-bool SSD1306<_width, _height>::send_data(uint8_t *bytes, uint16_t len) {
+template <size_t disp_width , size_t disp_height>
+bool SSD1306<disp_width, disp_height>::send_data(uint8_t *bytes, uint16_t len) {
     return false;
 }
 
-template<size_t _width, size_t _height>
-bool SSD1306<_width, _height>::init(I2C_HandleTypeDef *_hI2C, SSD1306_address addr) {
+template <size_t disp_width , size_t disp_height>
+bool SSD1306<disp_width, disp_height>::init(I2C_HandleTypeDef *_hI2C, SSD1306_address addr) {
+    hI2C = _hI2C;
+    deviceAddress = addr;
+    initialized = isReady();
+    return initialized;
+}
+
+template<size_t disp_width, size_t disp_height>
+bool SSD1306<disp_width, disp_height>::isReady() {
     return false;
 }
 
-template<size_t _width, size_t _height>
-bool SSD1306<_width, _height>::isReady() {
+template<size_t disp_width, size_t disp_height>
+void SSD1306<disp_width, disp_height>::clearBuffer() {
+
+}
+
+template<size_t disp_width, size_t disp_height>
+bool SSD1306<disp_width, disp_height>::updateDisplay() {
     return false;
 }
 
-template<size_t _width, size_t _height>
-void SSD1306<_width, _height>::clearBuffer() {
+template<size_t disp_width, size_t disp_height>
+void SSD1306<disp_width, disp_height>::displayFullyOn(bool on) {
 
 }
 
-template<size_t _width, size_t _height>
-bool SSD1306<_width, _height>::updateDisplay() {
-    return false;
-}
-
-template<size_t _width, size_t _height>
-void SSD1306<_width, _height>::displayFullyOn(bool on) {
-
-}
-
-template<size_t _width, size_t _height>
-void SSD1306<_width, _height>::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, uint16_t bmp_width, uint16_t bmp_height,
+template<size_t disp_width, size_t disp_height>
+void SSD1306<disp_width, disp_height>::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, uint16_t bmp_width, uint16_t bmp_height,
                                           SSD1306_colors color) {
 
 }
 
-template<size_t _width, size_t _height>
-void SSD1306<_width, _height>::drawPixel(int16_t x, int16_t y, SSD1306_colors color) {
+template<size_t disp_width, size_t disp_height>
+void SSD1306<disp_width, disp_height>::drawPixel(int16_t x, int16_t y, SSD1306_colors color) {
 
 }
 
-template<size_t _width, size_t _height>
-void SSD1306<_width, _height>::invertColors() {
+template<size_t disp_width, size_t disp_height>
+void SSD1306<disp_width, disp_height>::invertColors() {
 
 }
 
-template<size_t _width, size_t _height>
-char SSD1306<_width, _height>::writeChar(char ch, FontDef Font, SSD1306_colors color) {
+template<size_t disp_width, size_t disp_height>
+char SSD1306<disp_width, disp_height>::writeChar(char ch, FontDef Font, SSD1306_colors color) {
     return 0;
 }
 
-template<size_t _width, size_t _height>
-uint32_t SSD1306<_width, _height>::writeString(char *str, FontDef Font, SSD1306_colors color) {
+template<size_t disp_width, size_t disp_height>
+uint32_t SSD1306<disp_width, disp_height>::writeString(char *str, FontDef Font, SSD1306_colors color) {
     return 0;
 }
 
-template<size_t _width, size_t _height>
-void SSD1306<_width, _height>::setCursor(uint8_t x, uint8_t y) {
+template<size_t disp_width, size_t disp_height>
+void SSD1306<disp_width, disp_height>::setCursor(uint8_t x, uint8_t y) {
 
 }
 

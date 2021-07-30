@@ -132,6 +132,8 @@ class MCP9808 {
     I2C_HandleTypeDef* hI2C {nullptr};
     MCP9808_address deviceAddress{};
 public:
+    bool initialized {false};
+
     bool init(I2C_HandleTypeDef* _hI2C, MCP9808_address addr);
     bool isReady( );
 
@@ -140,6 +142,9 @@ public:
     bool writeReg16( MCP9808_register reg, uint16_t value );
     bool writeReg8 ( MCP9808_register reg, uint8_t value );
     bool readReg16( MCP9808_register reg, uint16_t &value );
+    inline bool readReg16( MCP9808_register reg, MCP9808_T &value ){
+        return readReg16(reg, (uint16_t&)value );
+    };
     bool readReg8 ( MCP9808_register reg, uint8_t &value );
 
     /* (Approximate) conversion to raw units.
@@ -152,7 +157,7 @@ public:
         return raw;
     };
 
-    int32_t raw_to_millidegC( MCP9808_T T )
+    static int32_t raw_to_millidegC(MCP9808_T T )
     {
         int16_t raw = (int16_t)T.bits.raw_temp;
         if(T.bits.sign == 0) {

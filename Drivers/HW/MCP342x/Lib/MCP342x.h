@@ -8,6 +8,8 @@
 
 #include "stm32f7xx_hal.h"
 
+#include "stdio.h"
+
 // MCP3422 A0 address (default, others only available on request)
 enum MCP3422_address {
     MCP3422_DEFAULT_ADDR_0x68 = 0x68, // fixed address
@@ -120,8 +122,10 @@ template < typename MCP342x_address , typename MP342x_channel>
 class MCP342x {
     I2C_HandleTypeDef* hI2C {nullptr};
     MCP342x_address deviceAddress{};
-    MCP342x_config cfg[4]{};
+    // MCP342x_config cfg[4]{};
 public:
+    bool initialized {false};
+
     bool init(I2C_HandleTypeDef *_hI2C, MCP342x_address addr);
     bool isReady( );
 
@@ -154,7 +158,8 @@ template<typename MCP342x_address, typename MP342x_channel>
 bool MCP342x<MCP342x_address, MP342x_channel>::init( I2C_HandleTypeDef *_hI2C, MCP342x_address addr ) {
     hI2C = _hI2C;
     deviceAddress = addr;
-    return isReady();
+    initialized = isReady();
+    return initialized;
 }
 
 template<typename MCP342x_address, typename MP342x_channel>
@@ -167,8 +172,8 @@ bool MCP342x<MCP342x_address, MP342x_channel>::writeConfig(MCP342x_config data) 
     // S
     // deviceAddress << 1 | 0 : ACK : ADDR : ACK : CONFIG
     // P
-    cfg[data.bits.channel] = data; // update shadow copy
-    uint8_t txbuf = (uint8_t)data;
+    // cfg[data.bits.channel] = data; // update shadow copy
+    uint8_t txbuf =(uint8_t)data;
     return HAL_OK == HAL_I2C_Master_Transmit( hI2C, deviceAddress << 1, &txbuf, 1, 5 );
 }
 

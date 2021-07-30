@@ -7,7 +7,8 @@
 bool ADG715::init(I2C_HandleTypeDef *_hI2C, ADG715_address addr) {
     hI2C = _hI2C;
     deviceAddress = addr;
-    return isReady();
+    initialized = isReady();
+    return initialized;
 }
 
 bool ADG715::isReady( ) {

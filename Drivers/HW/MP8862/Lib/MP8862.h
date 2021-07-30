@@ -19,6 +19,8 @@ class MP8862 {
     I2C_HandleTypeDef* hI2C {nullptr};
     MP8862_address deviceAddress{};
 public:
+    bool initialized {false};
+
     bool init(I2C_HandleTypeDef *_hI2C, MP8862_address addr);
     bool isReady( );
 };

@@ -7,7 +7,8 @@
 bool MCP9808::init(I2C_HandleTypeDef *_hI2C, MCP9808_address addr) {
     hI2C = _hI2C;
     deviceAddress = addr;
-    return isReady();
+    initialized = isReady();
+    return initialized;
 }
 
 bool MCP9808::isReady() {

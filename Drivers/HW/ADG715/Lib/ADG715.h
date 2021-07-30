@@ -35,6 +35,8 @@ class ADG715 {
     I2C_HandleTypeDef*  hI2C {nullptr};
     ADG715_address deviceAddress{};
 public:
+    bool initialized {false};
+
     bool init(I2C_HandleTypeDef *_hI2C, ADG715_address addr);
     bool isReady( );
     bool writeSwitchStates( ADG715_switches states );

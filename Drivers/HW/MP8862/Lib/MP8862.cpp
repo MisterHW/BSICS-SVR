@@ -7,7 +7,8 @@
 bool MP8862::init(I2C_HandleTypeDef *_hI2C, MP8862_address addr) {
     hI2C = _hI2C;
     deviceAddress = addr;
-    return isReady();
+    initialized = isReady();
+    return initialized;
 }
 
 bool MP8862::isReady() {

@@ -1,3 +1,5 @@
+#include <sys/types.h>
+#include <sys/cdefs.h>
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
@@ -69,7 +71,8 @@ static void MX_GPIO_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2C2_Init(void);
-void StartDefaultTask(void const * argument);
+
+_Noreturn void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -494,7 +497,8 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-      osDelay(1);
+      osDelay(500);
+      Devices_refresh();
   }
   /* USER CODE END 5 */
 }

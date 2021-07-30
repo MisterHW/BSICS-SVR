@@ -7,11 +7,12 @@
 
 extern UART_HandleTypeDef huart3;
 
-bool PeripheralDeviceGroup::init(I2C_HandleTypeDef* _hI2C)
+bool PeripheralDeviceGroup::init(I2C_HandleTypeDef* _hI2C, uint8_t index)
 {
     bool res = true;
 
     hI2C = _hI2C;
+    group_index = index;
 
     res &= report(gpio_exp.init(hI2C, PCA9536_ADDR_0x41) , "0x41 PCA9536" );
 
@@ -39,9 +40,13 @@ bool PeripheralDeviceGroup::init(I2C_HandleTypeDef* _hI2C)
 bool PeripheralDeviceGroup::configureDefaults() {
     bool res = true;
 
-    res &= octal_spst[0].writeSwitchStates( ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4 );
-    res &= octal_spst[1].writeSwitchStates( ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4 );
-    res &= octal_spst[2].writeSwitchStates( ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4 );
+    octal_spst_data[0].value = ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4;
+    octal_spst_data[1].value = ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4;
+    octal_spst_data[2].value = ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4;
+
+    res &= octal_spst[0].writeSwitchStates( octal_spst_data[0].value );
+    res &= octal_spst[1].writeSwitchStates( octal_spst_data[1].value );
+    res &= octal_spst[2].writeSwitchStates( octal_spst_data[2].value );
 
     res &= gpio_exp.writeRegister( PCA9536_PORT0_DIRECTION, PCA9536::REG_VALUE_SET_AS_INPUTS(0xF) );
 
@@ -65,6 +70,97 @@ bool PeripheralDeviceGroup::report(bool success, const char *s) {
     return success;
 }
 
+bool PeripheralDeviceGroup::refresh() {
+    bool res = true;
+
+    printf("Group %d\t", group_index);
+    // refresh common devices
+    if(gpio_exp.initialized){
+        if(gpio_exp.writeRegister(PCA9536_PORT0_OUTPUT, gpio_exp_data.gpo)){
+            gpio_exp_data.prev_gpo = gpio_exp_data.gpo;
+            res &= gpio_exp.readRegister(PCA9536_PORT0_INPUT, gpio_exp_data.gpi);
+        } else {
+            gpio_exp.initialized = false;
+            res = false;
+        }
+    }
+
+    // refresh per-channel devices
+    // read ADC channels, trigger conversion of next channel, calculate voltages when set of channels acquired
+    MCP342x_config cfg;
+    uint8_t refresh_phase_next;
+    switch(refresh_phase){
+        case 1:  {
+            cfg = MCP342X_GAIN_1X | MCP342X_RES_16BIT | MCP342x_MODE_CONTINUOUS | MCP3423_CHANNEL_2;
+            refresh_phase_next = 0;
+        }; break;
+        default: { // case 0, 0xFF:
+            cfg = MCP342X_GAIN_1X | MCP342X_RES_16BIT | MCP342x_MODE_CONTINUOUS | MCP3423_CHANNEL_1;
+            refresh_phase_next = 1;
+        }
+    };
+
+    for(int i = 0; i < 3; i++)
+    {
+        // read temperature sensors
+        if(temp_sensor[i].initialized){
+            if(temp_sensor[i].readReg16(MCP9808_REG16_T_ambient, temp_sensor_data[i].T_raw)){
+                temp_sensor_data[i].T_mdegC = MCP9808::raw_to_millidegC(temp_sensor_data[i].T_raw);
+                // printf("T%d=%d\t", i, temp_sensor_data[i].T_mdegC);
+            } else {
+                temp_sensor[i].initialized = false;
+                res = false;
+            }
+        }
+        // update SPSTs if needed
+        if(octal_spst[i].initialized){
+            if(octal_spst[i].writeSwitchStates((ADG715_switches)octal_spst_data[i].value)){
+                octal_spst_data[i].prev = octal_spst_data[i].value;
+            } else {
+                octal_spst[i].initialized = false;
+                res = false;
+            }
+        }
+
+        if(adc[i].initialized){
+            switch(refresh_phase){
+                case 0:{
+                    // read CH1 result, next conversion will be CH2
+                    res &= adc[i].readConvResult(adc_data[i].ch_raw[0]);
+                }; break;
+                case 1:{
+                    // read CH2 result, next conversion will be CH1
+                    res &= adc[i].readConvResult(adc_data[i].ch_raw[1]);
+                    /* calculate new voltages:
+                     * V_COM = 3.371428(5) * V_CH1
+                     * VCC   = 13.66666(6) * V_CH2
+                     * V_LO = -V_COM
+                     * V_HI = VCC - V_COM
+                     */
+                    adc_data[i].device_voltages_mV[0] = // V_lo =
+                            -MCP3423::raw_to_mV(adc_data[i].ch_raw[0], adc_data[i].coef_x1024[0]);
+                    adc_data[i].device_voltages_mV[1] = // V_hi =
+                            MCP3423::raw_to_mV(adc_data[i].ch_raw[1],adc_data[i].coef_x1024[1])
+                            + adc_data[i].device_voltages_mV[0];
+
+                    printf("Vlo%d=%d\tVhi%d=%d\t", i, (int)adc_data[i].device_voltages_mV[0], i, (int)adc_data[i].device_voltages_mV[1]);
+                }; break;
+                default:; // No conversion results available, continue with writeConfig() to trigger first conversion.
+            };
+            if(not adc[i].writeConfig(cfg)) { // initiate next conversion
+                adc[i].initialized = false;
+                res = false;
+            };
+        }
+
+    }
+
+    refresh_phase = refresh_phase_next;
+
+    printf("\n");
+    return res;
+}
+
 /* ---------------------------------------------------------------------------*/
 
 extern I2C_HandleTypeDef hi2c1;
@@ -73,12 +169,13 @@ extern I2C_HandleTypeDef hi2c2;
 PeripheralDeviceGroup DeviceGroups[DeviceGroupCount];
 uint8_t DeviceGroupIndex = 0;
 
+
 bool Devices_init( ) {
     bool res;
     printf("I2C1 :\n");
-    res  = DeviceGroups[0].init(&hi2c1);
+    res  = DeviceGroups[0].init(&hi2c1, 0);
     printf("I2C2 :\n");
-    res &= DeviceGroups[1].init(&hi2c2);
+    res &= DeviceGroups[1].init(&hi2c2, 1);
     return res;
 };
 
@@ -89,6 +186,10 @@ bool Devices_configure_defaults() {
     return res;
 };
 
-void Devices_update( ) {
-
+bool Devices_refresh( ) {
+    bool res;
+    res  = DeviceGroups[0].refresh( );
+    res &= DeviceGroups[1].refresh( );
+    printf("\n");
+    return res;
 }

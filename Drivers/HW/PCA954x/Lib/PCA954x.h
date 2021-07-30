@@ -140,6 +140,8 @@ class PCA954x {
     I2C_HandleTypeDef*  hI2C {nullptr};
     PCA954x_address deviceAddress{};
 public:
+    bool initialized {false};
+
     bool init(I2C_HandleTypeDef *_hI2C, PCA954x_address addr);
     bool isReady( );
     bool writeControlReg( PCA954x_control_register  reg );
@@ -147,10 +149,11 @@ public:
 };
 
 template < typename PCA954x_address, typename PCA954x_control_register >
-bool PCA954x::init(I2C_HandleTypeDef *_hI2C, PCA9548A_address addr) {
+bool PCA954x::init(I2C_HandleTypeDef *_hI2C, PCA954x_address addr) {
     hI2C = _hI2C;
     deviceAddress = addr;
-    return isReady();
+    initialized = isReady();
+    return initialized;
 };
 
 template < typename PCA954x_address, typename PCA954x_control_register >
@@ -159,7 +162,7 @@ bool PCA954x::isReady( ) {
 };
 
 template < typename PCA954x_address, typename PCA954x_control_register >
-bool PCA954x::writeSwitchStates(PCA954x_control_register reg) {
+bool PCA954x::writeControlReg(PCA954x_control_register reg) {
     // S
     // deviceAddress << 1 | 0 : ACK : CONTROL_REG
     // P
@@ -167,7 +170,7 @@ bool PCA954x::writeSwitchStates(PCA954x_control_register reg) {
 };
 
 template < typename PCA954x_address, typename PCA954x_control_register >
-bool PCA954x::readSwitchStates( PCA954x_control_register& reg ) {
+bool PCA954x::readControlReg( PCA954x_control_register& reg ) {
     // S
     // deviceAddress << 1 | 1 : ACK : CONTROL_REG
     // P

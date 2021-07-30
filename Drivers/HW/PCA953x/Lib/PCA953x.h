@@ -60,6 +60,8 @@ class PCA953x {
     I2C_HandleTypeDef* hI2C {nullptr};
     PCA953x_address deviceAddress{};
 public:
+    bool initialized {false};
+
     bool init(I2C_HandleTypeDef *_hI2C, PCA953x_address addr);
     bool isReady( );
     bool write(PCA953x_register reg, uint8_t *data, unsigned int len );
@@ -68,10 +70,8 @@ public:
     bool writeRegister( PCA953x_register reg, uint8_t value ) {
         return write( reg, &value, 1);
     }
-    uint8_t readRegister( PCA953x_register reg ) {
-        uint8_t data;
-        read( reg, &data, 1 );
-        return data;
+    bool readRegister( PCA953x_register reg , uint8_t &value) {
+        return read( reg, &value, 1 );
     }
 
     static inline uint8_t REG_VALUE_SET_AS_OUTPUTS ( uint8_t mask, uint8_t previous_dir = 0 )  {
@@ -86,7 +86,8 @@ template<typename PCA953x_address, typename PCA953x_register>
 bool PCA953x<PCA953x_address, PCA953x_register>::init(I2C_HandleTypeDef *_hI2C, PCA953x_address addr) {
     hI2C = _hI2C;
     deviceAddress = addr;
-    return isReady();
+    initialized = isReady();
+    return initialized;
 }
 
 template<typename PCA953x_address, typename PCA953x_register>
