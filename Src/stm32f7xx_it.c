@@ -28,7 +28,37 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-
+/** Configurable Fault Status Register - CFSR */
+typedef struct __attribute__ ((__packed__))
+{
+    /** MemManage Fault Status Sub-register - MMFSR */
+    uint32_t iaccViol    : 1;  /**< MemManage Fault - The instruction access violation flag */
+    uint32_t daccViol    : 1;  /**< MemManage Fault - The data access violation flag */
+    uint32_t reserved1   : 1;  /**< Reserved */
+    uint32_t mUnstkErr   : 1;  /**< MemManage Fault - Unstacking for a return from exception */
+    uint32_t mStkErr     : 1;  /**< MemManage Fault - MemManage fault on stacking for exception entry */
+    uint32_t mlspErr     : 1;  /**< MemManage Fault - MemManage fault occurred during floating-point lazy state preservation */
+    uint32_t reserved2   : 1;  /**< Reserved */
+    uint32_t mmarValid   : 1;  /**< MemManage Fault - The MemManage Address register valid flag */
+    /** Bus Fault Status Sub-register - UFSR */
+    uint32_t iBusErr     : 1;  /**< Bus Fault - The instruction bus error */
+    uint32_t precisErr   : 1;  /**< Bus Fault - The precise Data bus error */
+    uint32_t imprecisErr : 1;  /**< Bus Fault - The imprecise data bus error */
+    uint32_t unstkErr    : 1;  /**< Bus Fault - Unstacking for an exception return has caused one or more bus faults */
+    uint32_t stkErr      : 1;  /**< Bus Fault - Stacking for an exception entry has caused one or more bus faults */
+    uint32_t lspErr      : 1;  /**< Bus Fault - A bus fault occurred during the floating-point lazy state */
+    uint32_t reserved3   : 1;  /**< Reserved */
+    uint32_t bfarValid   : 1;  /**< Bus Fault - The bus fault address register valid flag */
+    /** Usage Fault Status Sub-register - UFSR */
+    uint32_t undefInstr  : 1;  /**< Usage Fault - An undefined instruction */
+    uint32_t invState    : 1;  /**< Usage Fault - The invalid state */
+    uint32_t invPC       : 1;  /**< Usage Fault - An invalid PC */
+    uint32_t noCP        : 1;  /**< Usage Fault - No coprocessor */
+    uint32_t reserved4   : 4;  /**< Reserved */
+    uint32_t unaligned   : 1;  /**< Usage Fault - Unaligned access */
+    uint32_t divByZero   : 1;  /**< Usage Fault - Divide by zero */
+    uint32_t reserved5   : 6;  /**< Reserved */
+} cy_stc_fault_cfsr_t;
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -86,7 +116,10 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
-    printf("HardFault_Handler called.\n");
+    printf("\n\nHardFault_Handler called.\n");
+    /* See PM0253 and SCB registers https://developer.arm.com/documentation/dui0646/a/CIHFDJCA .
+     * HFSR 0xE000ED2C : HardFault Status Register (dword access)
+     */
   /* USER CODE END HardFault_IRQn 0 */
   while (1)
   {
@@ -101,8 +134,16 @@ void HardFault_Handler(void)
 void MemManage_Handler(void)
 {
   /* USER CODE BEGIN MemoryManagement_IRQn 0 */
-    printf("MemManage_Handler called.\n");
-  /* USER CODE END MemoryManagement_IRQn 0 */
+    printf("\n\nMemManage_Handler called.\n");
+    /* See PM0253 and SCB registers https://developer.arm.com/documentation/dui0646/a/CIHFDJCA .
+     * MMFSR 0xE000ED28 : MemManage Fault Status register (byte access)
+     * MMFAR 0xE000ED34 : MemManage Fault Address Register (dword access)
+     * cy_stc_fault_cfsr_t sr = SCB->CFSR;
+     */
+    printf("MMFSR : 0x%2x\n", SCB->CFSR & 0xFF);
+    printf("MMFAR : 0x%8x\n", SCB->MMFAR);
+
+    /* USER CODE END MemoryManagement_IRQn 0 */
   while (1)
   {
     /* USER CODE BEGIN W1_MemoryManagement_IRQn 0 */
@@ -116,7 +157,13 @@ void MemManage_Handler(void)
 void BusFault_Handler(void)
 {
   /* USER CODE BEGIN BusFault_IRQn 0 */
-    printf("BusFault_Handler called.\n");
+    printf("\n\nBusFault_Handler called.\n");
+    /* See PM0253 and SCB registers https://developer.arm.com/documentation/dui0646/a/CIHFDJCA .
+     * BFSR 0xE000ED29 : Bus Fault Status register (byte access)
+     * BFAR 0xE000ED38 : BusFault Address Register
+     */
+    printf("BFSR : 0x%2x\n", (SCB->CFSR >> 8) & 0xFF);
+    printf("BFAR : 0x%8x\n", SCB->BFAR);
   /* USER CODE END BusFault_IRQn 0 */
   while (1)
   {
@@ -131,7 +178,11 @@ void BusFault_Handler(void)
 void UsageFault_Handler(void)
 {
   /* USER CODE BEGIN UsageFault_IRQn 0 */
-    printf("UsageFault_Handler called.\n");
+    printf("\n\nUsageFault_Handler called.\n");
+    /* See PM0253 and SCB registers https://developer.arm.com/documentation/dui0646/a/CIHFDJCA .
+     * UFSR 0xE000ED2A : UsageFault Status Register (word access)
+     */
+    printf("UFSR : 0x%4x\n", (SCB->CFSR >> 16) & 0xFFFF);
   /* USER CODE END UsageFault_IRQn 0 */
   while (1)
   {
