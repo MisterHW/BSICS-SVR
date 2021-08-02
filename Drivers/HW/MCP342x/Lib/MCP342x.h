@@ -8,8 +8,6 @@
 
 #include "stm32f7xx_hal.h"
 
-#include "stdio.h"
-
 // MCP3422 A0 address (default, others only available on request)
 enum MCP3422_address {
     MCP3422_DEFAULT_ADDR_0x68 = 0x68, // fixed address
@@ -140,7 +138,7 @@ public:
      */
     static int32_t raw_to_uV( int32_t adc_raw, int16_t coef_x4000 = 4000 )
     {
-        return ( adc_raw * coef_x4000 ) >> 8 ;
+        return ( adc_raw * coef_x4000 ) >> 8 ; // V = (2.49+1.05)/1.05 * 2.048 * (adc_raw / 131072) = adc_raw * 0.00005267857
     };
 
     /* Convert MCP342x raw values scaled by coef = -16.383 .. +16.383 (default: 1.0). Returns scaled mV.
@@ -150,7 +148,7 @@ public:
      */
     static int32_t raw_to_mV( int32_t adc_raw, int16_t coef_x1024 = 1024 )
     {
-        return ( adc_raw * coef_x1024 ) >> 16 ;
+        return ( adc_raw * coef_x1024 ) >> 16 ; // V = (13.3+1.05)/1.05 * 2.048 * (adc_raw / 131072) = adc_raw * 0.00021354166
     };
 };
 
@@ -164,11 +162,11 @@ bool MCP342x<MCP342x_address, MP342x_channel>::init( I2C_HandleTypeDef *_hI2C, M
 
 template<typename MCP342x_address, typename MP342x_channel>
 bool MCP342x<MCP342x_address, MP342x_channel>::isReady() {
-    return HAL_OK == HAL_I2C_IsDeviceReady(hI2C, deviceAddress << 1, 3, 5);
+    return HAL_OK == HAL_I2C_IsDeviceReady(hI2C, deviceAddress << 1, 3, 5 );
 }
 
 template<typename MCP342x_address, typename MP342x_channel>
-bool MCP342x<MCP342x_address, MP342x_channel>::writeConfig(MCP342x_config data) {
+bool MCP342x<MCP342x_address, MP342x_channel>::writeConfig( MCP342x_config data ) {
     // S
     // deviceAddress << 1 | 0 : ACK : ADDR : ACK : CONFIG
     // P
@@ -178,7 +176,7 @@ bool MCP342x<MCP342x_address, MP342x_channel>::writeConfig(MCP342x_config data) 
 }
 
 template<typename MCP342x_address, typename MP342x_channel>
-bool MCP342x<MCP342x_address, MP342x_channel>::read(uint8_t *data, MCP342x_rx_bytes len) {
+bool MCP342x<MCP342x_address, MP342x_channel>::read( uint8_t* data, MCP342x_rx_bytes len ) {
     // S
     // deviceAddress << 1 | 1 : ACK [ : DATA2 : ACK ] : DATA1 : ACK : DATA0 : ACK [ : CFG : ACK [ : CFG : ACK [ : ... ]]
     // P

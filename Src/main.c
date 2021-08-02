@@ -498,6 +498,9 @@ void StartDefaultTask(void const * argument)
   for(;;)
   {
       osDelay(500);
+
+      // printf("T%d=%.2f\t", 0, 12.345); // test MemManage fault
+
       Devices_refresh();
   }
   /* USER CODE END 5 */

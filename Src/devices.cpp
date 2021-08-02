@@ -52,10 +52,10 @@ bool PeripheralDeviceGroup::configureDefaults() {
 
     res &= temp_sensor[0].writeReg16(MCP9808_REG16_config, MP9808_CFG_default);
     res &= temp_sensor[1].writeReg16(MCP9808_REG16_config, MP9808_CFG_default);
-    res &= temp_sensor[1].writeReg16(MCP9808_REG16_config, MP9808_CFG_default);
+    res &= temp_sensor[2].writeReg16(MCP9808_REG16_config, MP9808_CFG_default);
 
     MCP342x_config adc_startup_cfg;
-    adc_startup_cfg = MCP342X_RES_16BIT | MCP342X_GAIN_1X | MCP342x_MODE_ONESHOT | MCP3423_CHANNEL_1;
+    adc_startup_cfg = MCP342X_RES_16BIT | MCP342X_GAIN_1X | MCP342x_MODE_CONTINUOUS | MCP3423_CHANNEL_1;
     res &= adc[0].writeConfig( adc_startup_cfg );
     res &= adc[1].writeConfig( adc_startup_cfg );
     res &= adc[2].writeConfig( adc_startup_cfg );
@@ -90,13 +90,13 @@ bool PeripheralDeviceGroup::refresh() {
     MCP342x_config cfg;
     uint8_t refresh_phase_next;
     switch(refresh_phase){
-        case 1:  {
+        case 0x00: {
             cfg = MCP342X_GAIN_1X | MCP342X_RES_16BIT | MCP342x_MODE_CONTINUOUS | MCP3423_CHANNEL_2;
-            refresh_phase_next = 0;
+            refresh_phase_next = 0x01;
         }; break;
-        default: { // case 0, 0xFF:
+        default : { // case 0x01, 0xFF
             cfg = MCP342X_GAIN_1X | MCP342X_RES_16BIT | MCP342x_MODE_CONTINUOUS | MCP3423_CHANNEL_1;
-            refresh_phase_next = 1;
+            refresh_phase_next = 0x00;
         }
     };
 
@@ -106,7 +106,7 @@ bool PeripheralDeviceGroup::refresh() {
         if(temp_sensor[i].initialized){
             if(temp_sensor[i].readReg16(MCP9808_REG16_T_ambient, temp_sensor_data[i].T_raw)){
                 temp_sensor_data[i].T_mdegC = MCP9808::raw_to_millidegC(temp_sensor_data[i].T_raw);
-                printf("T%d=%.1f\t", i, temp_sensor_data[i].T_mdegC / 1000.0);
+                // printf("T%d=%d\t", i, temp_sensor_data[i].T_mdegC);
             } else {
                 temp_sensor[i].initialized = false;
                 res = false;
@@ -143,7 +143,9 @@ bool PeripheralDeviceGroup::refresh() {
                             MCP3423::raw_to_mV(adc_data[i].ch_raw[1],adc_data[i].coef_x1024[1])
                             + adc_data[i].device_voltages_mV[0];
 
-                    printf("Vlo%d=%d\tVhi%d=%d\t", i, (int)adc_data[i].device_voltages_mV[0], i, (int)adc_data[i].device_voltages_mV[1]);
+                    printf("Vlo%d=%d\tVhi%d=%d\t",
+                           i, adc_data[i].device_voltages_mV[0],
+                           i, adc_data[i].device_voltages_mV[1] );
                 }; break;
                 default:; // No conversion results available, continue with writeConfig() to trigger first conversion.
             };
