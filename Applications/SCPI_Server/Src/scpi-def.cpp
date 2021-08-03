@@ -98,6 +98,21 @@ static scpi_result_t BSICS_SetCurrentHi(scpi_t * context) {
 // Return last DRV2A-CHn negative supply voltage (scaled ADC.ch0).
 // Previously read value will be returned for simplicity.
 static scpi_result_t BSICS_ChannelVoltageLoQ(scpi_t * context) {
+    int32_t commandNumber[2];
+    if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
+        || (commandNumber[0] >= DeviceGroupCount)
+        || (commandNumber[1] < 1)
+        || (commandNumber[1] > DeviceGroupChannelCount) )
+    { return SCPI_RES_ERR; }
+
+    if(commandNumber[0] < 0){
+        commandNumber[0] = DeviceGroupIndex;
+    } else {
+        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
+        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
+    }
+
+    SCPI_ResultFloat(context, (float)(DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].device_voltages_mV[0] / 1000.0) );
     return SCPI_RES_OK;
 }
 
@@ -105,11 +120,41 @@ static scpi_result_t BSICS_ChannelVoltageLoQ(scpi_t * context) {
  * Previously read values need to be used as MCP342x channels have
  * to be converted sequentially and read back asynchonously. */
 static scpi_result_t BSICS_ChannelVoltageHiQ(scpi_t * context) {
+    int32_t commandNumber[2];
+    if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
+        || (commandNumber[0] >= DeviceGroupCount)
+        || (commandNumber[1] < 1)
+        || (commandNumber[1] > DeviceGroupChannelCount) )
+    { return SCPI_RES_ERR; }
+
+    if(commandNumber[0] < 0){
+        commandNumber[0] = DeviceGroupIndex;
+    } else {
+        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
+        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
+    }
+
+    SCPI_ResultFloat(context, (float)(DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].device_voltages_mV[1] / 1000.0) );
     return SCPI_RES_OK;
 }
 
 // Return most recent CHn board temperature recorded near driver ICs.
 static scpi_result_t BSICS_ChannelTemperatureQ(scpi_t * context) {
+    int32_t commandNumber[2];
+    if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
+        || (commandNumber[0] >= DeviceGroupCount)
+        || (commandNumber[1] < 1)
+        || (commandNumber[1] > DeviceGroupChannelCount) )
+    { return SCPI_RES_ERR; }
+
+    if(commandNumber[0] < 0){
+        commandNumber[0] = DeviceGroupIndex;
+    } else {
+        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
+        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
+    }
+
+    SCPI_ResultFloat(context, (float)(DeviceGroup[commandNumber[0]].temp_sensor_data[commandNumber[1]-1].T_mdegC / 1000.0) );
     return SCPI_RES_OK;
 }
 
@@ -125,11 +170,46 @@ static scpi_result_t BSICS_DriversEnaQ(scpi_t * context) {
 
 // Configure CHn mux configuration
 static scpi_result_t BSICS_SetChannelDriverMux(scpi_t * context) {
+    int32_t commandNumber[2];
+    if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
+        || (commandNumber[0] >= DeviceGroupCount)
+        || (commandNumber[1] < 1)
+        || (commandNumber[1] > DeviceGroupChannelCount) )
+    { return SCPI_RES_ERR; }
+
+    if(commandNumber[0] < 0){
+        commandNumber[0] = DeviceGroupIndex;
+    } else {
+        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
+        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
+    }
+
+    scpi_number_t param0;
+    if (!SCPI_ParamNumber(context, scpi_special_numbers_def, &param0, TRUE)
+        || (param0.unit != SCPI_UNIT_NONE)
+        || (param0.content.value < 0) || (param0.content.value >= 0xFF) )
+    { return SCPI_RES_ERR; }
+
+    DeviceGroup[commandNumber[0]].octal_spst_data[commandNumber[1]-1].value = (uint8_t) param0.content.value;
     return SCPI_RES_OK;
 }
 
 // read back CHn mux configuration
 static scpi_result_t BSICS_ChannelDriverMuxQ(scpi_t * context) {
+    int32_t commandNumber[2];
+    if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
+        || (commandNumber[0] >= DeviceGroupCount)
+        || (commandNumber[1] < 1)
+        || (commandNumber[1] > DeviceGroupChannelCount) )
+    { return SCPI_RES_ERR; }
+
+    if(commandNumber[0] < 0){
+        commandNumber[0] = DeviceGroupIndex;
+    } else {
+        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
+        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
+    }
+    SCPI_ResultInt8( context, (uint8_t)(DeviceGroup[commandNumber[0]].octal_spst_data[commandNumber[1]-1].prev) );
     return SCPI_RES_OK;
 }
 
@@ -291,16 +371,15 @@ static scpi_result_t BSICS_ChannelADCCalibrationQ(scpi_t * context) {
 //    return SCPI_RES_OK;
 //}
 //
-//static scpi_result_t TEST_Numbers(scpi_t * context) {
-//    int32_t numbers[2];
+// static scpi_result_t TEST_Numbers(scpi_t * context) {
+//     int32_t numbers[2];
+//     SCPI_CommandNumbers(context, numbers, 2, 1);
 //
-//    SCPI_CommandNumbers(context, numbers, 2, 1);
+//     fprintf(stderr, "TEST numbers %d %d\r\n", numbers[0], numbers[1]);
 //
-//    fprintf(stderr, "TEST numbers %d %d\r\n", numbers[0], numbers[1]);
-//
-//    return SCPI_RES_OK;
-//}
-//
+//     return SCPI_RES_OK;
+// }
+
 //static scpi_result_t TEST_Text(scpi_t * context) {
 //    char buffer[100];
 //    size_t copy_len;

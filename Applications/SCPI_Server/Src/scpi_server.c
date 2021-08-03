@@ -203,7 +203,7 @@ void scpi_netconn_callback(struct netconn * conn, enum netconn_evt evt, u16_t le
         } else if (conn == user_data.control_io_listen) {
             msg.cmd = SCPI_MSG_CONTROL_IO_LISTEN;
         }
-        xQueueSend(user_data.evtQueue, &msg, 1000);
+                xQueueSend(user_data.evtQueue, &msg, 1000);
     }
 }
 

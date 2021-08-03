@@ -120,7 +120,8 @@ bool PeripheralDeviceGroup::readConversionResults() {
                     adc_data[i].device_voltages_mV[1] = // V_hi =
                             MCP3423::raw_to_mV(adc_data[i].ch_raw[1],adc_data[i].coef_x1024[1])
                             + adc_data[i].device_voltages_mV[0];
-
+                    adc_data[i].ch_raw[0] = 0;
+                    adc_data[i].ch_raw[1] = 0;
                 }; break;
                 default:; // No conversion results available, continue with writeConfig() to trigger first conversion.
             }
@@ -132,7 +133,7 @@ bool PeripheralDeviceGroup::readConversionResults() {
     }
 
     if(refresh_phase == 1){
-        res &= updateDisplay();
+    //    res &= updateDisplay();
     }
 
     refresh_phase = refresh_phase_next;
@@ -201,33 +202,33 @@ bool PeripheralDeviceGroup::updateDisplay() {
 extern I2C_HandleTypeDef hi2c1;
 extern I2C_HandleTypeDef hi2c2;
 
-PeripheralDeviceGroup DeviceGroups[DeviceGroupCount];
+PeripheralDeviceGroup DeviceGroup[DeviceGroupCount];
 uint8_t DeviceGroupIndex = 0;
 
 bool Devices_init( ) {
     bool res;
     printf("I2C1 :\n");
-    res  = DeviceGroups[0].init(&hi2c1, 0);
+    res  = DeviceGroup[0].init(&hi2c1, 0);
     printf("I2C2 :\n");
-    res &= DeviceGroups[1].init(&hi2c2, 1);
+    res &= DeviceGroup[1].init(&hi2c2, 1);
     printf("\n");
     return res;
 };
 
 bool Devices_configure_defaults() {
     bool res;
-    res  = DeviceGroups[0].configureDefaults( );
-    res &= DeviceGroups[1].configureDefaults( );
+    res  = DeviceGroup[0].configureDefaults( );
+    res &= DeviceGroup[1].configureDefaults( );
     return res;
 };
 
 bool Devices_refresh(bool read_slow_conversion_results) {
     bool res;
-    res  = DeviceGroups[0].writeChanges();
-    res &= DeviceGroups[1].writeChanges();
+    res  = DeviceGroup[0].writeChanges();
+    res &= DeviceGroup[1].writeChanges();
     if(read_slow_conversion_results) {
-        res &= DeviceGroups[0].readConversionResults();
-        res &= DeviceGroups[1].readConversionResults();
+        res &= DeviceGroup[0].readConversionResults();
+        res &= DeviceGroup[1].readConversionResults();
     }
     return res;
 }

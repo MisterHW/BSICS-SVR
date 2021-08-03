@@ -81,7 +81,8 @@ public:
 };
 
 #define DeviceGroupCount 2
-extern PeripheralDeviceGroup DeviceGroups[DeviceGroupCount];
+#define DeviceGroupChannelCount 3
+extern PeripheralDeviceGroup DeviceGroup[DeviceGroupCount];
 extern uint8_t DeviceGroupIndex;
 
 /* --------------------------------------------------------------------------- */
