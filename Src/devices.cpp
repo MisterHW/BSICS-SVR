@@ -70,25 +70,13 @@ bool PeripheralDeviceGroup::report(bool success, const char *s) {
     return success;
 }
 
-bool PeripheralDeviceGroup::refresh() {
+bool PeripheralDeviceGroup::readConversionResults() {
     bool res = true;
 
-    printf("Group %d\t", group_index);
-    // refresh common devices
-    if(gpio_exp.initialized){
-        if(gpio_exp.writeRegister(PCA9536_PORT0_OUTPUT, gpio_exp_data.gpo)){
-            gpio_exp_data.prev_gpo = gpio_exp_data.gpo;
-            res &= gpio_exp.readRegister(PCA9536_PORT0_INPUT, gpio_exp_data.gpi);
-        } else {
-            gpio_exp.initialized = false;
-            res = false;
-        }
-    }
-
-    // refresh per-channel devices
     // read ADC channels, trigger conversion of next channel, calculate voltages when set of channels acquired
     MCP342x_config cfg;
     uint8_t refresh_phase_next;
+
     switch(refresh_phase){
         case 0x00: {
             cfg = MCP342X_GAIN_1X | MCP342X_RES_16BIT | MCP342x_MODE_CONTINUOUS | MCP3423_CHANNEL_2;
@@ -98,7 +86,7 @@ bool PeripheralDeviceGroup::refresh() {
             cfg = MCP342X_GAIN_1X | MCP342X_RES_16BIT | MCP342x_MODE_CONTINUOUS | MCP3423_CHANNEL_1;
             refresh_phase_next = 0x00;
         }
-    };
+    }
 
     for(int i = 0; i < 3; i++)
     {
@@ -106,18 +94,8 @@ bool PeripheralDeviceGroup::refresh() {
         if(temp_sensor[i].initialized){
             if(temp_sensor[i].readReg16(MCP9808_REG16_T_ambient, temp_sensor_data[i].T_raw)){
                 temp_sensor_data[i].T_mdegC = MCP9808::raw_to_millidegC(temp_sensor_data[i].T_raw);
-                // printf("T%d=%d\t", i, temp_sensor_data[i].T_mdegC);
             } else {
                 temp_sensor[i].initialized = false;
-                res = false;
-            }
-        }
-        // update SPSTs if needed
-        if(octal_spst[i].initialized){
-            if(octal_spst[i].writeSwitchStates((ADG715_switches)octal_spst_data[i].value)){
-                octal_spst_data[i].prev = octal_spst_data[i].value;
-            } else {
-                octal_spst[i].initialized = false;
                 res = false;
             }
         }
@@ -143,24 +121,79 @@ bool PeripheralDeviceGroup::refresh() {
                             MCP3423::raw_to_mV(adc_data[i].ch_raw[1],adc_data[i].coef_x1024[1])
                             + adc_data[i].device_voltages_mV[0];
 
-                    printf("Vlo%d=%d\tVhi%d=%d\t",
-                           i, adc_data[i].device_voltages_mV[0],
-                           i, adc_data[i].device_voltages_mV[1] );
                 }; break;
                 default:; // No conversion results available, continue with writeConfig() to trigger first conversion.
-            };
+            }
             if(not adc[i].writeConfig(cfg)) { // initiate next conversion
                 adc[i].initialized = false;
                 res = false;
-            };
+            }
         }
+    }
 
+    if(refresh_phase == 1){
+        res &= updateDisplay();
     }
 
     refresh_phase = refresh_phase_next;
 
-    printf("\n");
     return res;
+}
+
+bool PeripheralDeviceGroup::writeChanges() {
+    bool res = true;
+
+    // readConversionResults common devices
+    if(gpio_exp.initialized && (gpio_exp_data.gpo != gpio_exp_data.prev_gpo)){
+        if(gpio_exp.writeRegister(PCA9536_PORT0_OUTPUT, gpio_exp_data.gpo)){
+            gpio_exp_data.prev_gpo = gpio_exp_data.gpo;
+            res &= gpio_exp.readRegister(PCA9536_PORT0_INPUT, gpio_exp_data.gpi);
+        } else {
+            // gpio_exp.initialized = false; // un-commment to remove device and prevent retry
+            res = false;
+        }
+    }
+
+    for(int i = 0; i < 3; i++) {
+        // update SPSTs
+        if (octal_spst[i].initialized && (octal_spst_data[i].value != octal_spst_data[i].prev)) {
+            if (octal_spst[i].writeSwitchStates((ADG715_switches) octal_spst_data[i].value)) {
+                octal_spst_data[i].prev = octal_spst_data[i].value;
+            } else {
+                // octal_spst[i].initialized = false; // un-commment to remove device and prevent retry
+                res = false;
+            }
+        }
+    }
+
+    return res;
+}
+
+bool PeripheralDeviceGroup::updateDisplay() {
+    printf("\nGroup%d:\n   \tCH1\tCH2\tCH3\n", group_index);
+
+    // update OLED display
+    // todo
+
+    /// debug output via UART
+    printf("SW \t0x%02x\t0x%02x\t0x%02x\n",
+           octal_spst_data[0].value,
+           octal_spst_data[1].value,
+           octal_spst_data[2].value );
+    printf("HI \t%d\t%d\t%d\n",
+           (int)adc_data[0].device_voltages_mV[1],
+           (int)adc_data[1].device_voltages_mV[1],
+           (int)adc_data[2].device_voltages_mV[1] );
+    printf("LO \t%d\t%d\t%d\n",
+           (int)adc_data[0].device_voltages_mV[0],
+           (int)adc_data[1].device_voltages_mV[0],
+           (int)adc_data[2].device_voltages_mV[0] );
+    printf("T  \t%d\t%d\t%d\n",
+           (int)temp_sensor_data[0].T_mdegC,
+           (int)temp_sensor_data[1].T_mdegC,
+           (int)temp_sensor_data[2].T_mdegC );
+
+    return true;
 }
 
 /* ---------------------------------------------------------------------------*/
@@ -171,13 +204,13 @@ extern I2C_HandleTypeDef hi2c2;
 PeripheralDeviceGroup DeviceGroups[DeviceGroupCount];
 uint8_t DeviceGroupIndex = 0;
 
-
 bool Devices_init( ) {
     bool res;
     printf("I2C1 :\n");
     res  = DeviceGroups[0].init(&hi2c1, 0);
     printf("I2C2 :\n");
     res &= DeviceGroups[1].init(&hi2c2, 1);
+    printf("\n");
     return res;
 };
 
@@ -188,10 +221,13 @@ bool Devices_configure_defaults() {
     return res;
 };
 
-bool Devices_refresh( ) {
+bool Devices_refresh(bool read_slow_conversion_results) {
     bool res;
-    res  = DeviceGroups[0].refresh( );
-    res &= DeviceGroups[1].refresh( );
-    printf("\n");
+    res  = DeviceGroups[0].writeChanges();
+    res &= DeviceGroups[1].writeChanges();
+    if(read_slow_conversion_results) {
+        res &= DeviceGroups[0].readConversionResults();
+        res &= DeviceGroups[1].readConversionResults();
+    }
     return res;
 }

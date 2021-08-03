@@ -494,14 +494,18 @@ void StartDefaultTask(void const * argument)
     /* Notify user about the network interface config */
     //User_notification();
 
+    uint8_t state = 0;
+
   /* Infinite loop */
   for(;;)
   {
-      osDelay(500);
+      osDelay(30);
 
-      // printf("T%d=%.2f\t", 0, 12.345); // test MemManage fault
+      // printf("T%d=%.2f\t", 0, 12.345); // test MemManage fault issue with newlib / STM32Cube code
 
-      Devices_refresh();
+      // Read ADCs no faster than every 240 ms, update display every other time.
+      Devices_refresh((state & 0x07) == 0x07);
+      state++;
   }
   /* USER CODE END 5 */
 }

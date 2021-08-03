@@ -73,8 +73,11 @@ public:
 
     // device group methods
     bool init(I2C_HandleTypeDef* _hI2C, uint8_t index = 0);
+
     bool configureDefaults( );
-    bool refresh( );
+    bool readConversionResults( );
+    bool writeChanges( );
+    bool updateDisplay( );
 };
 
 #define DeviceGroupCount 2
@@ -93,7 +96,7 @@ extern "C" {
 
 bool Devices_init( );
 bool Devices_configure_defaults();
-bool Devices_refresh( );
+bool Devices_refresh(bool read_slow_conversion_results);
 
 #ifdef __cplusplus
 }
