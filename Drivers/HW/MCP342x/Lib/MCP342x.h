@@ -47,13 +47,15 @@ enum MCP342x_resolution {
 };
 
 enum MCP342x_conversion_mode {
-    MCP342x_MODE_ONESHOT    = 0 << 4,
-    MCP342x_MODE_CONTINUOUS = 1 << 4,
+    MCP342X_MODE_ONESHOT       = 0 << 4, // no new conversion started, ongoing conversion can finish.
+    MCP342X_MODE_ONESHOT_START = (0 << 4) | (1 << 7), // Set mode oneshot, start single conversion (RDY = 1).
+    MCP342X_MODE_CONTINUOUS    = 1 << 4,
 };
 
 enum MCP342x_bit_mask {
     MCP342X_RDY          = 0x80, // RDY flag
     MCP342X_GAIN_MASK    = 0x03,
+    MCP342X_MODE_MASK    = 0x10,
     MCP342X_CHANNEL_MASK = 0x60,
     MCP342X_RES_MASK     = 0x0C,
 };

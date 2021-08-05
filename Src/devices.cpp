@@ -55,7 +55,7 @@ bool PeripheralDeviceGroup::configureDefaults() {
     res &= temp_sensor[2].writeReg16(MCP9808_REG16_config, MP9808_CFG_default);
 
     MCP342x_config adc_startup_cfg;
-    adc_startup_cfg = MCP342X_RES_16BIT | MCP342X_GAIN_1X | MCP342x_MODE_CONTINUOUS | MCP3423_CHANNEL_1;
+    adc_startup_cfg = MCP342X_RES_16BIT | MCP342X_GAIN_1X | MCP342X_MODE_ONESHOT | MCP3423_CHANNEL_1;
     res &= adc[0].writeConfig( adc_startup_cfg );
     res &= adc[1].writeConfig( adc_startup_cfg );
     res &= adc[2].writeConfig( adc_startup_cfg );
@@ -79,11 +79,11 @@ bool PeripheralDeviceGroup::readConversionResults() {
 
     switch(refresh_phase){
         case 0x00: {
-            cfg = MCP342X_GAIN_1X | MCP342X_RES_16BIT | MCP342x_MODE_CONTINUOUS | MCP3423_CHANNEL_2;
+            cfg = MCP342X_GAIN_1X | MCP342X_RES_16BIT | MCP342X_MODE_ONESHOT_START | MCP3423_CHANNEL_2;
             refresh_phase_next = 0x01;
         }; break;
         default : { // case 0x01, 0xFF
-            cfg = MCP342X_GAIN_1X | MCP342X_RES_16BIT | MCP342x_MODE_CONTINUOUS | MCP3423_CHANNEL_1;
+            cfg = MCP342X_GAIN_1X | MCP342X_RES_16BIT | MCP342X_MODE_ONESHOT_START | MCP3423_CHANNEL_1;
             refresh_phase_next = 0x00;
         }
     }
@@ -133,7 +133,7 @@ bool PeripheralDeviceGroup::readConversionResults() {
     }
 
     if(refresh_phase == 1){
-    //    res &= updateDisplay();
+        res &= updateDisplay();
     }
 
     refresh_phase = refresh_phase_next;
