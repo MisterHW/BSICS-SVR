@@ -56,8 +56,8 @@ public:
 
     // common devices
     PCA9536 gpio_exp{};
-    // MP8862 dcdc_hi{};
-    // MP8862 dcdc_lo{};
+    MP8862 dcdc_hi{};
+    MP8862 dcdc_lo{};
     SSD1306_128x32 status_display;
     // 24CXX eeprom;
 

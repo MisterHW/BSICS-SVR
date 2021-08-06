@@ -16,8 +16,8 @@ bool PeripheralDeviceGroup::init(I2C_HandleTypeDef* _hI2C, uint8_t index)
 
     res &= report(gpio_exp.init(hI2C, PCA9536_ADDR_0x41) , "0x41 PCA9536" );
 
-    // res &= report( dcdc_hi.init(I2C_handler, hI2C, MP8862_ADDR_0x6D), "0x6D MP8862" );
-    // res &= report( dcdc_lo.init(I2C_handler, hI2C, MP8862_ADDR_0x6F), "0x6F MP8862" );
+    res &= report( dcdc_hi.init(hI2C, MP8862_ADDR_0x6D), "0x6D HI MP8862" );
+    res &= report( dcdc_lo.init(hI2C, MP8862_ADDR_0x6F), "0x6F LO MP8862" );
 
     res &= report( octal_spst[0].init(hI2C, ADG715_ADDR_0x49) , "0x49 CH1 ADG715" );
     res &= report( octal_spst[1].init(hI2C, ADG715_ADDR_0x4A) , "0x4A CH2 ADG715" );
@@ -31,7 +31,7 @@ bool PeripheralDeviceGroup::init(I2C_HandleTypeDef* _hI2C, uint8_t index)
     res &= report( adc[1].init(hI2C, MCP342x_ADDR_0x6A) , "0x6A CH2 MCP3423" );
     res &= report( adc[2].init(hI2C, MCP342x_ADDR_0x6E) , "0x6E CH3 MCP3423" );
 
-    // res &= report( disp.init(I2C_handler, hI2C, SSD1306_ADDR_0x3C), "0x3C SSD1306" );
+    res &= report( status_display.init(hI2C, SSD1306_ADDR_0x3C), "0x3C SSD1306" );
 
     initialized = res;
     return res;
@@ -43,6 +43,9 @@ bool PeripheralDeviceGroup::configureDefaults() {
     octal_spst_data[0].value = ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4;
     octal_spst_data[1].value = ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4;
     octal_spst_data[2].value = ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4;
+    octal_spst_data[0].prev = octal_spst_data[0].value;
+    octal_spst_data[1].prev = octal_spst_data[1].value;
+    octal_spst_data[2].prev = octal_spst_data[2].value;
 
     res &= octal_spst[0].writeSwitchStates( octal_spst_data[0].value );
     res &= octal_spst[1].writeSwitchStates( octal_spst_data[1].value );
@@ -66,7 +69,7 @@ bool PeripheralDeviceGroup::configureDefaults() {
 bool PeripheralDeviceGroup::report(bool success, const char *s) {
     printf(success ? "[x] " : "[_] ");
     printf(s);
-    printf("\n");
+    printf("\r\n");
     return success;
 }
 
@@ -104,10 +107,12 @@ bool PeripheralDeviceGroup::readConversionResults() {
             switch(refresh_phase){
                 case 0:{
                     // read CH1 result, next conversion will be CH2
+                    adc_data[i].ch_raw[0] = 0;
                     res &= adc[i].readConvResult(adc_data[i].ch_raw[0]);
                 }; break;
                 case 1:{
                     // read CH2 result, next conversion will be CH1
+                    adc_data[i].ch_raw[1] = 0;
                     res &= adc[i].readConvResult(adc_data[i].ch_raw[1]);
                     /* calculate new voltages:
                      * V_COM = 3.371428(5) * V_CH1
@@ -125,10 +130,15 @@ bool PeripheralDeviceGroup::readConversionResults() {
                 }; break;
                 default:; // No conversion results available, continue with writeConfig() to trigger first conversion.
             }
-            if(not adc[i].writeConfig(cfg)) { // initiate next conversion
+            if(not adc[i].writeConfig(cfg)) { // try to initiate next conversion
                 adc[i].initialized = false;
                 res = false;
             }
+        } else {
+            adc_data[i].device_voltages_mV[0] = 0;
+            adc_data[i].device_voltages_mV[1] = 0;
+            adc_data[i].ch_raw[0] = 0;
+            adc_data[i].ch_raw[1] = 0;
         }
     }
 
@@ -171,25 +181,25 @@ bool PeripheralDeviceGroup::writeChanges() {
 }
 
 bool PeripheralDeviceGroup::updateDisplay() {
-    printf("\nGroup%d:\n   \tCH1\tCH2\tCH3\n", group_index);
+    printf("\r\nGroup%d:\r\n   \tCH1\tCH2\tCH3\r\n", group_index);
 
     // update OLED display
     // todo
 
     /// debug output via UART
-    printf("SW \t0x%02x\t0x%02x\t0x%02x\n",
-           octal_spst_data[0].value,
-           octal_spst_data[1].value,
-           octal_spst_data[2].value );
-    printf("HI \t%d\t%d\t%d\n",
+    printf("SW \t0x%02x\t0x%02x\t0x%02x\r\n",
+           octal_spst_data[0].prev,
+           octal_spst_data[1].prev,
+           octal_spst_data[2].prev );
+    printf("HI \t%d\t%d\t%d\r\n",
            (int)adc_data[0].device_voltages_mV[1],
            (int)adc_data[1].device_voltages_mV[1],
            (int)adc_data[2].device_voltages_mV[1] );
-    printf("LO \t%d\t%d\t%d\n",
+    printf("LO \t%d\t%d\t%d\r\n",
            (int)adc_data[0].device_voltages_mV[0],
            (int)adc_data[1].device_voltages_mV[0],
            (int)adc_data[2].device_voltages_mV[0] );
-    printf("T  \t%d\t%d\t%d\n",
+    printf("T  \t%d\t%d\t%d\r\n",
            (int)temp_sensor_data[0].T_mdegC,
            (int)temp_sensor_data[1].T_mdegC,
            (int)temp_sensor_data[2].T_mdegC );
@@ -207,9 +217,9 @@ uint8_t DeviceGroupIndex = 0;
 
 bool Devices_init( ) {
     bool res;
-    printf("I2C1 :\n");
+    printf("I2C1 :\r\n");
     res  = DeviceGroup[0].init(&hi2c1, 0);
-    printf("I2C2 :\n");
+    printf("I2C2 :\r\n");
     res &= DeviceGroup[1].init(&hi2c2, 1);
     printf("\n");
     return res;

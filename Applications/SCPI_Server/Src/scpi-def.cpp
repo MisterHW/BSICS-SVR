@@ -209,7 +209,7 @@ static scpi_result_t BSICS_ChannelDriverMuxQ(scpi_t * context) {
         // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
         // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
     }
-    SCPI_ResultInt8( context, (uint8_t)(DeviceGroup[commandNumber[0]].octal_spst_data[commandNumber[1]-1].prev) );
+    SCPI_ResultUInt8( context, (uint8_t)(DeviceGroup[commandNumber[0]].octal_spst_data[commandNumber[1]-1].prev) );
     return SCPI_RES_OK;
 }
 

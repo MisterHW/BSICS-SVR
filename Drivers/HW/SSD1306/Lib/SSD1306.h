@@ -119,7 +119,7 @@ bool SSD1306<disp_width, disp_height>::init(I2C_HandleTypeDef *_hI2C, SSD1306_ad
 
 template<size_t disp_width, size_t disp_height>
 bool SSD1306<disp_width, disp_height>::isReady() {
-    return false;
+    return HAL_OK == HAL_I2C_IsDeviceReady(hI2C, deviceAddress << 1, 3, 5 );
 }
 
 template<size_t disp_width, size_t disp_height>

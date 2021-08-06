@@ -165,8 +165,8 @@ int main(void)
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
 
-  char buf[] = "UART OK\n";
-  HAL_UART_Transmit(&huart3, buf, 8, HAL_MAX_DELAY);
+  char buf[] = "UART OK\r\n";
+  HAL_UART_Transmit(&huart3, buf, 9, HAL_MAX_DELAY);
 
   Devices_init();
   Devices_configure_defaults();
@@ -499,12 +499,11 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-      osDelay(30);
+      osDelay(12);
 
       // printf("T%d=%.2f\t", 0, 12.345); // test MemManage fault issue with newlib / STM32Cube code
 
-      // Read ADCs no faster than every 240 ms, update display every other time.
-      Devices_refresh((state & 0x07) == 0x07);
+      Devices_refresh((state & 0x0F) == 0x0F);
       state++;
   }
   /* USER CODE END 5 */
