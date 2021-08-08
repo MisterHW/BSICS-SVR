@@ -31,7 +31,7 @@ bool PeripheralDeviceGroup::init(I2C_HandleTypeDef* _hI2C, uint8_t index)
     res &= report( adc[1].init(hI2C, MCP342x_ADDR_0x6A) , "0x6A CH2 MCP3423" );
     res &= report( adc[2].init(hI2C, MCP342x_ADDR_0x6E) , "0x6E CH3 MCP3423" );
 
-    res &= report( status_display.init(hI2C, SSD1306_ADDR_0x3C), "0x3C SSD1306" );
+    res &= report(status_display.init(hI2C, SSD1306_ADDR_0x3C, false, false), "0x3C SSD1306" );
 
     initialized = res;
     return res;
@@ -98,9 +98,14 @@ bool PeripheralDeviceGroup::readConversionResults() {
             if(temp_sensor[i].readReg16(MCP9808_REG16_T_ambient, temp_sensor_data[i].T_raw)){
                 temp_sensor_data[i].T_mdegC = MCP9808::raw_to_millidegC(temp_sensor_data[i].T_raw);
             } else {
-                temp_sensor[i].initialized = false;
+                // temp_sensor[i].initialized = false;
+                temp_sensor_data[i].T_raw   = 0;
+                temp_sensor_data[i].T_mdegC = 0;
                 res = false;
             }
+        } else {
+            temp_sensor_data[i].T_raw   = 0;
+            temp_sensor_data[i].T_mdegC = 0;
         }
 
         if(adc[i].initialized){
