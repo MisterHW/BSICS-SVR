@@ -11,7 +11,22 @@ enum SSD1306_address {
     SSD1306_ADDR_0x3D = 0x3D, // D/~C high
 };
 
-// write
+/* The first byte transmitted is a CONTROL byte. It determines whether:
+ *  1) the second byte is a command or display data, and
+ *  2) whether the third byte is another control byte or whether only data bytes follow after the second byte.
+ *  The datasheet isn't very clear on the I2C write format, leading to many implementations using fragmented
+ *  transmissions containing a word made up of
+ *      S : ADDR<<1|W : ACK : CONTROL : ACK : COMMAND : ACK : P - where CONTROL = 0x00
+ *  or
+ *      S : ADDR<<1|W : ACK : CONTROL : ACK : DATA : ACK : P - where CONROL = 0x00.
+ *  The SSD1306 interface state machine seems to allow this, but the datasheet wording "triple byte command"
+ *  seems to imply e.g.
+ *      S : ADDR<<1|W : ACK : CONTROL : ACK : COMMAND : ACK : DATA0 : ACK : DATA1: ACK : P - where CONTROL = 0x00.
+ *  In this implementation, overloaded send_command() methods are provided for non-fragmented write operations.
+ *  Multi-byte commands can be sent via send_raw() using an array of bytes. Initializer macros
+ *  SSD1306_3B_COMMAND_LEN4, SSD1306_6B_COMMAND_LEN7 and SSD1306_7B_COMMAND_LEN8
+ *  are given to cover these cases (see scroll commands).
+ */
 enum SSD1306_control_bits {
     SSD1306_CTRL_WORD_CONTAINS_COMMAND         = 0 << 6, // byte following control byte is a command
     SSD1306_CTRL_WORD_CONTAINS_DATA            = 1 << 6, // byte following control byte is data
@@ -57,7 +72,7 @@ enum SSD1306_command {
     SSD1306_SET_COM_PINS            = 0xDA, // 0xDA, A[7:0] - COM sequence: A[5] = 0/1: COM L-R remap off / on. A[4] = 0: sequential, A[4] = 1: alternative (default), A[3:0] = 0x2, others 0
 
     // Timing & Driving Scheme Setting Commands
-    SSD1306_SET_DISPLAY_CLOCK_DIV_RATIO = 0xD5, // 0xD5, A[7:0] - A[7:4]: F_OSC (280 .. 520 kHz, see datahseet), A[3:0]: display clock DCLK = F_OSC / (A[3:0] + 1)
+    SSD1306_SET_DISPLAY_CLOCK_DIV_RATIO = 0xD5, // 0xD5, A[7:0] - A[7:4]: F_OSC (280 .. 520 kHz, see datasheet), A[3:0]: display clock DCLK = F_OSC / (A[3:0] + 1)
     SSD1306_SET_PRECHARGE_PERIOD        = 0xD9, // 0xD9, A[7:0] - A[7:4]: Phase2 period (0 is invalid), A[3:0]: Phase1 period (0 is invalid)
     SSD1306_SET_VCOMH_DESELECT_LEVEL    = 0xDB, // 0xDB, A[6:4] - A = 0x00: ~0.65*Vcc, 0x20: ~0.77*Vcc, 0x30: ~0.83*Vcc
     SSD1306_NOP                         = 0xE3, // 0xE3 - no operation (not needed for I2C interface)
@@ -71,7 +86,7 @@ enum SSD1306_command {
 };
 
 #define SSD1306_SET_START_LINE(n)    (SSD1306_command)((int)SSD1306_START_LINE_CMD_BASE + ((n) % 64))
-#define SSD1306_SET_LOWER_COLUMN(n)  (SSD1306_command)((int)SSD1306_LOWER_COLUMN_BASE   + ((n) % 16)) 
+#define SSD1306_SET_LOWER_COLUMN(n)  (SSD1306_command)((int)SSD1306_LOWER_COLUMN_BASE   + ((n) % 16))
 #define SSD1306_SET_HIGHER_COLUMN(n) (SSD1306_command)((int)SSD1306_HIGHER_COLUMN_BASE  + ((n) % 16))
 
 // uint8_t buf[] array initializer macros for send_raw() calls
@@ -91,10 +106,10 @@ protected:
     I2C_HandleTypeDef*  hI2C {};
     SSD1306_address deviceAddress;
 
-	uint16_t width  = disp_width;
-	uint16_t height = disp_height;
+    uint16_t width  = disp_width;
+    uint16_t height = disp_height;
     uint8_t buffer[disp_width * (disp_height >> 3)];
-	uint8_t rotation = 0;
+    uint8_t rotation = 0;
     uint16_t currentX = 0;
     uint16_t currentY = 0;
 
@@ -117,12 +132,12 @@ public:
     // canvas methods
     void clearBuffer();
     bool updateDisplay();
-	void drawBitmap(int16_t x, int16_t y, const uint8_t bitmap[],
+    void drawBitmap(int16_t x, int16_t y, const uint8_t bitmap[],
                     uint16_t bmp_width, uint16_t bmp_height, SSD1306_colors color);
-	void drawPixel(int16_t x, int16_t y, SSD1306_colors color);
-	char writeChar(char ch, FontDef Font, SSD1306_colors color);
-	uint32_t writeString(char* str, FontDef Font, SSD1306_colors color);
-	void setCursor(uint8_t x, uint8_t y);
+    void drawPixel(int16_t x, int16_t y, SSD1306_colors color);
+    char writeChar(char ch, FontDef Font, SSD1306_colors color);
+    uint32_t writeString(char* str, FontDef Font, SSD1306_colors color);
+    void setCursor(uint8_t x, uint8_t y);
 
 };
 
@@ -178,7 +193,7 @@ SSD1306<disp_width, disp_height>::init(I2C_HandleTypeDef *_hI2C, SSD1306_address
 
     // memory use and mapping to COM and SEGMENT lines (panel-specific)
     i &= init_panel_specifics();
-    
+
     // Display back on.
     i &= send_command( SSD1306_DISPLAY_ALL_ON_RESUME );
     i &= send_command( SSD1306_NORMAL_DISPLAY );
@@ -205,7 +220,7 @@ bool SSD1306<disp_width, disp_height>::updateDisplay() {
 
 template<size_t disp_width, size_t disp_height>
 void SSD1306<disp_width, disp_height>::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, uint16_t bmp_width, uint16_t bmp_height,
-                                          SSD1306_colors color) {
+                                                  SSD1306_colors color) {
 
 }
 
@@ -241,7 +256,7 @@ protected:
         bool i = true;
         // Charge pump.
         i &= send_command( SSD1306_CHARGE_PUMP_STATE , 0x14 ); // charge pump on
-        
+
         // Addressing
         i &= send_command(SSD1306_MEMORY_ADDR_MODE, 2); // page addressing mode
         i &= send_command(SSD1306_SET_START_LINE(0)); // RAM to COM offset = 0
@@ -252,8 +267,7 @@ protected:
         i &= send_command(SSD1306_COM_SCAN_DIR_DEC);
         i &= send_command(SSD1306_SET_COM_PINS, 0x00 | 0x02); // sequential COM pin config, no L-R remap
 
-        uint8_t buf[] = SSD1306_DOUBLE_COMMAND_LEN4(SSD1306_SET_VERT_DISPLAY_OFFSET, 0);
-        i &= send_raw(buf, sizeof(buf));
+        i &= send_command(SSD1306_SET_VERT_DISPLAY_OFFSET, 0);
         i &= send_command(SSD1306_SET_DISPLAY_CLOCK_DIV_RATIO, 0xF0); // F_OSC 0xF, DCLK divider 1
         return i;
     }
@@ -266,7 +280,7 @@ protected:
         bool i = true;
         // Charge pump.
         i &= send_command( SSD1306_CHARGE_PUMP_STATE , 0x14 ); // charge pump on
-        
+
         // Addressing
         i &= send_command(SSD1306_MEMORY_ADDR_MODE, 2); // page addressing mode
         i &= send_command(SSD1306_SET_START_LINE(0)); // RAM to COM offset = 0
@@ -277,8 +291,7 @@ protected:
         i &= send_command(SSD1306_COM_SCAN_DIR_DEC);
         i &= send_command(SSD1306_SET_COM_PINS, 0x10 | 0x02); // alternative COM pin config, no L-R remap
 
-        uint8_t buf[] = SSD1306_DOUBLE_COMMAND_LEN4(SSD1306_SET_VERT_DISPLAY_OFFSET, 0);
-        i &= send_raw(buf, sizeof(buf));
+        i &= send_command(SSD1306_SET_VERT_DISPLAY_OFFSET, 0);
         i &= send_command(SSD1306_SET_DISPLAY_CLOCK_DIV_RATIO, 0x80); // F_OSC 0x8, DCLK divider 1
         return i;
     }
