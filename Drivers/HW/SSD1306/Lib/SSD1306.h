@@ -11,7 +11,7 @@ enum SSD1306_address {
     SSD1306_ADDR_0x3D = 0x3D, // D/~C high
 };
 
-//
+// write
 enum SSD1306_control_bits {
     SSD1306_CTRL_WORD_CONTAINS_COMMAND         = 0 << 6, // byte following control byte is a command
     SSD1306_CTRL_WORD_CONTAINS_DATA            = 1 << 6, // byte following control byte is data
@@ -20,43 +20,65 @@ enum SSD1306_control_bits {
 };
 
 enum SSD1306_command {
-	SSD1306_MEMORY_ADDR_MODE      = 0x20, //
-	SSD1306_SET_COLUMN_ADDR       = 0x21, // See datasheet
-	SSD1306_SET_PAGE_ADDR         = 0x22, // See datasheet
-	SSD1306_SET_CONTRAST_CONTROL  = 0x81, // See datasheet
-	SSD1306_SET_PAGE_START_ADDR   = 0xB0,
-	SSD1306_CHARGE_PUMP           = 0x8D, // See datasheet
-	SSD1306_SET_SEGMENT_REMAP     = 0xA0, // See datasheet
-	SSD1306_SET_SEGMENT_REMAP_INV = 0xA1, // See datasheet
-	SSD1306_DISPLAY_ALL_ON_RESUME = 0xA4, // See datasheet
-	SSD1306_DISPLAY_ALL_ON        = 0xA5, // Not currently used
-	SSD1306_NORMAL_DISPLAY        = 0xA6, // See datasheet
-	SSD1306_INVERTDISPLAY         = 0xA7, // See datasheet
-	SSD1306_SET_MULTIPLEX_RATIO   = 0xA8, // See datasheet
-	SSD1306_DISPLAY_OFF           = 0xAE, // See datasheet
-	SSD1306_DISPLAY_ON            = 0xAF, // See datasheet
-	SSD1306_COM_SCAN_DIR_INC      = 0xC0, // Not currently used
-	SSD1306_COM_SCAN_DIR_DEC      = 0xC8, // See datasheet
-	SSD1306_SET_DISPLAY_OFFSET    = 0xD3, // See datasheet
-	SSD1306_SET_PRECHARGE_PERIOD  = 0xD9, // See datasheet
-	SSD1306_SET_COM_PINS          = 0xDA, // See datasheet
-	SSD1306_SET_VCOM_DESELECT     = 0xDB, // See datasheet
-	SSD1306_SET_LOWER_COLUMN      = 0x00, // Not currently used
-	SSD1306_SET_HIGHER_COLUMN     = 0x10, // Not currently used
-	SSD1306_START_LINE_CMD_BASE   = 0x40, // 0x40 .. 0x7F commands select RAM row 0 .. 63 mapping to COM0. 0x40+n: n->COM0, n+1->COM1, ...
-	SSD1306_EXTERNALVCC           = 0x01, // External display voltage source
-	SSD1306_SWITCHCAPVCC          = 0x02, // Gen. display voltage from 3.3V
-	SSD1306_SET_DISPLAY_CLOCK_DIV_RATIO          = 0xD5, // See datasheet
-	SSD1306_RIGHT_HORIZONTAL_SCROLL              = 0x26, // Init rt scroll
-	SSD1306_LEFT_HORIZONTAL_SCROLL               = 0x27, // Init left scroll
-	SSD1306_VERTICAL_AND_RIGHT_HORIZONTAL_SCROLL = 0x29, // Init diag scroll
-	SSD1306_VERTICAL_AND_LEFT_HORIZONTAL_SCROLL  = 0x2A, // Init diag scroll
-	SSD1306_DEACTIVATE_SCROLL                    = 0x2E, // Stop scroll
-	SSD1306_ACTIVATE_SCROLL                      = 0x2F, // Start scroll
-	SSD1306_SET_VERTICAL_SCROLL_AREA             = 0xA3  // Set scroll range
+    // Fundamental Commands
+    SSD1306_SET_CONTRAST_CONTROL  = 0x81, // 0x81, A[7:0] - contrast A = 0 .. 255
+    SSD1306_DISPLAY_ALL_ON_RESUME = 0xA4, // 0xA4 - Output follows RAM content
+    SSD1306_DISPLAY_ALL_ON        = 0xA5, // 0xA5 - Output ignores RAM content
+    SSD1306_NORMAL_DISPLAY        = 0xA6, // 0xA6 - 0: dark pixel, 1: bright pixel (default)
+    SSD1306_INVERSE_DISPLAY       = 0xA7, // 0xA7 - 0: bright pixel, 1: dark pixel
+    SSD1306_DISPLAY_OFF           = 0xAE, // 0xAE - Display OFF, sleep mode
+    SSD1306_DISPLAY_ON            = 0xAF, // 0xAF - Display ON, normal mode
+
+    // Scrolling Commands
+    SSD1306_CONT_HORIZONTAL_SCROLL_RIGHT         = 0x26, // 0x26, 0x00, B[2:0], C[2:0], D[2:0], 0x00, 0xFF - start page B, C : {5, 64, 128, 256, 3, 4, 35, 2} frames, end page D
+    SSD1306_CONT_HORIZONTAL_SCROLL_LEFT          = 0x27, // 0x27, 0x00, B[2:0], C[2:0], D[2:0], 0x00, 0xFF - start page B, C : {5, 64, 128, 256, 3, 4, 35, 2} frames, end page D
+    SSD1306_VERTICAL_AND_RIGHT_HORIZONTAL_SCROLL = 0x29, // 0x29, 0x00, B[2:0], C[2:0], D[2:0], E[5:0] - B, C, D: see 0x26 and 0x27; E[5:0] = 1..63 rows vert. scrolling offset
+    SSD1306_VERTICAL_AND_LEFT_HORIZONTAL_SCROLL  = 0x2A, // 0x2A, 0x00, B[2:0], C[2:0], D[2:0], E[5:0] - see 0x29
+    SSD1306_DEACTIVATE_SCROLL                    = 0x2E, // 0x2E - Stop scrolling (deactivate before changing H / V scroll mode to avoid RAM corruption)
+    SSD1306_ACTIVATE_SCROLL                      = 0x2F, // 0x2F - Start scrolling
+    SSD1306_SET_VERTICAL_SCROLL_AREA             = 0xA3, // 0xA3, A[5:0], B[6:0] - top fixed rows A, scrolled rows (starts at first row below last fixed)
+
+    // Addressing Setting Commands
+    SSD1306_LOWER_COLUMN_BASE     = 0x00, // 0x0X - single-byte commands range 0x00 .. 0x0F, Lower Column Start Address for Page Addressing Mode
+    SSD1306_HIGHER_COLUMN_BASE    = 0x10, // 0x1X - single-byte commands range 0x10 .. 0x1F, Higher Column Start Address for Page Addressing Mode
+    SSD1306_MEMORY_ADDR_MODE      = 0x20, // 0x20, A[1:0] - A = {horiz. addr mode, vert. addr mode, page addr mode, 11b: invalid}
+    SSD1306_SET_COLUMN_ADDR       = 0x21, // 0x21, A[6:0], B[6:0] - col start A = 0..127, col end B = 0..127 (H and V addr mode only)
+    SSD1306_SET_PAGE_ADDR         = 0x22, // 0x22, A[2:0], B[2:0] - page start A = 0..7, page end B = 0..7 (
+    SSD1306_PAGE_START_ADDR_BASE  = 0xB0, // 0xBX - single-byte commands range 0xB0 .. 0xB7, page start address 0..7 (for page addr mode only)
+
+    // Hardware Configuration Commands
+    SSD1306_START_LINE_CMD_BASE     = 0x40, // 0xXX single-byte commands range  0x40 .. 0x7F, commands select RAM row 0 .. 63 mapping to COM0. 0x40+n: n->COM0, n+1->COM1, ...
+    SSD1306_SET_SEGMENT_REMAP_OFF   = 0xA0, // 0xA0 - column addr 0   -> SEG0
+    SSD1306_SET_SEGMENT_REMAP_INV   = 0xA1, // 0xA1 - column addr 127 -> SEG0
+    SSD1306_SET_MULTIPLEX_RATIO     = 0xA8, // 0xA8, A[5:0] - A = 0.. 63 (= height - 1)
+    SSD1306_COM_SCAN_DIR_INC        = 0xC0, // 0xC0 - COM scan direction COM0 to COM[N–1] (N : multiplex ratio)
+    SSD1306_COM_SCAN_DIR_DEC        = 0xC8, // 0XC8 - COM scan direction COM[N-1] to COM0 (N : multiplex ratio)
+    SSD1306_SET_VERT_DISPLAY_OFFSET = 0xD3, // 0xD3, A[5:0] - Set vertical shift by COM, A = 0 .. 63
+    SSD1306_SET_COM_PINS            = 0xDA, // 0xDA, A[7:0] - COM sequence: A[5] = 0/1: COM L-R remap off / on. A[4] = 0: sequential, A[4] = 1: alternative (default), A[3:0] = 0x2, others 0
+
+    // Timing & Driving Scheme Setting Commands
+    SSD1306_SET_DISPLAY_CLOCK_DIV_RATIO = 0xD5, // 0xD5, A[7:0] - A[7:4]: F_OSC (280 .. 520 kHz, see datahseet), A[3:0]: display clock DCLK = F_OSC / (A[3:0] + 1)
+    SSD1306_SET_PRECHARGE_PERIOD        = 0xD9, // 0xD9, A[7:0] - A[7:4]: Phase2 period (0 is invalid), A[3:0]: Phase1 period (0 is invalid)
+    SSD1306_SET_VCOMH_DESELECT_LEVEL    = 0xDB, // 0xDB, A[6:4] - A = 0x00: ~0.65*Vcc, 0x20: ~0.77*Vcc, 0x30: ~0.83*Vcc
+    SSD1306_NOP                         = 0xE3, // 0xE3 - no operation (not needed for I2C interface)
+
+    // Advanced Graphics Commands
+    SSD1306_SET_FADE_OUT_AND_BLINKING = 0x23, // 0x23, A[6:0] - A[5:4]: 00b: disabled, 01b: unknown, 10b: fade-out, 11b: blinking, time interval A[3:0]*8 frames
+    SSD1306_SET_ZOOM_IN               = 0xD6, // 0xD6, A[0] - A[0] = 0b: disable zoom mode, 1b: enable zoom mode (requires alternative COM mode)
+
+    // Charge Pump Commands
+    SSD1306_CHARGE_PUMP_STATE = 0x8D, // 0x8D, A[7:0] - 0x10: disable charge pump, 0x14_ enable charge pumpe (NOTE: command must be followed by Display ON command: 0x8D, 0x14, 0xAF)
 };
 
-#define SSD1306_SET_START_LINE(n) (SSD1306_command)((int)SSD1306_START_LINE_CMD_BASE + (n % 64))
+#define SSD1306_SET_START_LINE(n)    (SSD1306_command)((int)SSD1306_START_LINE_CMD_BASE + ((n) % 64))
+#define SSD1306_SET_LOWER_COLUMN(n)  (SSD1306_command)((int)SSD1306_LOWER_COLUMN_BASE   + ((n) % 16)) 
+#define SSD1306_SET_HIGHER_COLUMN(n) (SSD1306_command)((int)SSD1306_HIGHER_COLUMN_BASE  + ((n) % 16))
+
+// uint8_t buf[] array initializer macros for send_raw() calls
+#define SSD1306_DOUBLE_COMMAND_LEN4(cmd1, cmd2) {SSD1306_CTRL_WORD_CONTAINS_COMMAND | SSD1306_CTRL_NEXT_WORD_STARTS_WITH_CONTROL, (cmd1), SSD1306_CTRL_WORD_CONTAINS_COMMAND, (cmd2)}
+#define SSD1306_3B_COMMAND_LEN4(cmd, A, B) {SSD1306_CTRL_WORD_CONTAINS_COMMAND, (cmd), (A), (B)}
+#define SSD1306_6B_COMMAND_LEN7(cmd, A, B, C, D, E) {SSD1306_CTRL_WORD_CONTAINS_COMMAND, (cmd), (A), (B), (C), (D), (E)}
+#define SSD1306_7B_COMMAND_LEN8(cmd, A, B, C, D, E, F) {SSD1306_CTRL_WORD_CONTAINS_COMMAND, (cmd), (A), (B), (C), (D), (E), (F)}
 
 enum SSD1306_colors {
     black = 0x00,   // Black color, no pixel
@@ -68,37 +90,36 @@ class SSD1306 {
 protected:
     I2C_HandleTypeDef*  hI2C {};
     SSD1306_address deviceAddress;
+
 	uint16_t width  = disp_width;
 	uint16_t height = disp_height;
     uint8_t buffer[disp_width * (disp_height >> 3)];
 	uint8_t rotation = 0;
-
-    uint16_t currentX;
-    uint16_t currentY;
+    uint16_t currentX = 0;
+    uint16_t currentY = 0;
 
     bool inv_x = false;
     bool inv_y = false;
     bool inv_c = false; // invert color (B/W)
 
-    bool send_command(SSD1306_command cmd);
-    bool send_command(SSD1306_command cmd, uint8_t data);
-	bool send_data(uint8_t* bytes, uint16_t len);
-
     virtual bool init_panel_specifics() = 0;
 public:
     bool initialized {false};
 
+    // primary methods
     bool init(I2C_HandleTypeDef *_hI2C, SSD1306_address addr, bool invert_x = false, bool invert_y = false);
-
     bool isReady();
+    bool send_command(SSD1306_command cmd);
+    bool send_command(SSD1306_command cmd, uint8_t data);
+    bool send_raw(uint8_t *data, uint16_t len);
+    bool send_data(uint8_t* bytes, uint16_t len);
 
+    // canvas methods
     void clearBuffer();
     bool updateDisplay();
-	void displayFullyOn(bool on = true);
 	void drawBitmap(int16_t x, int16_t y, const uint8_t bitmap[],
                     uint16_t bmp_width, uint16_t bmp_height, SSD1306_colors color);
 	void drawPixel(int16_t x, int16_t y, SSD1306_colors color);
-	void invertColors();
 	char writeChar(char ch, FontDef Font, SSD1306_colors color);
 	uint32_t writeString(char* str, FontDef Font, SSD1306_colors color);
 	void setCursor(uint8_t x, uint8_t y);
@@ -121,6 +142,8 @@ bool SSD1306<disp_width, disp_height>::send_command(SSD1306_command cmd, uint8_t
     buf[2] = data;
     return HAL_OK == HAL_I2C_Master_Transmit( hI2C, deviceAddress << 1, buf, 3, 5 );
 }
+
+
 
 template <size_t disp_width , size_t disp_height>
 bool SSD1306<disp_width, disp_height>::send_data(uint8_t *bytes, uint16_t len) {
@@ -146,19 +169,16 @@ SSD1306<disp_width, disp_height>::init(I2C_HandleTypeDef *_hI2C, SSD1306_address
     // Timing and driving.
     i &= send_command( SSD1306_SET_DISPLAY_CLOCK_DIV_RATIO , 0x80 );
     i &= send_command( SSD1306_SET_PRECHARGE_PERIOD , 0x22 );
-    i &= send_command( SSD1306_SET_VCOM_DESELECT    , 0x40 );
+    i &= send_command( SSD1306_SET_VCOMH_DESELECT_LEVEL , 0x40 );
     i &= send_command( SSD1306_SET_CONTRAST_CONTROL , 0x7F );
-    i &= send_command( SSD1306_SET_DISPLAY_OFFSET   , 0x00 );
+    i &= send_command( SSD1306_SET_VERT_DISPLAY_OFFSET , 0x00 );
 
     // Scrolling
     i &= send_command( SSD1306_DEACTIVATE_SCROLL );
 
     // memory use and mapping to COM and SEGMENT lines (panel-specific)
     i &= init_panel_specifics();
-
-    // Charge pump.
-    i &= send_command( SSD1306_CHARGE_PUMP , 0x14 );
-
+    
     // Display back on.
     i &= send_command( SSD1306_DISPLAY_ALL_ON_RESUME );
     i &= send_command( SSD1306_NORMAL_DISPLAY );
@@ -184,11 +204,6 @@ bool SSD1306<disp_width, disp_height>::updateDisplay() {
 }
 
 template<size_t disp_width, size_t disp_height>
-void SSD1306<disp_width, disp_height>::displayFullyOn(bool on) {
-
-}
-
-template<size_t disp_width, size_t disp_height>
 void SSD1306<disp_width, disp_height>::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, uint16_t bmp_width, uint16_t bmp_height,
                                           SSD1306_colors color) {
 
@@ -196,11 +211,6 @@ void SSD1306<disp_width, disp_height>::drawBitmap(int16_t x, int16_t y, const ui
 
 template<size_t disp_width, size_t disp_height>
 void SSD1306<disp_width, disp_height>::drawPixel(int16_t x, int16_t y, SSD1306_colors color) {
-
-}
-
-template<size_t disp_width, size_t disp_height>
-void SSD1306<disp_width, disp_height>::invertColors() {
 
 }
 
@@ -219,39 +229,57 @@ void SSD1306<disp_width, disp_height>::setCursor(uint8_t x, uint8_t y) {
 
 }
 
+template<size_t disp_width, size_t disp_height>
+bool SSD1306<disp_width, disp_height>::send_raw(uint8_t *data, uint16_t len) {
+    return false;
+}
 
-class SSD1306_128x32 : public SSD1306< 128, 32 > {
+
+class [[maybe_unused]] SSD1306_128x32 : public SSD1306< 128, 32 > {
 protected:
     bool init_panel_specifics() override {
         bool i = true;
+        // Charge pump.
+        i &= send_command( SSD1306_CHARGE_PUMP_STATE , 0x14 ); // charge pump on
+        
         // Addressing
-        i &= send_command(SSD1306_MEMORY_ADDR_MODE, 0x10);        // Page addressing mode.
-        i &= send_command(SSD1306_SET_START_LINE(0));
+        i &= send_command(SSD1306_MEMORY_ADDR_MODE, 2); // page addressing mode
+        i &= send_command(SSD1306_SET_START_LINE(0)); // RAM to COM offset = 0
 
         // Hardware config
         i &= send_command(SSD1306_SET_SEGMENT_REMAP_INV);
-        i &= send_command(SSD1306_SET_MULTIPLEX_RATIO, height - 1);
+        i &= send_command(SSD1306_SET_MULTIPLEX_RATIO, height - 1); // 32x multiplexing
         i &= send_command(SSD1306_COM_SCAN_DIR_DEC);
-        i &= send_command(SSD1306_SET_COM_PINS, 0x12);
+        i &= send_command(SSD1306_SET_COM_PINS, 0x00 | 0x02); // sequential COM pin config, no L-R remap
 
+        uint8_t buf[] = SSD1306_DOUBLE_COMMAND_LEN4(SSD1306_SET_VERT_DISPLAY_OFFSET, 0);
+        i &= send_raw(buf, sizeof(buf));
+        i &= send_command(SSD1306_SET_DISPLAY_CLOCK_DIV_RATIO, 0xF0); // F_OSC 0xF, DCLK divider 1
         return i;
     }
 };
 
-class SSD1306_128x64 : public SSD1306< 128, 64 > {
+
+class [[maybe_unused]] SSD1306_128x64 : public SSD1306< 128, 64 > {
 protected:
     bool init_panel_specifics() override {
         bool i = true;
+        // Charge pump.
+        i &= send_command( SSD1306_CHARGE_PUMP_STATE , 0x14 ); // charge pump on
+        
         // Addressing
-        i &= send_command(SSD1306_MEMORY_ADDR_MODE, 0x10);        // Page addressing mode.
-        i &= send_command(SSD1306_SET_START_LINE(0));
+        i &= send_command(SSD1306_MEMORY_ADDR_MODE, 2); // page addressing mode
+        i &= send_command(SSD1306_SET_START_LINE(0)); // RAM to COM offset = 0
 
         // Hardware config
         i &= send_command(SSD1306_SET_SEGMENT_REMAP_INV);
-        i &= send_command(SSD1306_SET_MULTIPLEX_RATIO, height - 1);
+        i &= send_command(SSD1306_SET_MULTIPLEX_RATIO, height - 1); // 64x multiplexing
         i &= send_command(SSD1306_COM_SCAN_DIR_DEC);
-        i &= send_command(SSD1306_SET_COM_PINS, 0x12);
+        i &= send_command(SSD1306_SET_COM_PINS, 0x10 | 0x02); // alternative COM pin config, no L-R remap
 
+        uint8_t buf[] = SSD1306_DOUBLE_COMMAND_LEN4(SSD1306_SET_VERT_DISPLAY_OFFSET, 0);
+        i &= send_raw(buf, sizeof(buf));
+        i &= send_command(SSD1306_SET_DISPLAY_CLOCK_DIV_RATIO, 0x80); // F_OSC 0x8, DCLK divider 1
         return i;
     }
 };
