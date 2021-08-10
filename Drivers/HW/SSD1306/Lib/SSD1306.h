@@ -266,7 +266,7 @@ protected:
     bool init_panel_specifics() override {
         bool i = true;
         // Hardware config
-        i &= send_command(SSD1306_SET_MULTIPLEX_RATIO, height - 1); // 32x multiplexing
+        i &= send_command(SSD1306_SET_MULTIPLEX_RATIO, height - 1); // 48x multiplexing
         i &= send_command(SSD1306_SET_COM_PINS, 0x10 | 0x02); // sequential COM pin config, no L-R remap. 0x12 if height > 32 else 0x02?
         return i;
     }
@@ -278,7 +278,7 @@ protected:
     bool init_panel_specifics() override {
         bool i = true;
         // Hardware config
-        i &= send_command(SSD1306_SET_MULTIPLEX_RATIO, height - 1); // 32x multiplexing
+        i &= send_command(SSD1306_SET_MULTIPLEX_RATIO, height - 1); // 16x multiplexing
         i &= send_command(SSD1306_SET_COM_PINS, 0x00 | 0x02); // sequential COM pin config, no L-R remap. 0x12 if height > 32 else 0x02?
         return i;
     }
