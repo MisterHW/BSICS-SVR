@@ -4,6 +4,7 @@
 
 #include "stm32f7xx_hal.h"
 #include "fonts.h"
+#include "string.h"
 
 // Slave addresses. D/~C pin acts as SA0 for slave address selection.
 enum SSD1306_address {
@@ -11,7 +12,8 @@ enum SSD1306_address {
     SSD1306_ADDR_0x3D = 0x3D, // D/~C high
 };
 
-/* The first byte transmitted is a CONTROL byte. It determines whether:
+/*  SSD1306 I2C Write Operations:
+ *  The first byte transmitted is a CONTROL byte. It determines whether:
  *  1) the second byte is a command or display data, and
  *  2) whether the third byte is another control byte or whether only data bytes follow after the second byte.
  *  The datasheet isn't very clear on the I2C write format, leading to many implementations using fragmented
@@ -60,12 +62,12 @@ enum SSD1306_command {
     SSD1306_SET_VERTICAL_SCROLL_AREA             = 0xA3, // 0xA3, A[5:0], B[6:0] - top fixed rows A, scrolled rows (starts at first row below last fixed)
 
     // Addressing Setting Commands
-    SSD1306_LOWER_COLUMN_BASE     = 0x00, // 0x0X - single-byte commands range 0x00 .. 0x0F, Lower Column Start Address for Page Addressing Mode
-    SSD1306_HIGHER_COLUMN_BASE    = 0x10, // 0x1X - single-byte commands range 0x10 .. 0x1F, Higher Column Start Address for Page Addressing Mode
-    SSD1306_MEMORY_ADDR_MODE      = 0x20, // 0x20, A[1:0] - A = {horiz. addr mode, vert. addr mode, page addr mode, 11b: invalid}
-    SSD1306_SET_COLUMN_ADDR       = 0x21, // 0x21, A[6:0], B[6:0] - col start A = 0..127, col end B = 0..127 (H and V addr mode only)
-    SSD1306_SET_PAGE_ADDR         = 0x22, // 0x22, A[2:0], B[2:0] - page start A = 0..7, page end B = 0..7 (
-    SSD1306_PAGE_START_ADDR_BASE  = 0xB0, // 0xBX - single-byte commands range 0xB0 .. 0xB7, page start address 0..7 (for page addr mode only)
+    SSD1306_COLUMN_ADDR_LOWER_NIBBLE_BASE = 0x00, // 0x0X - single-byte commands range 0x00 .. 0x0F, Column Start Address [3:0] for Page Addressing Mode
+    SSD1306_COLUMN_ADDR_UPPER_NIBBLE_BASE = 0x10, // 0x1X - single-byte commands range 0x10 .. 0x1F, Column Start Address [7:4] for Page Addressing Mode
+    SSD1306_MEMORY_ADDR_MODE              = 0x20, // 0x20, A[1:0] - A = {horiz. addr mode, vert. addr mode, page addr mode, 11b: invalid}
+    SSD1306_SET_COLUMN_ADDR               = 0x21, // 0x21, A[6:0], B[6:0] - col start A = 0..127, col end B = 0..127 (H and V addr mode only)
+    SSD1306_SET_PAGE_ADDR                 = 0x22, // 0x22, A[2:0], B[2:0] - page start A = 0..7, page end B = 0..7. Also sets page address pointer to start.
+    SSD1306_PAGE_START_ADDR_BASE          = 0xB0, // 0xBX - single-byte commands range 0xB0 .. 0xB7, page start address 0..7 (for page addr mode only)
 
     // Hardware Configuration Commands
     SSD1306_START_LINE_CMD_BASE     = 0x40, // 0xXX single-byte commands range  0x40 .. 0x7F, commands select RAM row 0 .. 63 mapping to COM0. 0x40+n: n->COM0, n+1->COM1, ...
@@ -92,14 +94,15 @@ enum SSD1306_command {
 };
 
 // macros for packed single-byte commands
-#define SSD1306_SET_START_LINE(n)    (SSD1306_command)((int)SSD1306_START_LINE_CMD_BASE + ((n) % 64))
-#define SSD1306_SET_LOWER_COLUMN(n)  (SSD1306_command)((int)SSD1306_LOWER_COLUMN_BASE   + ((n) % 16))
-#define SSD1306_SET_HIGHER_COLUMN(n) (SSD1306_command)((int)SSD1306_HIGHER_COLUMN_BASE  + ((n) % 16))
+#define SSD1306_SET_START_LINE(n)      (SSD1306_command)((int)SSD1306_START_LINE_CMD_BASE + ((n) % 64))
+#define SSD1306_SET_COLUMN_ADDR_LOWER_NIBBLE(addr) (SSD1306_command)((int)SSD1306_COLUMN_ADDR_LOWER_NIBBLE_BASE + ((addr) & 0x0F))
+#define SSD1306_SET_COLUMN_ADDR_UPPER_NIBBLE(addr) (SSD1306_command)((int)SSD1306_COLUMN_ADDR_UPPER_NIBBLE_BASE + ((addr >> 4) & 0x0F))
+#define SSD1306_SET_PAGE_START_ADDR(n) (SSD1306_command)((int)SSD1306_PAGE_START_ADDR_BASE + ((n) % 8))
 
 // uint8_t buf[] array initializer macros for send_raw() calls
 #define SSD1306_DOUBLE_COMMAND_LEN4(cmd1, cmd2) {SSD1306_CTRL_WORD_CONTAINS_COMMAND | SSD1306_CTRL_NEXT_WORD_STARTS_WITH_CONTROL, (cmd1), SSD1306_CTRL_WORD_CONTAINS_COMMAND, (cmd2)}
-#define SSD1306_3B_COMMAND_LEN4(cmd, A, B) {SSD1306_CTRL_WORD_CONTAINS_COMMAND, (cmd), (A), (B)}
-#define SSD1306_6B_COMMAND_LEN7(cmd, A, B, C, D, E) {SSD1306_CTRL_WORD_CONTAINS_COMMAND, (cmd), (A), (B), (C), (D), (E)}
+#define SSD1306_3B_COMMAND_LEN4(cmd, A, B)             {SSD1306_CTRL_WORD_CONTAINS_COMMAND, (cmd), (A), (B)}
+#define SSD1306_6B_COMMAND_LEN7(cmd, A, B, C, D, E)    {SSD1306_CTRL_WORD_CONTAINS_COMMAND, (cmd), (A), (B), (C), (D), (E)}
 #define SSD1306_7B_COMMAND_LEN8(cmd, A, B, C, D, E, F) {SSD1306_CTRL_WORD_CONTAINS_COMMAND, (cmd), (A), (B), (C), (D), (E), (F)}
 
 /* Parallel interface use D/~C as data/control select. "The serial interface mode is always in write mode."
@@ -111,9 +114,9 @@ enum SSD1306_status {
     // All other bits are reserved.
 };
 
-enum SSD1306_colors {
-    black = 0x00,   // Black color, no pixel
-    white = 0x01,   // Pixel is set. Color depends on LCD
+enum SSD1306_color {
+    black = 0x00,   // Pixel is off (normal mode)
+    white = 0xFF,   // Pixel is on  (normal mode)
 };
 
 
@@ -126,13 +129,12 @@ protected:
     uint16_t width  = disp_width;
     uint16_t height = disp_height;
     uint8_t buffer[disp_width * (disp_height >> 3)];
-    uint8_t rotation = 0;
+
     uint16_t currentX = 0;
     uint16_t currentY = 0;
 
     bool inv_x = false;
     bool inv_y = false;
-    bool inv_c = false; // invert color (B/W)
 
     virtual bool init_panel_specifics() = 0;
 public:
@@ -149,12 +151,12 @@ public:
 
     // canvas methods
     void clearBuffer();
-    bool updateDisplay();
-    void drawBitmap(int16_t x, int16_t y, const uint8_t bitmap[],
-                    uint16_t bmp_width, uint16_t bmp_height, SSD1306_colors color);
-    void drawPixel(int16_t x, int16_t y, SSD1306_colors color);
-    char writeChar(char ch, FontDef Font, SSD1306_colors color);
-    uint32_t writeString(char* str, FontDef Font, SSD1306_colors color);
+    bool updateDisplay(uint8_t page_offset = 0, uint8_t column_offset = 0);
+    void drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, uint16_t bmp_width,
+                    uint16_t bmp_height);
+    void drawPixel(int16_t x, int16_t y, SSD1306_color color);
+    char writeChar(char ch, FontDef Font, SSD1306_color color);
+    uint32_t writeString(char* str, FontDef Font, SSD1306_color color);
     void setCursor(uint8_t x, uint8_t y);
 
 };
@@ -263,41 +265,59 @@ bool SSD1306<disp_width, disp_height>::read_status(uint8_t &status) {
 }
 
 template<size_t disp_width, size_t disp_height>
+bool SSD1306<disp_width, disp_height>::updateDisplay(uint8_t page_offset, const uint8_t column_offset) {
+    // Writing buffer to page_offset != 0: useful for double-buffering displays with height = 16, 32.
+    bool success = true;
+    uint8_t buf[6]; // Send 3 commands in one frame.
+    buf[0] = SSD1306_CTRL_WORD_CONTAINS_COMMAND | SSD1306_CTRL_NEXT_WORD_STARTS_WITH_CONTROL ;
+    buf[1] = SSD1306_SET_COLUMN_ADDR_LOWER_NIBBLE(column_offset) ;
+    buf[2] = SSD1306_CTRL_WORD_CONTAINS_COMMAND | SSD1306_CTRL_NEXT_WORD_STARTS_WITH_CONTROL ;
+    buf[3] = SSD1306_SET_COLUMN_ADDR_UPPER_NIBBLE(column_offset) ;
+    buf[4] = SSD1306_CTRL_WORD_CONTAINS_COMMAND ;
+
+    for(int i = 0; i < height >> 3; i++){
+        buf[5] = SSD1306_SET_PAGE_START_ADDR(page_offset + i) ;
+        success &= send_raw(buf, sizeof(buf));
+        success &= send_data(&buffer[i * width], width);
+    }
+    return success;
+}
+
+template<size_t disp_width, size_t disp_height>
 void SSD1306<disp_width, disp_height>::clearBuffer() {
-
+    memset(buffer, 0, width * (height >> 3));
 }
 
 template<size_t disp_width, size_t disp_height>
-bool SSD1306<disp_width, disp_height>::updateDisplay() {
-    return false;
+void SSD1306<disp_width, disp_height>::drawPixel(int16_t x, int16_t y, SSD1306_color color) {
+    // In buffer, a byte represents eight vertically arranged pixels, giving rise to 3
+    if((x < width) && (y < height)) {
+        uint8_t mask = 1 << (y & 0x07);
+        uint16_t idx = x + (y >> 3) * width;
+        buffer[idx] = (buffer[idx] & ~mask) | (color & mask);
+    }
 }
 
 template<size_t disp_width, size_t disp_height>
-void SSD1306<disp_width, disp_height>::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, uint16_t bmp_width, uint16_t bmp_height,
-                                                  SSD1306_colors color) {
+void SSD1306<disp_width, disp_height>::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, uint16_t bmp_width,
+                                                  uint16_t bmp_height) {
 }
 
 template<size_t disp_width, size_t disp_height>
-void SSD1306<disp_width, disp_height>::drawPixel(int16_t x, int16_t y, SSD1306_colors color) {
-
-}
-
-template<size_t disp_width, size_t disp_height>
-char SSD1306<disp_width, disp_height>::writeChar(char ch, FontDef Font, SSD1306_colors color) {
+char SSD1306<disp_width, disp_height>::writeChar(char ch, FontDef Font, SSD1306_color color) {
     return 0;
 }
 
 template<size_t disp_width, size_t disp_height>
-uint32_t SSD1306<disp_width, disp_height>::writeString(char *str, FontDef Font, SSD1306_colors color) {
+uint32_t SSD1306<disp_width, disp_height>::writeString(char *str, FontDef Font, SSD1306_color color) {
     return 0;
 }
 
 template<size_t disp_width, size_t disp_height>
 void SSD1306<disp_width, disp_height>::setCursor(uint8_t x, uint8_t y) {
-
+    currentX = x;
+    currentY = y;
 }
-
-
 
 
 class [[maybe_unused]] SSD1306_64x48 : public SSD1306< 64, 48 > {
