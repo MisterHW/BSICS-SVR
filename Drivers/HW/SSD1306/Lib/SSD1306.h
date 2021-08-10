@@ -290,13 +290,23 @@ void SSD1306<disp_width, disp_height>::clearBuffer() {
 
 template<size_t disp_width, size_t disp_height>
 void SSD1306<disp_width, disp_height>::drawPixel(int16_t x, int16_t y, SSD1306_color color) {
-    /* In buffer, a byte represents eight vertically arranged pixels, so (x, y) needs to be transformed into
-     * (x, y div 8, y mod 8) coordinates. These are used to resolve 1D buffer index and bit masking.
+    /* screen  x
+     *     _1__2__3____
+     *   0| A0 B0 C0 ..   One byte (e.g. C) of GDDRAM image data maps to eight vertically consecutive pixels.
+     *   1| A1 B1 C1 ..   SSD1306 organizes blocks of 128x8 pixels into "pages" of 128 bytes (page0 = {A,B,C,..}.).
+     *   2| A2 B2 C2 ..   This library uses the same byte-oriented vertical pixel grouping, but serializes
+     *   ~| .. .. .. ..   image data in 1-dim arrays. In the case of buffer[disp_width * (disp_height/8)] ,
+     * y 7| A7 B7 C7 ..   the pixel at (x|y) is the (y mod 8)-th bit of the byte buffer[x + (y div 8) * disp_width] .
+     *   8| U0 V0 W0 ..   Monochrome bitmap data used with SSD1306 functions can follow the same organization
+     *   9| U1 V1 W1 ..   as a "native format" to avoid the transpose-8x8 problem:
+     *  10| U2 V2 W2 ..   https://stackoverflow.com/questions/6930667/what-is-the-fastest-way-to-transpose-the-bits-in-an-8x8-block-on-bits
+     *   ~| .. .. .. ..
      */
-    if((x < width) && (y < height)) {
-        uint8_t mask = 1 << (y & 0x07);
-        uint16_t idx = x + (y >> 3) * width;
-        buffer[idx] = (buffer[idx] & ~mask) | (color & mask);
+    if((x < width) && (y < height)) {             // prevent out-of-range access (just return, no wrap-around)
+        uint8_t mask = 1 << (y & 0x07);           // bit mask is 1 << (y mod 8)
+        uint16_t idx = x + (y >> 3) * disp_width; // calculate buffer array index
+        // bitwise-and with the complementary mask (all 1's except bit to mask) selectively clears masked bit, while
+        buffer[idx] = (buffer[idx] & (~mask)) | (color & mask); // or-ing conditionally sets bit again if color is 0xFF
     }
 }
 
