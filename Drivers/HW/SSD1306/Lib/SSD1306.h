@@ -302,7 +302,7 @@ void SSD1306<disp_width, disp_height>::drawPixel(int16_t x, int16_t y, SSD1306_c
      *  10| U2 V2 W2 ..   https://stackoverflow.com/questions/6930667/what-is-the-fastest-way-to-transpose-the-bits-in-an-8x8-block-on-bits
      *   ~| .. .. .. ..
      */
-    if((x < width) && (y < height)) {             // prevent out-of-range access (just return, no wrap-around)
+    if((x < disp_width) && (y < disp_height)) {   // prevent out-of-range access (just return, no wrap-around)
         uint8_t mask = 1 << (y & 0x07);           // bit mask is 1 << (y mod 8)
         uint16_t idx = x + (y >> 3) * disp_width; // calculate buffer array index
         // bitwise-and with the complementary mask (all 1's except bit to mask) selectively clears masked bit, while
