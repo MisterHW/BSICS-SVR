@@ -153,9 +153,9 @@ public:
     void clearBuffer();
     bool updateDisplay(uint8_t page_offset = 0, uint8_t column_offset = 0);
     void drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, uint16_t bmp_width,
-                    uint16_t bmp_height);
+                    uint16_t bmp_height, SSD1306_color color);
     void drawPixel(int16_t x, int16_t y, SSD1306_color color);
-    char writeChar(char ch, FontDef Font, SSD1306_color color);
+    bool writeChar(char ch, FontDef Font, SSD1306_color color);
     uint32_t writeString(char* str, FontDef Font, SSD1306_color color);
     void setCursor(uint8_t x, uint8_t y);
 
@@ -290,7 +290,9 @@ void SSD1306<disp_width, disp_height>::clearBuffer() {
 
 template<size_t disp_width, size_t disp_height>
 void SSD1306<disp_width, disp_height>::drawPixel(int16_t x, int16_t y, SSD1306_color color) {
-    // In buffer, a byte represents eight vertically arranged pixels, giving rise to 3
+    /* In buffer, a byte represents eight vertically arranged pixels, so (x, y) needs to be transformed into
+     * (x, y div 8, y mod 8) coordinates. These are used to resolve 1D buffer index and bit masking.
+     */
     if((x < width) && (y < height)) {
         uint8_t mask = 1 << (y & 0x07);
         uint16_t idx = x + (y >> 3) * width;
@@ -300,12 +302,13 @@ void SSD1306<disp_width, disp_height>::drawPixel(int16_t x, int16_t y, SSD1306_c
 
 template<size_t disp_width, size_t disp_height>
 void SSD1306<disp_width, disp_height>::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, uint16_t bmp_width,
-                                                  uint16_t bmp_height) {
+                                                  uint16_t bmp_height, SSD1306_color color) {
+
 }
 
 template<size_t disp_width, size_t disp_height>
-char SSD1306<disp_width, disp_height>::writeChar(char ch, FontDef Font, SSD1306_color color) {
-    return 0;
+bool SSD1306<disp_width, disp_height>::writeChar(char ch, FontDef Font, SSD1306_color color) {
+    return false;
 }
 
 template<size_t disp_width, size_t disp_height>
