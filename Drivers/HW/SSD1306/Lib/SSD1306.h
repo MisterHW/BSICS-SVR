@@ -22,6 +22,12 @@ enum SSD1306_address {
  *  The SSD1306 interface state machine seems to allow this, but the datasheet wording "triple byte command"
  *  seems to imply e.g.
  *      S : ADDR<<1|W : ACK : CONTROL : ACK : COMMAND : ACK : DATA0 : ACK : DATA1: ACK : P - where CONTROL = 0x00.
+ *
+ *  Commands with > 1 byte operands would require the SSD1306 state machine to interpret commands and know how many
+ *  operand bytes to expect, which does not seem to be the case (Table 8-7 shows > 1 byte operands as necessarily
+ *  followed by a STOP, and SSD1306_CTRL_NEXT_WORD_STARTS_WITH_CONTROL would not be necessary). So only word instructions
+ *  containing CONTROL + Byte can precede a subsequent instruction.
+ *
  *  In this implementation, overloaded send_command() methods are provided for non-fragmented write operations.
  *  Multi-byte commands can be sent via send_raw() using an array of bytes. Initializer macros
  *  SSD1306_3B_COMMAND_LEN4, SSD1306_6B_COMMAND_LEN7 and SSD1306_7B_COMMAND_LEN8
@@ -82,7 +88,7 @@ enum SSD1306_command {
     SSD1306_SET_ZOOM_IN               = 0xD6, // 0xD6, A[0] - A[0] = 0b: disable zoom mode, 1b: enable zoom mode (requires alternative COM mode)
 
     // Charge Pump Commands
-    SSD1306_CHARGE_PUMP_STATE = 0x8D, // 0x8D, A[7:0] - 0x10: disable charge pump, 0x14_ enable charge pumpe (NOTE: command must be followed by Display ON command: 0x8D, 0x14, 0xAF)
+    SSD1306_CHARGE_PUMP_STATE = 0x8D, // 0x8D, A[7:0] - 0x10: disable charge pump, 0x14: enable charge pump (NOTE: command must ultimately be followed by Display ON command: 0x8D, 0x14, 0xAF)
 };
 
 // macros for packed single-byte commands
@@ -96,10 +102,20 @@ enum SSD1306_command {
 #define SSD1306_6B_COMMAND_LEN7(cmd, A, B, C, D, E) {SSD1306_CTRL_WORD_CONTAINS_COMMAND, (cmd), (A), (B), (C), (D), (E)}
 #define SSD1306_7B_COMMAND_LEN8(cmd, A, B, C, D, E, F) {SSD1306_CTRL_WORD_CONTAINS_COMMAND, (cmd), (A), (B), (C), (D), (E), (F)}
 
+/* Parallel interface use D/~C as data/control select. "The serial interface mode is always in write mode."
+ * "In I2C mode, [D/~C] acts as SA0 for slave address selection." N
+ * No GDDRAM data can be read back, but reading the status byte may be possible.
+ */
+enum SSD1306_status {
+    SSD1306_STATUS_DISPLAY_OFF = 1 << 6, // bit mask for "not display on"
+    // All other bits are reserved.
+};
+
 enum SSD1306_colors {
     black = 0x00,   // Black color, no pixel
     white = 0x01,   // Pixel is set. Color depends on LCD
 };
+
 
 template <size_t disp_width , size_t disp_height>
 class SSD1306 {
@@ -129,6 +145,7 @@ public:
     bool send_command(SSD1306_command cmd, uint8_t data);
     bool send_raw(uint8_t *data, uint16_t len);
     bool send_data(uint8_t* bytes, uint16_t len);
+    bool read_status(uint8_t& status);
 
     // canvas methods
     void clearBuffer();
@@ -141,30 +158,6 @@ public:
     void setCursor(uint8_t x, uint8_t y);
 
 };
-
-template <size_t disp_width , size_t disp_height>
-bool SSD1306<disp_width, disp_height>::send_command(SSD1306_command cmd) {
-    uint8_t buf[2];
-    buf[0] = SSD1306_CTRL_WORD_CONTAINS_COMMAND ;
-    buf[1] = cmd;
-    return HAL_OK == HAL_I2C_Master_Transmit( hI2C, deviceAddress << 1, buf, 2, 5 );
-}
-
-template <size_t disp_width , size_t disp_height>
-bool SSD1306<disp_width, disp_height>::send_command(SSD1306_command cmd, uint8_t data) {
-    uint8_t buf[3];
-    buf[0] = SSD1306_CTRL_WORD_CONTAINS_COMMAND | SSD1306_CTRL_ALL_FOLLOWING_BYTES_ARE_DATA ;
-    buf[1] = cmd;
-    buf[2] = data;
-    return HAL_OK == HAL_I2C_Master_Transmit( hI2C, deviceAddress << 1, buf, 3, 5 );
-}
-
-
-
-template <size_t disp_width , size_t disp_height>
-bool SSD1306<disp_width, disp_height>::send_data(uint8_t *bytes, uint16_t len) {
-    return false;
-}
 
 template <size_t disp_width , size_t disp_height>
 bool
@@ -219,6 +212,56 @@ bool SSD1306<disp_width, disp_height>::isReady() {
     return HAL_OK == HAL_I2C_IsDeviceReady(hI2C, deviceAddress << 1, 3, 5 );
 }
 
+template <size_t disp_width , size_t disp_height>
+bool SSD1306<disp_width, disp_height>::send_command(SSD1306_command cmd) {
+    // S
+    // deviceAddress << 1 | 0 : ACK : CONTROL 0x00 : ACK : COMMAND : ACK
+    // P
+    uint8_t buf[2];
+    buf[0] = SSD1306_CTRL_WORD_CONTAINS_COMMAND ;
+    buf[1] = cmd;
+    return HAL_OK == HAL_I2C_Master_Transmit( hI2C, deviceAddress << 1, buf, 2, 5 );
+}
+
+template <size_t disp_width , size_t disp_height>
+bool SSD1306<disp_width, disp_height>::send_command(SSD1306_command cmd, uint8_t data) {
+    // S
+    // deviceAddress << 1 | 0 : ACK : CONTROL 0x00 : ACK : COMMAND : ACK : DATA : ACK
+    // P
+    uint8_t buf[3];
+    buf[0] = SSD1306_CTRL_WORD_CONTAINS_COMMAND | SSD1306_CTRL_ALL_FOLLOWING_BYTES_ARE_DATA ;
+    buf[1] = cmd;
+    buf[2] = data;
+    return HAL_OK == HAL_I2C_Master_Transmit( hI2C, deviceAddress << 1, buf, 3, 5 );
+}
+
+template<size_t disp_width, size_t disp_height>
+bool SSD1306<disp_width, disp_height>::send_raw(uint8_t *data, uint16_t len) {
+    // Note: D0 must be a CONTROL byte.
+    // S
+    // deviceAddress << 1 | 0 : ACK : D0 : ACK : D1 : ACK : ... : Dn : ACK
+    // P
+    return HAL_OK == HAL_I2C_Master_Transmit( hI2C, deviceAddress << 1, data, len, 5 );
+}
+
+template <size_t disp_width , size_t disp_height>
+bool SSD1306<disp_width, disp_height>::send_data(uint8_t *bytes, uint16_t len) {
+    // S
+    // deviceAddress << 1 | 0 : ACK : CONTROL 0x40 : ACK : D0 : ACK : D1 : ACK : ... : Dn : ACK
+    // P
+    return HAL_OK == HAL_I2C_Mem_Write( hI2C, deviceAddress << 1,
+                                        SSD1306_CTRL_WORD_CONTAINS_DATA | SSD1306_CTRL_ALL_FOLLOWING_BYTES_ARE_DATA , 1 ,
+                                        bytes, len, 5);
+}
+
+template<size_t disp_width, size_t disp_height>
+bool SSD1306<disp_width, disp_height>::read_status(uint8_t &status) {
+    // S
+    // deviceAddress << 1 | 1 : ACK : STATUS
+    // P
+    return HAL_OK == HAL_I2C_Master_Receive(hI2C, deviceAddress << 1, &status, 1, 5);
+}
+
 template<size_t disp_width, size_t disp_height>
 void SSD1306<disp_width, disp_height>::clearBuffer() {
 
@@ -232,7 +275,6 @@ bool SSD1306<disp_width, disp_height>::updateDisplay() {
 template<size_t disp_width, size_t disp_height>
 void SSD1306<disp_width, disp_height>::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, uint16_t bmp_width, uint16_t bmp_height,
                                                   SSD1306_colors color) {
-
 }
 
 template<size_t disp_width, size_t disp_height>
@@ -255,10 +297,7 @@ void SSD1306<disp_width, disp_height>::setCursor(uint8_t x, uint8_t y) {
 
 }
 
-template<size_t disp_width, size_t disp_height>
-bool SSD1306<disp_width, disp_height>::send_raw(uint8_t *data, uint16_t len) {
-    return false;
-}
+
 
 
 class [[maybe_unused]] SSD1306_64x48 : public SSD1306< 64, 48 > {
