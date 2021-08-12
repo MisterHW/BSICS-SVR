@@ -190,10 +190,32 @@ bool PeripheralDeviceGroup::updateDisplay() {
 
     // update OLED display
     if(status_display.initialized){
-        char s[] = "BSICS-DRV-2A";
+        uint8_t ch_idx[3] = {2, 1, 0}; // normal display: CH3, CH2, CH1.
+        if(status_display_rotated180){ // HS group needs 180° rotation and text in reversed order
+            ch_idx[0] = 0;
+            ch_idx[2] = 2;
+        }
+
         status_display.clearBuffer();
         status_display.setCursor(0, 0);
+        int n;
+        char s[20];
+
+        // print line 0 : SPST config for all channels
+        n = sprintf(s, " 0x%02x  0x%02x  0x%02x",
+                    octal_spst_data[ch_idx[0]].prev,
+                    octal_spst_data[ch_idx[1]].prev,
+                    octal_spst_data[ch_idx[2]].prev );
         status_display.writeString(s, Font_7x10, SSD1306_color::monochrome_white);
+
+        // print line 1: VHI for all channels
+        //...
+
+        // print line 2: VLO for all channels
+        // ...
+
+        // update display contents
+        status_display.configure_orientation( status_display_rotated180, status_display_rotated180 );
         status_display.updateDisplay();
     }
 
@@ -230,8 +252,10 @@ bool Devices_init( ) {
     bool res;
     printf("I2C1 :\r\n");
     res  = DeviceGroup[0].init(&hi2c1, 0);
+    DeviceGroup[0].status_display_rotated180 = false;
     printf("I2C2 :\r\n");
     res &= DeviceGroup[1].init(&hi2c2, 1);
+    DeviceGroup[0].status_display_rotated180 = true;
     printf("\n");
     return res;
 };

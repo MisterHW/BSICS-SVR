@@ -72,10 +72,10 @@ enum SSD1306_command {
     // Hardware Configuration Commands
     SSD1306_START_LINE_CMD_BASE     = 0x40, // 0xXX single-byte commands range  0x40 .. 0x7F, commands select RAM row 0 .. 63 mapping to COM0. 0x40+n: n->COM0, n+1->COM1, ...
     SSD1306_SET_SEGMENT_REMAP_OFF   = 0xA0, // 0xA0 - column addr 0   -> SEG0
-    SSD1306_SET_SEGMENT_REMAP_INV   = 0xA1, // 0xA1 - column addr 127 -> SEG0
+    SSD1306_SET_SEGMENT_REMAP_INV   = 0xA1, // 0xA1 - column addr 127 -> SEG0 (typical)
     SSD1306_SET_MULTIPLEX_RATIO     = 0xA8, // 0xA8, A[5:0] - A = 0.. 63 (= height - 1)
     SSD1306_COM_SCAN_DIR_INC        = 0xC0, // 0xC0 - COM scan direction COM0 to COM[N–1] (N : multiplex ratio)
-    SSD1306_COM_SCAN_DIR_DEC        = 0xC8, // 0XC8 - COM scan direction COM[N-1] to COM0 (N : multiplex ratio)
+    SSD1306_COM_SCAN_DIR_DEC        = 0xC8, // 0XC8 - COM scan direction COM[N-1] to COM0 (N : multiplex ratio) (typical)
     SSD1306_SET_VERT_DISPLAY_OFFSET = 0xD3, // 0xD3, A[5:0] - Set vertical shift by COM, A = 0 .. 63
     SSD1306_SET_COM_PINS            = 0xDA, // 0xDA, A[7:0] - COM sequence: A[5] = 0/1: COM L-R remap off / on. A[4] = 0: sequential, A[4] = 1: alternative (default), A[3:0] = 0x2, others 0
 
@@ -95,8 +95,8 @@ enum SSD1306_command {
 
 // macros for packed single-byte commands
 #define SSD1306_SET_START_LINE(n)      (SSD1306_command)((int)SSD1306_START_LINE_CMD_BASE + ((n) % 64))
-#define SSD1306_SET_COLUMN_ADDR_LOWER_NIBBLE(addr) (SSD1306_command)((int)SSD1306_COLUMN_ADDR_LOWER_NIBBLE_BASE + ((addr) & 0x0F))
-#define SSD1306_SET_COLUMN_ADDR_UPPER_NIBBLE(addr) (SSD1306_command)((int)SSD1306_COLUMN_ADDR_UPPER_NIBBLE_BASE + ((addr >> 4) & 0x0F))
+#define SSD1306_SET_COLUMN_ADDR_LOWER_NIBBLE(addr) (SSD1306_command)((int)SSD1306_COLUMN_ADDR_LOWER_NIBBLE_BASE + ( (addr) & 0x0F) )
+#define SSD1306_SET_COLUMN_ADDR_UPPER_NIBBLE(addr) (SSD1306_command)((int)SSD1306_COLUMN_ADDR_UPPER_NIBBLE_BASE + ( ((addr) >> 4) & 0x0F) )
 #define SSD1306_SET_PAGE_START_ADDR(n) (SSD1306_command)((int)SSD1306_PAGE_START_ADDR_BASE + ((n) % 8))
 
 // uint8_t buf[] array initializer macros for send_raw() calls
@@ -154,6 +154,7 @@ public:
     bool send_raw(uint8_t *data, uint16_t len);
     bool send_data(uint8_t* bytes, uint16_t len);
     bool read_status(uint8_t& status);
+    virtual bool configure_orientation(bool mirror_H, bool mirror_V); // default SSD1306_COM_SCAN_DIR_DEC;
 
     // canvas methods
     void clearBuffer();
@@ -272,6 +273,14 @@ bool SSD1306<disp_width, disp_height>::read_status(uint8_t &status) {
 }
 
 template<size_t disp_width, size_t disp_height>
+bool SSD1306<disp_width, disp_height>::configure_orientation(bool mirror_H, bool mirror_V) {
+    bool success;
+    success  = send_command( mirror_H ? SSD1306_COM_SCAN_DIR_INC      : SSD1306_COM_SCAN_DIR_DEC      );
+    success &= send_command( mirror_V ? SSD1306_SET_SEGMENT_REMAP_OFF : SSD1306_SET_SEGMENT_REMAP_INV );
+    return success;
+}
+
+template<size_t disp_width, size_t disp_height>
 bool SSD1306<disp_width, disp_height>::updateDisplay(uint8_t page_offset, const uint8_t column_offset) {
     // Writing buffer to page_offset != 0: useful for double-buffering displays with height = 16, 32.
     bool success = true;
@@ -330,16 +339,16 @@ template<size_t disp_width, size_t disp_height>
 char SSD1306<disp_width, disp_height>::writeChar(char ch, FontDef Font, SSD1306_color color) {
     uint32_t i, b, j;
 
-    if(ch < 0x20){
-        ch = '?';
-    }
-
     // Check remaining space on current line
     if (width  <= (currentX + Font.FontWidth) ||
         height <= (currentY + Font.FontHeight))
     {
         // Not enough space on current line
         return 0;
+    }
+
+    if(ch < 0x20){
+        ch = '?';
     }
 
     // Translate font to screenbuffer
@@ -354,7 +363,7 @@ char SSD1306<disp_width, disp_height>::writeChar(char ch, FontDef Font, SSD1306_
             }
             else
             {
-                drawPixel(currentY + j, (currentY + i), (SSD1306_color)(~color));
+                drawPixel(currentX + j, (currentY + i), (SSD1306_color)(~color));
             }
         }
     }
