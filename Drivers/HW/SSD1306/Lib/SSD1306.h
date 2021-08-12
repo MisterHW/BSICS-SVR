@@ -115,8 +115,14 @@ enum SSD1306_status {
 };
 
 enum SSD1306_color {
-    black = 0x00,   // Pixel is off (normal mode)
-    white = 0xFF,   // Pixel is on  (normal mode)
+    monochrome_black = 0x00,   // Pixel is off (normal mode)
+    monochrome_white = 0xFF,   // Pixel is on  (normal mode)
+};
+
+enum SSD1306_copy_mode {
+    SSD1306_CM_NORMAL,          // pixels get copied as they are
+    SSD1306_CM_COMPOSITE_COLOR, // pixel is set to a color, bitmap acts as mask
+//    SSD1306_CM_COMPOSITE_XOR,   // pixels are inverted, bitmap acts as mask
 };
 
 
@@ -152,11 +158,12 @@ public:
     // canvas methods
     void clearBuffer();
     bool updateDisplay(uint8_t page_offset = 0, uint8_t column_offset = 0);
-    void drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, uint16_t bmp_width,
-                    uint16_t bmp_height, SSD1306_color color);
-    void drawPixel(int16_t x, int16_t y, SSD1306_color color);
-    bool writeChar(char ch, FontDef Font, SSD1306_color color);
-    uint32_t writeString(char* str, FontDef Font, SSD1306_color color);
+    void drawBitmap(int16_t src_x, int16_t src_y, int16_t dest_x, int16_t dest_y,
+                    const uint8_t *bitmap, uint16_t bmp_width, uint16_t bmp_height,
+                    SSD1306_color color, SSD1306_copy_mode mode = SSD1306_CM_NORMAL);
+    void drawPixel(int16_t x, int16_t y, int color);
+    char writeChar(char ch, FontDef Font, SSD1306_color color);
+    char * writeString(char* str, FontDef Font, SSD1306_color color);
     void setCursor(uint8_t x, uint8_t y);
 
 };
@@ -289,7 +296,7 @@ void SSD1306<disp_width, disp_height>::clearBuffer() {
 }
 
 template<size_t disp_width, size_t disp_height>
-void SSD1306<disp_width, disp_height>::drawPixel(int16_t x, int16_t y, SSD1306_color color) {
+void SSD1306<disp_width, disp_height>::drawPixel(int16_t x, int16_t y, int color) {
     /* screen  x
      *     _1__2__3____
      *   0| A0 B0 C0 ..   One byte (e.g. C) of GDDRAM image data maps to eight vertically consecutive pixels.
@@ -306,24 +313,76 @@ void SSD1306<disp_width, disp_height>::drawPixel(int16_t x, int16_t y, SSD1306_c
         uint8_t mask = 1 << (y & 0x07);           // bit mask is 1 << (y mod 8)
         uint16_t idx = x + (y >> 3) * disp_width; // calculate buffer array index
         // bitwise-and with the complementary mask (all 1's except bit to mask) selectively clears masked bit, while
-        buffer[idx] = (buffer[idx] & (~mask)) | (color & mask); // or-ing conditionally sets bit again if color is 0xFF
+        buffer[idx] = (buffer[idx] & (~mask)) | (color & mask); // or-ing conditionally sets bit again if color is 0xFF.
     }
 }
 
 template<size_t disp_width, size_t disp_height>
-void SSD1306<disp_width, disp_height>::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, uint16_t bmp_width,
-                                                  uint16_t bmp_height, SSD1306_color color) {
-
+void SSD1306<disp_width, disp_height>::drawBitmap( int16_t src_x, int16_t src_y, int16_t dest_x, int16_t dest_y,
+                                                   const uint8_t *bitmap, uint16_t bmp_width, uint16_t bmp_height,
+                                                   SSD1306_color color, SSD1306_copy_mode mode ) {
+    // TODO: Implement general-purpose blitting method.
+    // TODO: Switch fonts to bitmap-based character ROM format so characters can be drawn using drawBitmap with SSD1306_copy_mode.
+    // TODO: Re-implement writeChar() using drawBitmap().
 }
 
 template<size_t disp_width, size_t disp_height>
-bool SSD1306<disp_width, disp_height>::writeChar(char ch, FontDef Font, SSD1306_color color) {
-    return false;
+char SSD1306<disp_width, disp_height>::writeChar(char ch, FontDef Font, SSD1306_color color) {
+    uint32_t i, b, j;
+
+    if(ch < 0x20){
+        ch = '?';
+    }
+
+    // Check remaining space on current line
+    if (width  <= (currentX + Font.FontWidth) ||
+        height <= (currentY + Font.FontHeight))
+    {
+        // Not enough space on current line
+        return 0;
+    }
+
+    // Translate font to screenbuffer
+    for (i = 0; i < Font.FontHeight; i++)
+    {
+        b = Font.data[(ch - 32) * Font.FontHeight + i];
+        for (j = 0; j < Font.FontWidth; j++)
+        {
+            if ((b << j) & 0x8000)
+            {
+                drawPixel(currentX + j, (currentY + i), color);
+            }
+            else
+            {
+                drawPixel(currentY + j, (currentY + i), (SSD1306_color)(~color));
+            }
+        }
+    }
+
+    // The current space is now taken
+    currentX += Font.FontWidth;
+
+    // Return written char for validation
+    return ch;
 }
 
 template<size_t disp_width, size_t disp_height>
-uint32_t SSD1306<disp_width, disp_height>::writeString(char *str, FontDef Font, SSD1306_color color) {
-    return 0;
+char * SSD1306<disp_width, disp_height>::writeString(char *str, FontDef Font, SSD1306_color color) {
+    // Write until null-byte
+    while (*str)
+    {
+        if (writeChar(*str, Font, color) != *str)
+        {
+            // Char could not be written
+            return str;
+        }
+
+        // Next char
+        str++;
+    }
+
+    // Everything ok
+    return str;
 }
 
 template<size_t disp_width, size_t disp_height>

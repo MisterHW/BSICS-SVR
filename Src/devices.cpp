@@ -189,7 +189,13 @@ bool PeripheralDeviceGroup::updateDisplay() {
     printf("\r\nGroup%d:\r\n   \tCH1\tCH2\tCH3\r\n", group_index);
 
     // update OLED display
-    // todo
+    if(status_display.initialized){
+        char s[] = "BSICS-DRV-2A";
+        status_display.clearBuffer();
+        status_display.setCursor(0, 0);
+        status_display.writeString(s, Font_7x10, SSD1306_color::monochrome_white);
+        status_display.updateDisplay();
+    }
 
     /// debug output via UART
     printf("SW \t0x%02x\t0x%02x\t0x%02x\r\n",
