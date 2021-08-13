@@ -336,6 +336,7 @@ void SSD1306<disp_width, disp_height>::drawBitmap( int16_t src_x, int16_t src_y,
     // TODO: Re-implement writeChar() using drawBitmap().
 }
 
+// copy-pasted code, TODO: needs improvements and checks to prevent lock-up and out-of-bounds reads/writes
 template<size_t disp_width, size_t disp_height>
 char SSD1306<disp_width, disp_height>::writeChar(char ch, FontDef Font, SSD1306_color color) {
     uint32_t i, b, j;
@@ -348,14 +349,14 @@ char SSD1306<disp_width, disp_height>::writeChar(char ch, FontDef Font, SSD1306_
         return 0;
     }
 
-    if(ch < 0x20){
-        ch = '?';
+    if((ch < Font.codeOffset) || (ch > Font.codeMax)){
+        ch = '?'; // replace unsupported character with '?' (assumes Font supports code 0x3F)
     }
 
-    // Translate font to screenbuffer
+    // Translate font to screen buffer
     for (i = 0; i < Font.FontHeight; i++)
     {
-        b = Font.data[(ch - 32) * Font.FontHeight + i];
+        b = Font.data[(ch - Font.codeOffset) * Font.FontHeight + i];
         for (j = 0; j < Font.FontWidth; j++)
         {
             if ((b << j) & 0x8000)
@@ -376,6 +377,7 @@ char SSD1306<disp_width, disp_height>::writeChar(char ch, FontDef Font, SSD1306_
     return ch;
 }
 
+// copy-pasted code, TODO: needs improvements and checks to prevent lock-up and out-of-bounds reads/writes
 template<size_t disp_width, size_t disp_height>
 char * SSD1306<disp_width, disp_height>::writeString(char *str, FontDef Font, SSD1306_color color) {
     // Write until null-byte

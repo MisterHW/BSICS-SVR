@@ -6,9 +6,11 @@
 //
 //  Structure used to define fonts
 //
-typedef struct {
+typedef struct __attribute__((packed)) {
     const uint8_t FontWidth;    /* Font width in pixels */
-    uint8_t FontHeight;         /* Font height in pixels */
+    const uint8_t FontHeight;   /* Font height in pixels */
+    const uint8_t codeOffset;   /* character code of first glyph */
+    const uint8_t codeMax;      /* Highest valid code (assumes no gaps) */
     const uint16_t *data;       /* Pointer to data font data array */
 } FontDef;
 

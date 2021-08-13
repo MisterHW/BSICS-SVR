@@ -200,10 +200,7 @@ bool PeripheralDeviceGroup::writeChanges() {
     return res;
 }
 
-bool PeripheralDeviceGroup::updateDisplay() {
-    printf("\r\nGroup%d:\r\n   \tCH1\tCH2\tCH3\r\n", group_index);
-
-    // update OLED display
+void PeripheralDeviceGroup::draw_page_summary() {
     if(status_display.initialized){
         uint8_t ch_idx[3] = {2, 1, 0}; // normal display: CH3, CH2, CH1.
         if(status_display_rotated180){ // HS group needs 180° rotation and text in reversed order
@@ -213,29 +210,98 @@ bool PeripheralDeviceGroup::updateDisplay() {
 
         status_display.clearBuffer();
         status_display.setCursor(0, 0);
-        int n;
-        char s[20];
 
         // print line 0 : SPST config for all channels
-        n = sprintf(s, " 0x%02x  0x%02x  0x%02x",
+        char line[22];
+        sprintf(line, "CFG 0x%02X 0x%02X 0x%02X", // non-aligned " 0x%02X  0x%02X  0x%02X",
                     octal_spst_data[ch_idx[0]].prev,
                     octal_spst_data[ch_idx[1]].prev,
                     octal_spst_data[ch_idx[2]].prev );
-        status_display.writeString(s, Font_7x10, SSD1306_color::monochrome_white);
+        status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
 
-        // print line 1: VHI for all channels
-        //...
-
-        // print line 2: VLO for all channels
+        // print line 1
+        status_display.setCursor(0, (Font_7x10.FontHeight + 1) * 1 - 1);
+        strcpy(line, "VHI xx.x xx.x xx.x");
         // ...
+        status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
+        // print line 2
+        status_display.setCursor(0, (Font_7x10.FontHeight + 1) * 2 - 1);
+        strcpy(line, "VLO xx.x xx.x xx.x");
+        // ...
+        status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
 
-        // update display contents
-        status_display.configure_orientation( status_display_rotated180, status_display_rotated180 );
-        status_display.updateDisplay();
+
+    } else {
+        // success = false; // Uncomment to intepret missing display as failure to update.
+    }
+}
+
+void printBinary(char* buf, uint8_t val, uint8_t digits = 8){
+    buf += (digits - 1);
+    for(uint8_t i = 0; i < digits; i++){
+        *buf-- = '0' + (val & 0x01);
+        val >>= 1;
+    }
+}
+
+void PeripheralDeviceGroup::draw_page_channel_info() {
+    if(status_display.initialized){
+        uint8_t ch_idx[3] = {2, 1, 0}; // normal display: CH3, CH2, CH1.
+        if( status_display_rotated180 ){ // HS group: rotated 180° (upside-down, reverse order)
+            ch_idx[0] = 0;
+            ch_idx[2] = 2;
+        }
+
+        status_display.clearBuffer();
+
+        // print line 0
+        status_display.setCursor(0, 0);
+        char line[22];
+        sprintf( line, "CH%d hhhh-llll 0x%02X",
+                    ch_idx[display_page_index - 1] + 1,
+                    octal_spst_data[ch_idx[display_page_index - 1]].prev );
+        printBinary(&line[4],octal_spst_data[ch_idx[display_page_index - 1]].prev >> 4, 4);
+        printBinary(&line[9],octal_spst_data[ch_idx[display_page_index - 1]].prev     , 4);
+
+        status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
+
+        // print line 1
+        status_display.setCursor(0, (Font_7x10.FontHeight + 1) * 1 - 1);
+        strcpy(line, "VHI xx.xx T xxx.xC");
+        // ...
+        status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
+        // print line 2
+        status_display.setCursor(0, (Font_7x10.FontHeight + 1) * 2 - 1);
+        strcpy(line, "VLO -x.xx         ");
+        // ...
+        status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
+    } else {
+        // success = false; // Uncomment to intepret missing display as failure to update.
+    }
+}
+
+
+bool PeripheralDeviceGroup::updateDisplay() {
+    bool success = true;
+    printf("\r\nGroup%d:\r\n   \tCH1\tCH2\tCH3\r\n", group_index);
+
+    // draw display contents
+    switch( display_page_index ){
+        case 1:
+        case 2:
+        case 3:
+            draw_page_channel_info();
+            break;
+        default:
+            draw_page_summary();
     }
 
+    // update display contents
+    success &= status_display.configure_orientation( status_display_rotated180, status_display_rotated180 );
+    success &= status_display.updateDisplay();
+
     /// debug output via UART
-    printf("SW \t0x%02x\t0x%02x\t0x%02x\r\n",
+    printf("SW \t0x%02X\t0x%02X\t0x%02X\r\n",
            octal_spst_data[0].prev,
            octal_spst_data[1].prev,
            octal_spst_data[2].prev );
@@ -252,8 +318,10 @@ bool PeripheralDeviceGroup::updateDisplay() {
            (int)temp_sensor_data[1].T_mdegC,
            (int)temp_sensor_data[2].T_mdegC );
 
-    return true;
+    return success;
 }
+
+
 
 /* ---------------------------------------------------------------------------*/
 

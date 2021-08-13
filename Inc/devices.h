@@ -25,6 +25,9 @@ class PeripheralDeviceGroup {
 private:
     uint8_t refresh_phase = 0xFF; // ADC channel sequencer state (0xFF: before first conversion, then 0->1->0->1>...)
     static bool report(bool success, const char *s);
+
+    void draw_page_summary();
+    void draw_page_channel_info();
 public:
     struct {
         uint8_t gpo = 0;      // value to be sent to device (async mode)
@@ -61,6 +64,7 @@ public:
     SSD1306_128x32 status_display;
     bool status_display_rotated180 {false};
     char identifier_string[21] {};
+    uint8_t display_page_index {0};
     // 24CXX eeprom;
 
     // per-channel devices (CH1, CH2, CH3)
