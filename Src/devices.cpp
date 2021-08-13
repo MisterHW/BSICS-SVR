@@ -40,6 +40,21 @@ bool PeripheralDeviceGroup::init(I2C_HandleTypeDef* _hI2C, uint8_t index)
 bool PeripheralDeviceGroup::configureDefaults() {
     bool res = true;
 
+    // read EEPROM if present
+    // ...
+
+    // apply contents (identifier, calibration coefficients, ...)
+    // ...
+
+    //
+    if(status_display.initialized) {
+        // At first execution, buffer should be initialized with 0x00. Uncomment when configureDefaults() is used during later execution.
+        // status_display.clearBuffer();
+        status_display.writeString(identifier_string, Font_7x10,SSD1306_color::monochrome_white);
+        status_display.configure_orientation(status_display_rotated180, status_display_rotated180);
+        status_display.updateDisplay();
+    }
+
     octal_spst_data[0].value = ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4;
     octal_spst_data[1].value = ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4;
     octal_spst_data[2].value = ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4;
@@ -252,18 +267,26 @@ bool Devices_init( ) {
     bool res;
     printf("I2C1 :\r\n");
     res  = DeviceGroup[0].init(&hi2c1, 0);
-    DeviceGroup[0].status_display_rotated180 = false;
+
     printf("I2C2 :\r\n");
     res &= DeviceGroup[1].init(&hi2c2, 1);
-    DeviceGroup[0].status_display_rotated180 = true;
-    printf("\n");
     return res;
 };
 
 bool Devices_configure_defaults() {
+    // set group-specific defaults (general defaults are already initialized)
+    DeviceGroup[0].status_display_rotated180 = false;
+    strcpy(DeviceGroup[0].identifier_string, "BSiCS-DRV-2A  LO");
+    DeviceGroup[1].status_display_rotated180 = true;
+    strcpy(DeviceGroup[1].identifier_string, "BSiCS-DRV-2A  HI");
+
     bool res;
+    /* read and apply presets (identifier strings, calibration coefficients) from EEPROM if available,
+     * set-up peripherals with default configuration
+     */
     res  = DeviceGroup[0].configureDefaults( );
     res &= DeviceGroup[1].configureDefaults( );
+    printf("\n");
     return res;
 };
 

@@ -60,6 +60,7 @@ public:
     MP8862 dcdc_lo{};
     SSD1306_128x32 status_display;
     bool status_display_rotated180 {false};
+    char identifier_string[21] {};
     // 24CXX eeprom;
 
     // per-channel devices (CH1, CH2, CH3)
