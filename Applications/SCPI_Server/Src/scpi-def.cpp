@@ -187,7 +187,7 @@ static scpi_result_t BSICS_SetChannelDriverMux(scpi_t * context) {
     scpi_number_t param0;
     if (!SCPI_ParamNumber(context, scpi_special_numbers_def, &param0, TRUE)
         || (param0.unit != SCPI_UNIT_NONE)
-        || (param0.content.value < 0) || (param0.content.value >= 0xFF) )
+        || (param0.content.value < 0) || (param0.content.value > 0xFF) )
     { return SCPI_RES_ERR; }
 
     DeviceGroup[commandNumber[0]].octal_spst_data[commandNumber[1]-1].value = (uint8_t) param0.content.value;

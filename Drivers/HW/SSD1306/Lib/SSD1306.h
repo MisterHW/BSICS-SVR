@@ -121,6 +121,7 @@ enum SSD1306_color {
 
 enum SSD1306_copy_mode {
     SSD1306_CM_NORMAL,          // pixels get copied as they are
+//    SSD1306_CM_INVERTED,        // pixels get copied as their inverse color
     SSD1306_CM_COMPOSITE_COLOR, // pixel is set to a color, bitmap acts as mask
 //    SSD1306_CM_COMPOSITE_XOR,   // pixels are inverted, bitmap acts as mask
 };
