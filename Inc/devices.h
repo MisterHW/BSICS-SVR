@@ -26,6 +26,7 @@ private:
     uint8_t refresh_phase = 0xFF; // ADC channel sequencer state (0xFF: before first conversion, then 0->1->0->1>...)
     static bool report(bool success, const char *s);
 
+    void draw_start_screen();
     void draw_page_summary();
     void draw_page_channel_info();
 public:

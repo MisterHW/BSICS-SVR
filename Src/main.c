@@ -1,5 +1,3 @@
-#include <sys/types.h>
-#include <sys/cdefs.h>
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
@@ -60,7 +58,7 @@ UART_HandleTypeDef huart3;
 osThreadId defaultTaskHandle;
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-
+uint8_t peek_MX_LWIP_Init = 0;
 
 /* USER CODE END PV */
 
@@ -71,8 +69,7 @@ static void MX_GPIO_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2C2_Init(void);
-
-_Noreturn void StartDefaultTask(void const * argument);
+void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -169,6 +166,9 @@ int main(void)
   HAL_UART_Transmit(&huart3, buf, 9, HAL_MAX_DELAY);
 
   Devices_init();
+  peek_MX_LWIP_Init = 1; // STM32CubeMX workaround: IPv4 address originates from MX_LWIP_Init() scope
+  MX_LWIP_Init();        // peek_MX_LWIP_Init != 0 ? return in USER CODE BEGIN IP_ADDRESSES
+  peek_MX_LWIP_Init = 0; // restore MX_LWIP_Init() to normal
   Devices_configure_defaults();
   /* USER CODE END 2 */
 

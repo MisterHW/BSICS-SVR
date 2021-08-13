@@ -27,7 +27,6 @@
 #include "ethernetif.h"
 
 /* USER CODE BEGIN 0 */
-
 /* USER CODE END 0 */
 /* Private function prototypes -----------------------------------------------*/
 /* ETH Variables initialization ----------------------------------------------*/
@@ -51,7 +50,7 @@ uint8_t NETMASK_ADDRESS[4];
 uint8_t GATEWAY_ADDRESS[4];
 
 /* USER CODE BEGIN 2 */
-
+extern uint8_t peek_MX_LWIP_Init;
 /* USER CODE END 2 */
 
 /**
@@ -74,6 +73,9 @@ void MX_LWIP_Init(void)
   GATEWAY_ADDRESS[3] = 1;
 
 /* USER CODE BEGIN IP_ADDRESSES */
+    if (peek_MX_LWIP_Init != 0){
+        return;
+    }
 /* USER CODE END IP_ADDRESSES */
 
   /* Initilialize the LwIP stack with RTOS */

@@ -1,4 +1,6 @@
 #include "devices.h"
+#include "scpi_server.h"
+#include "main.h"
 
 #include "stdio.h"
 #include "stm32f7xx_hal.h"
@@ -6,6 +8,7 @@
 /* ---------------------------------------------------------------------------*/
 
 extern UART_HandleTypeDef huart3;
+extern uint8_t IP_ADDRESS[4];
 
 bool PeripheralDeviceGroup::init(I2C_HandleTypeDef* _hI2C, uint8_t index)
 {
@@ -46,14 +49,7 @@ bool PeripheralDeviceGroup::configureDefaults() {
     // apply contents (identifier, calibration coefficients, ...)
     // ...
 
-    //
-    if(status_display.initialized) {
-        // At first execution, buffer should be initialized with 0x00. Uncomment when configureDefaults() is used during later execution.
-        // status_display.clearBuffer();
-        status_display.writeString(identifier_string, Font_7x10,SSD1306_color::monochrome_white);
-        status_display.configure_orientation(status_display_rotated180, status_display_rotated180);
-        status_display.updateDisplay();
-    }
+    draw_start_screen();
 
     octal_spst_data[0].value = ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4;
     octal_spst_data[1].value = ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4;
@@ -200,6 +196,31 @@ bool PeripheralDeviceGroup::writeChanges() {
     return res;
 }
 
+void PeripheralDeviceGroup::draw_start_screen() {
+    if(status_display.initialized) {
+        char line[22];
+        // At first execution, buffer should be initialized with 0x00. Uncomment when configureDefaults() is used during later execution.
+        // status_display.clearBuffer();
+
+        // line 0
+        status_display.setCursor( 0,0 );
+        status_display.writeString(identifier_string, Font_7x10,SSD1306_color::monochrome_white);
+        // line 1
+        // IPv4 address IP_ADDRESS[4] is set in MX_LWIP_Init() with long execution time
+        sprintf(line, "IP %d.%d.%d.%d", IP_ADDRESS[0], IP_ADDRESS[1], IP_ADDRESS[2], IP_ADDRESS[3] );
+        status_display.setCursor( 0, (Font_7x10.FontHeight + 1) * 1 - 1 );
+        status_display.writeString(line, Font_7x10,SSD1306_color::monochrome_white);
+        // line 2
+        sprintf(line, "   :%d SCPI-RAW", SCPI_DEVICE_PORT );
+        status_display.setCursor( 0, (Font_7x10.FontHeight + 1) *  2 - 1 );
+        status_display.writeString(line, Font_7x10,SSD1306_color::monochrome_white);
+
+        status_display.configure_orientation(status_display_rotated180, status_display_rotated180);
+        status_display.updateDisplay();
+    }
+}
+
+
 void PeripheralDeviceGroup::draw_page_summary() {
     if(status_display.initialized){
         uint8_t ch_idx[3] = {2, 1, 0}; // normal display: CH3, CH2, CH1.
@@ -320,8 +341,6 @@ bool PeripheralDeviceGroup::updateDisplay() {
 
     return success;
 }
-
-
 
 /* ---------------------------------------------------------------------------*/
 
