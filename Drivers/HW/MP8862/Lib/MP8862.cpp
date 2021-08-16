@@ -7,7 +7,7 @@
 bool MP8862::init(I2C_HandleTypeDef *_hI2C, MP8862_address addr) {
     hI2C = _hI2C;
     deviceAddress = addr;
-    initialized = isReady();
+    initialized   = isReady();
     return initialized;
 }
 
@@ -39,9 +39,28 @@ bool MP8862::read(MP8862_register reg, uint8_t *data, uint8_t len ) {
     return HAL_OK == HAL_I2C_Mem_Read( hI2C, deviceAddress << 1, reg, 1, data, len, 5 );
 }
 
-bool MP8862::hardwarePowerUp(bool (*callback_set_enable_pin)(uint8_t)) {
-    // TODO: implement time-cirtical power-up sequence
-    return false;
+bool MP8862::hardwarePowerUp(bool (*callback_set_enable_pin)(uint8_t), MP8862_retry_count trials) {
+    if(*callback_set_enable_pin == nullptr){
+        return false;
+    }
+    uint8_t reg_default_off = MP8862_CTL1_DEFAULT_OUTPUT_OFF;
+    bool success = false;
+    // set hardware EN = HI (starts time-critical power-up)
+    callback_set_enable_pin(1);
+    // Keep trying to get ACK, then immediately proceed to set CTL1.
+    for(uint8_t i = 0; i < trials; i++){
+       if(success = HAL_I2C_Mem_Write(hI2C, deviceAddress << 1, MP8862_REG_CTL1, 1, &reg_default_off, 1, 1);){
+           break;
+       }
+    }
+
+    if( not success ){
+        callback_set_enable_pin(0);
+        return false;
+    } else {
+        // leave hardware_EN on, output is off via soft_EN in CTL1 and responds to I2C commands.
+        return true;
+    }
 }
 
 bool MP8862::setEnable(bool soft_EN) {
@@ -64,7 +83,7 @@ bool MP8862::readCurrentLimit_mA(uint16_t &current_mA) {
     bool success;
     uint8_t tmp;
     success = read( MP8862_REG_IOUT_LIM , &tmp, 1 );
-    current_mA = tmp * 50; // scale by 50 mA / LSB
+    current_mA = (tmp & 0x7F) * 50; // scale by 50 mA / LSB
     return success;
 }
 
@@ -72,11 +91,12 @@ bool MP8862::setVoltageSetpoint_mV(uint16_t voltage_mV) {
     if(voltage_mV > 20480){ // highest permitted value producing int part 2047
         voltage_mV = 20480; // 20.47 V max (VOUT = 2047)
     }
-    uint8_t tmp[2];
+    uint8_t tmp[3];
     uint32_t voltage_raw = (voltage_mV * 819 + (5 * 819)) >> 13; // * 0.1 (~ 819/8192)
-    tmp[0] = voltage_raw & 0x07; // VOUT_L value
-    tmp[1] = (voltage_raw >> 3) & 0xFF; // VOUT_H value
-    return write( MP8862_REG_VOUT_L , tmp, 2 );
+    tmp[0] = voltage_raw & 0x07;                 // VOUT_L value = voltage_raw[ 2:0]
+    tmp[1] = (voltage_raw >> 3) & 0xFF;          // VOUT_H value = voltage_raw[10:3]
+    tmp[2] = MP8862_GO_BIT | MP8862_PG_DELAY_EN; // Apply VOUT changes by setting the GO bit right after updating VOUT.
+    return write( MP8862_REG_VOUT_L , tmp, 3 );
 }
 
 bool MP8862::readVoltageSetpoint_mV(uint16_t &voltage_mV) {

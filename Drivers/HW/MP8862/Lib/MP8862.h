@@ -23,13 +23,15 @@ enum MP8862_REG_VOUT_GO_bits {
 };
 
 enum MP8862_REG_CTL1_bits {
-    MP8862_FREQ_00_500kHz = 0x0 << 2, // switching frequency (default)
+    MP8862_FREQ_00_500kHz   = 0x0 << 2, // switching frequency (default)
     // MP8862_FREQ bits 01, 10, 11 : reserved
-    MP8862_MODE           = 1 << 4 , // switching mode: 0: Enables auto PFM/PWM mode, 1: Sets forced PWM mode (default)
-    MP8862_DISCH_EN       = 1 << 5 , // 1: Output discharge function during EN or VIN shutdown (default)
-    MP8862_HICCUP_OCP_OVP = 1 << 6 , // Over-current and over-voltage protection mode: 0: Latch-off, 1: Hiccup (default)
-    MP8862_EN             = 1 << 7 , // I2C on/off control (EN is high, the EN bit takes over), soft EN : I2C register does not reset,
+    MP8862_MODE             = 1 << 4 , // switching mode: 0: Enables auto PFM/PWM mode, 1: Sets forced PWM mode (default)
+    MP8862_DISCH_EN         = 1 << 5 , // 1: Output discharge function during EN or VIN shutdown (default)
+    MP8862_HICCUP_OCP_OVP   = 1 << 6 , // Over-current and over-voltage protection mode: 0: Latch-off, 1: Hiccup (default)
+    MP8862_EN               = 1 << 7 , // I2C on/off control (EN is high, the EN bit takes over), soft EN : I2C register does not reset,
                                      // HW EN: reset to defaults, delay to reset depending on DISCH_EN. )
+    MP8862_CTL1_DEFAULT_OUTPUT_OFF = 0x70,
+    MP8862_CTL1_DEFAULT_OUTPUT_ON  = 0xF0,
 };
 
 enum MP8862_REG_CTL2_bits {
@@ -42,6 +44,7 @@ enum MP8862_REG_CTL2_bits {
     MP8862_LINE_COMP_01_2A_100mV = 0x1 << 6 ,
     MP8862_LINE_COMP_10_2A_200mV = 0x2 << 6 ,
     MP8862_LINE_COMP_11_2A_400mV = 0x3 << 6 ,
+
 };
 
 enum MP8862_REG_STATUS_bits {
@@ -107,6 +110,22 @@ enum MP8862_register {
 };
 
 
+/* Approximate number of isDeviceReady() attempts after hardware EN _/  before output rises above 2.5V (assume 150 µs).
+ * If unsuccessful (NACK), hardware EN needs to be disabled again immediately.
+ */
+enum MP8862_retry_count {
+    /* time-critical power-up not supported on 100 kHz I2C -
+     * at least 3 Bytes (DEVICE ADDR, REG ADDR, REG VALUE) need to be transferred within 150 µs.
+     * If needed, an attempt can be made to delay by 50 .. 80µs, then start CTL1 write. If NACK, hardware EN needs
+     * to be disabled as a Microcontroller GPIO, I2C GPIO expanders are not acceptable in this case.
+     */
+    MP8862_RETRY_I2C_400kHz  =  4, // ~25µs per byte: 150µs - 3 * 25µs leaves times for addtional 3 failed attempts.
+                                   // If unsuccessful, the remaining 2 bytes transferred go e.g. to a GPIO expander update.
+    MP8862_RETRY_I2C_1000kHz = 13, // ~ 10µs per byte
+    MP8862_RETRY_I2C_3400kHz = 48, // ~  3µs per byte
+};
+
+
 class MP8862 {
     I2C_HandleTypeDef* hI2C {nullptr};
     MP8862_address deviceAddress{};
@@ -118,7 +137,7 @@ public:
     bool write( MP8862_register reg, uint8_t *data, uint8_t len );
     bool read ( MP8862_register reg, uint8_t *data, uint8_t len );
 
-    bool hardwarePowerUp( bool (*callback_set_enable_pin)(uint8_t hardware_EN) ); // time-critical power-up sequence
+    bool hardwarePowerUp(bool (*callback_set_enable_pin)(uint8_t), MP8862_retry_count trials); // time-critical power-up sequence
     bool setEnable ( bool soft_EN ); // soft_EN when hardware_EN is on
 
     bool setCurrentLimit_mA  ( uint16_t  current_mA );
