@@ -49,9 +49,10 @@ bool MP8862::hardwarePowerUp(bool (*callback_set_enable_pin)(uint8_t), MP8862_re
     callback_set_enable_pin(1);
     // Keep trying to get ACK, then immediately proceed to set CTL1.
     for(uint8_t i = 0; i < trials; i++){
-       if(success = HAL_I2C_Mem_Write(hI2C, deviceAddress << 1, MP8862_REG_CTL1, 1, &reg_default_off, 1, 1);){
+        success = HAL_I2C_Mem_Write(hI2C, deviceAddress << 1, MP8862_REG_CTL1, 1, &reg_default_off, 1, 1);
+        if( success ){
            break;
-       }
+        }
     }
 
     if( not success ){
