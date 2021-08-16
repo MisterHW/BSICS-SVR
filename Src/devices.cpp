@@ -368,9 +368,9 @@ bool Devices_configure_defaults() {
     strcpy(DeviceGroup[1].identifier_string, "BSiCS-DRV-2A  HI");
 
     bool res;
-    /* read and apply presets (identifier strings, calibration coefficients) from EEPROM if available,
-     * set-up peripherals with default configuration
-     */
+    // TODO: read and apply presets (identifier strings, calibration coefficients) from EEPROM if available
+
+    // set-up peripherals with default configuration
     res  = DeviceGroup[0].configureDefaults( );
     res &= DeviceGroup[1].configureDefaults( );
     printf("\n");

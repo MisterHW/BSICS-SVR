@@ -64,8 +64,8 @@ public:
 
     bool init(I2C_HandleTypeDef *_hI2C, PCA953x_address addr);
     bool isReady( );
-    bool write(PCA953x_register reg, uint8_t *data, unsigned int len );
-    bool read(PCA953x_register reg, uint8_t *data, unsigned int len );
+    bool write( PCA953x_register reg, uint8_t *data, unsigned int len );
+    bool read ( PCA953x_register reg, uint8_t *data, unsigned int len );
 
     bool writeRegister( PCA953x_register reg, uint8_t value ) {
         return write( reg, &value, 1);
@@ -98,7 +98,7 @@ bool PCA953x<PCA953x_address, PCA953x_register>::isReady( ) {
 template<typename PCA953x_address, typename PCA953x_register>
 bool PCA953x<PCA953x_address, PCA953x_register>::write(PCA953x_register reg, uint8_t *data, unsigned int len ) {
     // S
-    // deviceAddress << 1 | 0 : ACK : ADDR : ACK
+    // deviceAddress << 1 | 0 : ACK : REG_ADDR : ACK
     // BYTE0 : ACK [ : BYTE1 : ACK [ : ... ]]
     // P
     return HAL_OK == HAL_I2C_Mem_Write( hI2C, deviceAddress << 1, reg, 1, data, len, 5 );
@@ -107,7 +107,7 @@ bool PCA953x<PCA953x_address, PCA953x_register>::write(PCA953x_register reg, uin
 template<typename PCA953x_address, typename PCA953x_register>
 bool PCA953x<PCA953x_address, PCA953x_register>::read(PCA953x_register reg, uint8_t *data, unsigned int len ) {
     // S
-    // deviceAddress << 1 | 0 : ACK : ADDR : ACK
+    // deviceAddress << 1 | 0 : ACK : REG_ADDR : ACK
     // S
     // deviceAddress << 1 | 1 : ACK : BYTE0 : ACK [ : BYTE1 : ACK [ : ... ]]
     // P
