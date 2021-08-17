@@ -93,6 +93,29 @@ int __io_putchar(int ch)
     HAL_UART_Transmit(&huart3, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
     return ch;
 }
+
+// Run the first part of MX_LWIP_Init() to set up IP_ADDRESS, NETMASK_ADDRESS and GATEWAY_ADDRESS only, then return.
+void MX_LWIP_Init_Addresses(){
+    // requires private variable
+    // uint8_t peek_MX_LWIP_Init = 0;
+    //
+    // also requires lwip.c insertions:
+    //
+    // /* USER CODE BEGIN 2 */
+    // extern uint8_t peek_MX_LWIP_Init;
+    // /* USER CODE END 2 */
+    //
+    // /* USER CODE BEGIN IP_ADDRESSES */
+    // if (peek_MX_LWIP_Init != 0){
+    //     return;
+    // }
+    // /* USER CODE END IP_ADDRESSES */
+    //
+    peek_MX_LWIP_Init = 1; // STM32CubeMX workaround: IPv4 address originates from MX_LWIP_Init() scope
+    MX_LWIP_Init();        // peek_MX_LWIP_Init != 0 ? return in USER CODE BEGIN IP_ADDRESSES
+    peek_MX_LWIP_Init = 0; // restore MX_LWIP_Init() to normal
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -165,11 +188,13 @@ int main(void)
   char buf[] = "UART OK\r\n";
   HAL_UART_Transmit(&huart3, buf, 9, HAL_MAX_DELAY);
 
-  Devices_init();
-  peek_MX_LWIP_Init = 1; // STM32CubeMX workaround: IPv4 address originates from MX_LWIP_Init() scope
-  MX_LWIP_Init();        // peek_MX_LWIP_Init != 0 ? return in USER CODE BEGIN IP_ADDRESSES
-  peek_MX_LWIP_Init = 0; // restore MX_LWIP_Init() to normal
-  Devices_configure_defaults();
+  // stage 0
+  Devices_init_0();
+  Devices_configure_defaults_0();
+  // stage 1
+  Devices_init_1();
+  MX_LWIP_Init_Addresses();
+  Devices_configure_defaults_1();
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
