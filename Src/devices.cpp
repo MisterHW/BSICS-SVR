@@ -10,7 +10,47 @@
 extern UART_HandleTypeDef huart3;
 extern uint8_t IP_ADDRESS[4];
 
-bool PeripheralDeviceGroup::init(I2C_HandleTypeDef* _hI2C, uint8_t index)
+#define DCDC_ID(group_idx, device_idx) (((group_idx) << 8) | ((device_idx) & 0xFF))
+#define DCDC_ID_TO_GROUP(ID)  ((ID) >> 8)
+#define DCDC_ID_TO_DEVICE(ID) ((ID) & 0xFF)
+enum dcdc_device_idx {
+    DCDC_DEVICE_HI = 0,
+    DCDC_DEVICE_LO = 1
+};
+
+bool dcdc_hw_EN(uint16_t ID, uint8_t state){
+    uint8_t gidx = DCDC_ID_TO_GROUP(ID);
+    uint8_t gpio_bit_val;
+    uint8_t gpio_bit_mask;
+
+    switch(DCDC_ID_TO_DEVICE(ID)){
+        case DCDC_DEVICE_HI:
+            gpio_bit_val  = state == 0 ? 0 : GPIO_EXP_0_DC_EN1_HI ;
+            gpio_bit_mask = ~GPIO_EXP_0_DC_EN1_HI;
+            break;
+        case DCDC_DEVICE_LO:
+            gpio_bit_val  = state == 0 ? 0 : GPIO_EXP_1_DC_EN2_LO ;
+            gpio_bit_mask = ~GPIO_EXP_1_DC_EN2_LO;
+            break;
+        default:
+            return false; // Invalid device index.
+    }
+
+    if(DeviceGroup[gidx].gpio_exp.initialized){
+        bool success = DeviceGroup[gidx].gpio_exp.writeRegister(
+                PCA9536_PORT0_OUTPUT,
+                (DeviceGroup[gidx].gpio_exp_data.gpo & gpio_bit_mask) | gpio_bit_val
+        );
+        if(success){
+            DeviceGroup[gidx].gpio_exp_data.prev_gpo = DeviceGroup[gidx].gpio_exp_data.gpo;
+        }
+        return success;
+    }
+    return false;
+}
+
+// initializatoin stage 0: primary-side devices
+bool PeripheralDeviceGroup::init_0(I2C_HandleTypeDef* _hI2C, uint8_t index)
 {
     bool res = true;
 
@@ -18,6 +58,50 @@ bool PeripheralDeviceGroup::init(I2C_HandleTypeDef* _hI2C, uint8_t index)
     group_index = index;
 
     res &= report(gpio_exp.init(hI2C, PCA9536_ADDR_0x41) , "0x41 PCA9536" );
+
+    // Set up MP8862 class instances, result may be false if device is in power-down.
+    dcdc_hi.init(hI2C, MP8862_ADDR_0x6D);
+    dcdc_lo.init(hI2C, MP8862_ADDR_0x6F);
+
+    res &= report(status_display.init(hI2C, SSD1306_ADDR_0x3C, false, false), "0x3C SSD1306" );
+
+    initialized = res;
+    return res;
+}
+
+// configuration stage 0: primary-side devices, DCDC power-up
+bool PeripheralDeviceGroup::configureDefaults_0() {
+    bool res = true;
+
+    gpio_exp_data.gpo      = 0x0;
+    gpio_exp_data.prev_gpo = 0x0;
+    res &= gpio_exp.writeRegister( PCA9536_PORT0_OUTPUT   , 0x0 ); // all outputs will be LOW
+    res &= gpio_exp.writeRegister( PCA9536_PORT0_DIRECTION, PCA9536::REG_VALUE_SET_AS_OUTPUTS(GPIO_EXP_0_DC_EN1_HI | GPIO_EXP_1_DC_EN2_LO) );
+
+    if( dcdc_hi.hardwarePowerUp( dcdc_hw_EN , DCDC_ID(group_index, DCDC_DEVICE_HI) , MP8862_RETRY_I2C_400kHz ) ) {
+        dcdc_hi.setVoltageSetpoint_mV(2600);
+        dcdc_hi.write(MP8862_REG_CTL1, MP8862_CTL1_DEFAULT_OUTPUT_ON);
+    } else {
+        res = false;
+    }
+
+    if( dcdc_lo.hardwarePowerUp( dcdc_hw_EN , DCDC_ID(group_index, DCDC_DEVICE_LO) , MP8862_RETRY_I2C_400kHz ) ) {
+        dcdc_lo.setVoltageSetpoint_mV(2400);
+        dcdc_lo.write(MP8862_REG_CTL1, MP8862_CTL1_DEFAULT_OUTPUT_ON);
+    } else {
+        res = false;
+    }
+
+    return res;
+}
+
+/* initialization stage 1: re-init DCDC class instances, initialize secondary-side devices
+ * Secondary-side devices are now guaranteed to be supplied with power (either externally or via DCDCs.
+ * If DCDC initialization failed, devices won't show up (see debug output reported via UART).
+ */
+bool PeripheralDeviceGroup::init_1()
+{
+    bool res = true;
 
     res &= report( dcdc_hi.init(hI2C, MP8862_ADDR_0x6D), "0x6D HI MP8862" );
     res &= report( dcdc_lo.init(hI2C, MP8862_ADDR_0x6F), "0x6F LO MP8862" );
@@ -34,13 +118,12 @@ bool PeripheralDeviceGroup::init(I2C_HandleTypeDef* _hI2C, uint8_t index)
     res &= report( adc[1].init(hI2C, MCP342x_ADDR_0x6A) , "0x6A CH2 MCP3423" );
     res &= report( adc[2].init(hI2C, MCP342x_ADDR_0x6E) , "0x6E CH3 MCP3423" );
 
-    res &= report(status_display.init(hI2C, SSD1306_ADDR_0x3C, false, false), "0x3C SSD1306" );
-
     initialized = res;
     return res;
 }
 
-bool PeripheralDeviceGroup::configureDefaults() {
+// configuration stage 1: secondary-side devices
+bool PeripheralDeviceGroup::configureDefaults_1() {
     bool res = true;
 
     // read EEPROM if present
@@ -61,8 +144,6 @@ bool PeripheralDeviceGroup::configureDefaults() {
     res &= octal_spst[0].writeSwitchStates( octal_spst_data[0].value );
     res &= octal_spst[1].writeSwitchStates( octal_spst_data[1].value );
     res &= octal_spst[2].writeSwitchStates( octal_spst_data[2].value );
-
-    res &= gpio_exp.writeRegister( PCA9536_PORT0_DIRECTION, PCA9536::REG_VALUE_SET_AS_INPUTS(0xF) );
 
     res &= temp_sensor[0].writeReg16(MCP9808_REG16_config, MP9808_CFG_default);
     res &= temp_sensor[1].writeReg16(MCP9808_REG16_config, MP9808_CFG_default);
@@ -199,7 +280,7 @@ bool PeripheralDeviceGroup::writeChanges() {
 void PeripheralDeviceGroup::draw_start_screen() {
     if(status_display.initialized) {
         char line[22];
-        // At first execution, buffer should be initialized with 0x00. Uncomment when configureDefaults() is used during later execution.
+        // At first execution, buffer should be initialized with 0x00. Uncomment when configureDefaults_1() is used during later execution.
         // status_display.clearBuffer();
 
         // line 0
@@ -350,32 +431,49 @@ extern I2C_HandleTypeDef hi2c2;
 PeripheralDeviceGroup DeviceGroup[DeviceGroupCount];
 uint8_t DeviceGroupIndex = 0;
 
-bool Devices_init( ) {
+bool Devices_init_0( ) {
     bool res;
     printf("I2C1 :\r\n");
-    res  = DeviceGroup[0].init(&hi2c1, 0);
-
+    res  = DeviceGroup[0].init_0(&hi2c1, 0);
     printf("I2C2 :\r\n");
-    res &= DeviceGroup[1].init(&hi2c2, 1);
+    res &= DeviceGroup[1].init_0(&hi2c2, 1);
     return res;
 };
 
-bool Devices_configure_defaults() {
+bool Devices_configure_defaults_0() {
+    bool res;
+    res  = DeviceGroup[0].configureDefaults_0();
+    res &= DeviceGroup[1].configureDefaults_0();
+    printf("\n");
+    return res;
+}
+
+bool Devices_init_1( ) {
+    bool res;
+    printf("I2C1 :\r\n");
+    res  = DeviceGroup[0].init_1();
+    printf("I2C2 :\r\n");
+    res &= DeviceGroup[1].init_1();
+    return res;
+};
+
+bool Devices_configure_defaults_1() {
+    bool res;
     // set group-specific defaults (general defaults are already initialized)
     DeviceGroup[0].status_display_rotated180 = false;
     strcpy(DeviceGroup[0].identifier_string, "BSiCS-DRV-2A  LO");
     DeviceGroup[1].status_display_rotated180 = true;
     strcpy(DeviceGroup[1].identifier_string, "BSiCS-DRV-2A  HI");
 
-    bool res;
-    // TODO: read and apply presets (identifier strings, calibration coefficients) from EEPROM if available
+    // TODO: read and apply presets from EEPROM if available (identifier strings, calibration coefficients)
 
     // set-up peripherals with default configuration
-    res  = DeviceGroup[0].configureDefaults( );
-    res &= DeviceGroup[1].configureDefaults( );
+    res  = DeviceGroup[0].configureDefaults_1();
+    res &= DeviceGroup[1].configureDefaults_1();
     printf("\n");
     return res;
 };
+
 
 bool Devices_refresh(bool read_slow_conversion_results) {
     bool res;

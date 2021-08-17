@@ -21,6 +21,13 @@
 #include "MP8862.h"
 #include "SSD1306.h"
 
+enum gpio_exp_bits {
+    GPIO_EXP_0_DC_EN1_HI = 1 << 0 ,
+    GPIO_EXP_1_DC_EN2_LO = 1 << 1 ,
+    GPIO_EXP_2_DC_ALTN   = 1 << 2 ,
+    GPIO_EXP_3_RDY       = 1 << 3 ,
+};
+
 class PeripheralDeviceGroup {
 private:
     uint8_t refresh_phase = 0xFF; // ADC channel sequencer state (0xFF: before first conversion, then 0->1->0->1>...)
@@ -79,9 +86,14 @@ public:
     I2C_HandleTypeDef* hI2C {nullptr};
 
     // device group methods
-    bool init(I2C_HandleTypeDef* _hI2C, uint8_t index = 0);
 
-    bool configureDefaults( );
+    // stage 0
+    bool init_0(I2C_HandleTypeDef* _hI2C, uint8_t index = 0);
+    bool configureDefaults_0( );
+    // stage 1
+    bool init_1();
+    bool configureDefaults_1( );
+
     bool readConversionResults( );
     bool writeChanges( );
     bool updateDisplay( );
@@ -102,8 +114,12 @@ extern "C" {
 #include <stdbool.h>
 #endif
 
-bool Devices_init( );
-bool Devices_configure_defaults();
+bool Devices_init_0();
+bool Devices_configure_defaults_0();
+
+bool Devices_init_1();
+bool Devices_configure_defaults_1();
+
 bool Devices_refresh(bool read_slow_conversion_results);
 
 #ifdef __cplusplus
