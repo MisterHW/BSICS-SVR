@@ -8,6 +8,7 @@ bool MP8862::init(I2C_HandleTypeDef *_hI2C, MP8862_address addr) {
     hI2C = _hI2C;
     deviceAddress = addr;
     initialized   = isReady();
+    VOUT_soft_limit_mV = 5500;
     return initialized;
 }
 
@@ -25,6 +26,11 @@ bool MP8862::write(MP8862_register reg, uint8_t *data, uint8_t len ) {
     return HAL_OK == HAL_I2C_Mem_Write( hI2C, deviceAddress << 1, reg, 1, data, len, 5 );
 }
 
+bool MP8862::write(MP8862_register reg, uint8_t value) {
+    return write( reg, &value, 1 );
+}
+
+
 
 bool MP8862::read(MP8862_register reg, uint8_t *data, uint8_t len ) {
     // S
@@ -39,16 +45,15 @@ bool MP8862::read(MP8862_register reg, uint8_t *data, uint8_t len ) {
     return HAL_OK == HAL_I2C_Mem_Read( hI2C, deviceAddress << 1, reg, 1, data, len, 5 );
 }
 
-bool MP8862::hardwarePowerUp(bool (*callback_set_enable_pin)(uint8_t), MP8862_retry_count trials) {
+bool MP8862::hardwarePowerUp(bool (*callback_set_enable_pin)(uint16_t ID, uint8_t state), uint16_t ID, MP8862_retry_count trials) {
     if(*callback_set_enable_pin == nullptr){
         return false;
     }
     uint8_t reg_default_off = MP8862_CTL1_DEFAULT_OUTPUT_OFF;
     bool success = false;
-    // set hardware EN = HI (starts time-critical power-up)
-    callback_set_enable_pin(1);
-    // Keep trying to get ACK, then immediately proceed to set CTL1.
-    for(uint8_t i = 0; i < trials; i++){
+
+    callback_set_enable_pin( ID , 1 ); // set hardware EN = HI (starts time-critical power-up)
+    for(uint8_t i = 0; i < trials; i++){ // Keep trying to get ACK, then immediately proceed to set CTL1.
         success = HAL_I2C_Mem_Write(hI2C, deviceAddress << 1, MP8862_REG_CTL1, 1, &reg_default_off, 1, 1);
         if( success ){
            break;
@@ -56,10 +61,16 @@ bool MP8862::hardwarePowerUp(bool (*callback_set_enable_pin)(uint8_t), MP8862_re
     }
 
     if( not success ){
-        callback_set_enable_pin(0);
+        callback_set_enable_pin( ID , 0 );
         return false;
     } else {
-        // leave hardware_EN on, output is off via soft_EN in CTL1 and responds to I2C commands.
+        /* Leave hardware_EN on, output is off via soft_EN in CTL1 and responds to I2C commands.
+         * Usage:
+         * if( MP8862_inst.hardwarePowerUp( MP8862_set_EN, MP8862_RETRY_I2C_400kHz ) ) {
+         *   MP8862_inst.setVoltageSetpoint_mV( <new setpoint> );
+         *   MP8862_inst.write( MP8862_REG_CTL1 , MP8862_CTL1_DEFAULT_OUTPUT_ON );
+         * }
+         */
         return true;
     }
 }
@@ -89,7 +100,10 @@ bool MP8862::readCurrentLimit_mA(uint16_t &current_mA) {
 }
 
 bool MP8862::setVoltageSetpoint_mV(uint16_t voltage_mV) {
-    if(voltage_mV > 20480){ // highest permitted value producing int part 2047
+    if( voltage_mV  > VOUT_soft_limit_mV ){
+        return false;
+    }
+    if( voltage_mV > 20480 ){ // highest permitted value producing int part 2047
         voltage_mV = 20480; // 20.47 V max (VOUT = 2047)
     }
     uint8_t tmp[3];

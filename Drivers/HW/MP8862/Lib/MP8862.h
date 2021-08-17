@@ -131,13 +131,15 @@ class MP8862 {
     MP8862_address deviceAddress{};
 public:
     bool initialized {false};
+    uint16_t VOUT_soft_limit_mV {}; // Prevent setVoltageSetpoint_mV() from setting values exceeding this limit.
 
     bool init(I2C_HandleTypeDef *_hI2C, MP8862_address addr);
     bool isReady( );
     bool write( MP8862_register reg, uint8_t *data, uint8_t len );
     bool read ( MP8862_register reg, uint8_t *data, uint8_t len );
+    bool write( MP8862_register reg, uint8_t value );
 
-    bool hardwarePowerUp(bool (*callback_set_enable_pin)(uint8_t), MP8862_retry_count trials); // time-critical power-up sequence
+    bool hardwarePowerUp(bool (*callback_set_enable_pin)(uint16_t ID, uint8_t state), uint16_t ID, MP8862_retry_count trials); // time-critical power-up sequence
     bool setEnable ( bool soft_EN ); // soft_EN when hardware_EN is on
 
     bool setCurrentLimit_mA  ( uint16_t  current_mA );
