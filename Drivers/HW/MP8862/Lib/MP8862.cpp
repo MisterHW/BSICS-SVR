@@ -54,7 +54,7 @@ bool MP8862::hardwarePowerUp(bool (*callback_set_enable_pin)(uint16_t ID, uint8_
 
     callback_set_enable_pin( ID , 1 ); // set hardware EN = HI (starts time-critical power-up)
     for(uint8_t i = 0; i < trials; i++){ // Keep trying to get ACK, then immediately proceed to set CTL1.
-        success = HAL_I2C_Mem_Write(hI2C, deviceAddress << 1, MP8862_REG_CTL1, 1, &reg_default_off, 1, 1);
+        success = HAL_OK == HAL_I2C_Mem_Write(hI2C, deviceAddress << 1, MP8862_REG_CTL1, 1, &reg_default_off, 1, 1);
         if( success ){
            break;
         }
@@ -120,4 +120,10 @@ bool MP8862::readVoltageSetpoint_mV(uint16_t &voltage_mV) {
     success = read( MP8862_REG_VOUT_L , tmp, 2 );
     voltage_mV = (tmp[1] << 3 | (tmp[0] & 0x07)) * 10; // scale by 10 mV / LSB
     return success;
+}
+
+bool MP8862::readPG() {
+    uint8_t SR;
+    bool success = read(MP8862_REG_STATUS, &SR, 1);
+    return success && ((SR & MP8862_STATUS_PG) != 0);
 }

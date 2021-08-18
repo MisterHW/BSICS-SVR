@@ -146,7 +146,7 @@ public:
     bool readCurrentLimit_mA ( uint16_t& current_mA );
     bool setVoltageSetpoint_mV  ( uint16_t  voltage_mV );
     bool readVoltageSetpoint_mV ( uint16_t& voltage_mV );
-
+    bool readPG();
 };
 
 
