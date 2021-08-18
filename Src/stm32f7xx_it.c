@@ -116,7 +116,7 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
-    printf("\n\nHardFault_Handler called.\n");
+    printf("\r\n\r\nHardFault_Handler called.\r\n");
     /* See PM0253 and SCB registers https://developer.arm.com/documentation/dui0646/a/CIHFDJCA .
      * HFSR 0xE000ED2C : HardFault Status Register (dword access)
      */
@@ -134,14 +134,14 @@ void HardFault_Handler(void)
 void MemManage_Handler(void)
 {
   /* USER CODE BEGIN MemoryManagement_IRQn 0 */
-    printf("\n\nMemManage_Handler called.\n");
+    printf("\r\n\r\nMemManage_Handler called.\r\n");
     /* See PM0253 and SCB registers https://developer.arm.com/documentation/dui0646/a/CIHFDJCA .
      * MMFSR 0xE000ED28 : MemManage Fault Status register (byte access)
      * MMFAR 0xE000ED34 : MemManage Fault Address Register (dword access)
      * cy_stc_fault_cfsr_t sr = SCB->CFSR;
      */
-    printf("MMFSR : 0x%2x\n", SCB->CFSR & 0xFF);
-    printf("MMFAR : 0x%8x\n", SCB->MMFAR);
+    printf("MMFSR : 0x%2x\r\n", SCB->CFSR & 0xFF);
+    printf("MMFAR : 0x%8x\r\n", SCB->MMFAR);
 
   /* USER CODE END MemoryManagement_IRQn 0 */
   while (1)
@@ -157,13 +157,13 @@ void MemManage_Handler(void)
 void BusFault_Handler(void)
 {
   /* USER CODE BEGIN BusFault_IRQn 0 */
-    printf("\n\nBusFault_Handler called.\n");
+    printf("\r\n\r\nBusFault_Handler called.\r\n");
     /* See PM0253 and SCB registers https://developer.arm.com/documentation/dui0646/a/CIHFDJCA .
      * BFSR 0xE000ED29 : Bus Fault Status register (byte access)
      * BFAR 0xE000ED38 : BusFault Address Register
      */
-    printf("BFSR : 0x%2x\n", (SCB->CFSR >> 8) & 0xFF);
-    printf("BFAR : 0x%8x\n", SCB->BFAR);
+    printf("BFSR : 0x%2x\r\n", (SCB->CFSR >> 8) & 0xFF);
+    printf("BFAR : 0x%8x\r\n", SCB->BFAR);
   /* USER CODE END BusFault_IRQn 0 */
   while (1)
   {
@@ -178,11 +178,11 @@ void BusFault_Handler(void)
 void UsageFault_Handler(void)
 {
   /* USER CODE BEGIN UsageFault_IRQn 0 */
-    printf("\n\nUsageFault_Handler called.\n");
+    printf("\r\n\r\nUsageFault_Handler called.\r\n");
     /* See PM0253 and SCB registers https://developer.arm.com/documentation/dui0646/a/CIHFDJCA .
      * UFSR 0xE000ED2A : UsageFault Status Register (word access)
      */
-    printf("UFSR : 0x%4x\n", (SCB->CFSR >> 16) & 0xFFFF);
+    printf("UFSR : 0x%4x\r\n", (SCB->CFSR >> 16) & 0xFFFF);
   /* USER CODE END UsageFault_IRQn 0 */
   while (1)
   {
