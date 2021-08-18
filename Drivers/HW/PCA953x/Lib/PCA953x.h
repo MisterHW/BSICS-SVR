@@ -74,10 +74,10 @@ public:
         return read( reg, &value, 1 );
     }
 
-    static inline uint8_t REG_VALUE_SET_AS_OUTPUTS ( uint8_t mask, uint8_t previous_dir = 0 )  {
+    static inline uint8_t REG_VALUE_SET_AS_INPUTS ( uint8_t mask, uint8_t previous_dir = 0 )  {
         return previous_dir | mask;
     }
-    static inline uint8_t REG_VALUE_SET_AS_INPUTS ( uint8_t mask, uint8_t previous_dir = 0xFF )  {
+    static inline uint8_t REG_VALUE_SET_AS_OUTPUTS ( uint8_t mask, uint8_t previous_dir = 0xFF )  {
         return previous_dir & ~mask;
     }
 };
