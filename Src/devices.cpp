@@ -37,10 +37,10 @@ bool dcdc_hw_EN(uint16_t ID, uint8_t state){
     }
 
     if(DeviceGroup[gidx].gpio_exp.initialized){
+        DeviceGroup[gidx].gpio_exp_data.gpo = (DeviceGroup[gidx].gpio_exp_data.gpo & gpio_bit_mask) | gpio_bit_val;
         bool success = DeviceGroup[gidx].gpio_exp.writeRegister(
                 PCA9536_PORT0_OUTPUT,
-                (DeviceGroup[gidx].gpio_exp_data.gpo & gpio_bit_mask) | gpio_bit_val
-        );
+                DeviceGroup[gidx].gpio_exp_data.gpo );
         if(success){
             DeviceGroup[gidx].gpio_exp_data.prev_gpo = DeviceGroup[gidx].gpio_exp_data.gpo;
         }
@@ -71,26 +71,45 @@ bool PeripheralDeviceGroup::init_0(I2C_HandleTypeDef* _hI2C, uint8_t index)
 
 // configuration stage 0: primary-side devices, DCDC power-up
 bool PeripheralDeviceGroup::configureDefaults_0() {
-    bool res = true;
+    bool res = true, success;
+
+    // read and apply identifier string if EEPROM  present
+    draw_start_screen();
 
     gpio_exp_data.gpo      = 0x0;
     gpio_exp_data.prev_gpo = 0x0;
     res &= gpio_exp.writeRegister( PCA9536_PORT0_OUTPUT   , 0x0 ); // all outputs will be LOW
     res &= gpio_exp.writeRegister( PCA9536_PORT0_DIRECTION, PCA9536::REG_VALUE_SET_AS_OUTPUTS(GPIO_EXP_0_DC_EN1_HI | GPIO_EXP_1_DC_EN2_LO) );
 
-    if( dcdc_hi.hardwarePowerUp( dcdc_hw_EN , DCDC_ID(group_index, DCDC_DEVICE_HI) , MP8862_RETRY_I2C_400kHz ) ) {
-        dcdc_hi.setVoltageSetpoint_mV(2600);
+    success = dcdc_hi.hardwarePowerUp( dcdc_hw_EN , DCDC_ID(group_index, DCDC_DEVICE_HI) , MP8862_RETRY_I2C_400kHz );
+    if( success ) {
+        dcdc_hi.setVoltageSetpoint_mV(3900);
         dcdc_hi.write(MP8862_REG_CTL1, MP8862_CTL1_DEFAULT_OUTPUT_ON);
+        for(int i = 0; i < 250000 / 50; i++){ // timeout ~ 250 ms (assume readPG takes 50µs at 400 kHz I2C clock - adjust when changing bus speed)
+            if(dcdc_hi.readPG()){
+                break;
+            }
+        }
+        success &= dcdc_hi.readPG();
     } else {
         res = false;
     }
+    report(success, "Power-Up : 0x6D HI MP8862");
 
-    if( dcdc_lo.hardwarePowerUp( dcdc_hw_EN , DCDC_ID(group_index, DCDC_DEVICE_LO) , MP8862_RETRY_I2C_400kHz ) ) {
-        dcdc_lo.setVoltageSetpoint_mV(2400);
+    success = dcdc_lo.hardwarePowerUp( dcdc_hw_EN , DCDC_ID(group_index, DCDC_DEVICE_LO) , MP8862_RETRY_I2C_400kHz );
+    if( success ) {
+        dcdc_lo.setVoltageSetpoint_mV(2700);
         dcdc_lo.write(MP8862_REG_CTL1, MP8862_CTL1_DEFAULT_OUTPUT_ON);
+        for(int i = 0; i < 250000 / 50; i++){ // timeout ~ 250 ms (assume readPG takes 50µs at 400 kHz I2C clock - adjust when changing bus speed)
+            if(dcdc_lo.readPG()){
+                break;
+            }
+        }
+        success &= dcdc_lo.readPG();
     } else {
         res = false;
     }
+    report(success, "Power-Up : 0x6F LO MP8862");
 
     return res;
 }
@@ -126,13 +145,8 @@ bool PeripheralDeviceGroup::init_1()
 bool PeripheralDeviceGroup::configureDefaults_1() {
     bool res = true;
 
-    // read EEPROM if present
+    // apply contents (calibration coefficients, ...)
     // ...
-
-    // apply contents (identifier, calibration coefficients, ...)
-    // ...
-
-    draw_start_screen();
 
     octal_spst_data[0].value = ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4;
     octal_spst_data[1].value = ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4;
@@ -346,81 +360,83 @@ void printBinary(char* buf, uint8_t val, uint8_t digits = 8){
     }
 }
 
+
+
 void PeripheralDeviceGroup::draw_page_channel_info() {
-    if(status_display.initialized){
-        uint8_t ch_idx[3] = {2, 1, 0}; // normal display: CH3, CH2, CH1.
-        if( status_display_rotated180 ){ // HS group: rotated 180° (upside-down, reverse order)
-            ch_idx[0] = 0;
-            ch_idx[2] = 2;
-        }
-
-        status_display.clearBuffer();
-
-        // print line 0
-        status_display.setCursor(0, 0);
-        char line[22];
-        sprintf( line, "CH%d hhhh-llll 0x%02X",
-                    ch_idx[display_page_index - 1] + 1,
-                    octal_spst_data[ch_idx[display_page_index - 1]].prev );
-        printBinary(&line[4],octal_spst_data[ch_idx[display_page_index - 1]].prev >> 4, 4);
-        printBinary(&line[9],octal_spst_data[ch_idx[display_page_index - 1]].prev     , 4);
-
-        status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
-
-        // print line 1
-        status_display.setCursor(0, (Font_7x10.FontHeight + 1) * 1 - 1);
-        strcpy(line, "VHI xx.xx T xxx.xC");
-        // ...
-        status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
-        // print line 2
-        status_display.setCursor(0, (Font_7x10.FontHeight + 1) * 2 - 1);
-        strcpy(line, "VLO -x.xx         ");
-        // ...
-        status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
-    } else {
-        // success = false; // Uncomment to intepret missing display as failure to update.
+if(status_display.initialized){
+    uint8_t ch_idx[3] = {2, 1, 0}; // normal display: CH3, CH2, CH1.
+    if( status_display_rotated180 ){ // HS group: rotated 180° (upside-down, reverse order)
+        ch_idx[0] = 0;
+        ch_idx[2] = 2;
     }
+
+    status_display.clearBuffer();
+
+    // print line 0
+    status_display.setCursor(0, 0);
+    char line[22];
+    sprintf( line, "CH%d hhhh-llll 0x%02X",
+                ch_idx[display_page_index - 1] + 1,
+                octal_spst_data[ch_idx[display_page_index - 1]].prev );
+    printBinary(&line[4],octal_spst_data[ch_idx[display_page_index - 1]].prev >> 4, 4);
+    printBinary(&line[9],octal_spst_data[ch_idx[display_page_index - 1]].prev     , 4);
+
+    status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
+
+    // print line 1
+    status_display.setCursor(0, (Font_7x10.FontHeight + 1) * 1 - 1);
+    strcpy(line, "VHI xx.xx T xxx.xC");
+    // ...
+    status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
+    // print line 2
+    status_display.setCursor(0, (Font_7x10.FontHeight + 1) * 2 - 1);
+    strcpy(line, "VLO -x.xx         ");
+    // ...
+    status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
+} else {
+    // success = false; // Uncomment to intepret missing display as failure to update.
+}
 }
 
 
 bool PeripheralDeviceGroup::updateDisplay() {
-    bool success = true;
-    printf("\r\nGroup%d:\r\n   \tCH1\tCH2\tCH3\r\n", group_index);
+bool success = true;
+printf("\r\nGroup%d:\r\n   \tCH1\tCH2\tCH3\r\n", group_index);
 
-    // draw display contents
-    switch( display_page_index ){
-        case 1:
-        case 2:
-        case 3:
-            draw_page_channel_info();
-            break;
-        default:
-            draw_page_summary();
-    }
+// draw display contents
+switch( display_page_index ){
+    case 1:
+    case 2:
+    case 3:
+        draw_page_channel_info();
+        break;
+    default:
+        draw_page_summary();
+}
 
-    // update display contents
-    success &= status_display.configure_orientation( status_display_rotated180, status_display_rotated180 );
-    success &= status_display.updateDisplay();
+// update display contents
+success &= status_display.configure_orientation( status_display_rotated180, status_display_rotated180 );
+success &= status_display.updateDisplay();
 
-    /// debug output via UART
-    printf("SW \t0x%02X\t0x%02X\t0x%02X\r\n",
-           octal_spst_data[0].prev,
-           octal_spst_data[1].prev,
-           octal_spst_data[2].prev );
-    printf("HI \t%d\t%d\t%d\r\n",
-           (int)adc_data[0].device_voltages_mV[1],
-           (int)adc_data[1].device_voltages_mV[1],
-           (int)adc_data[2].device_voltages_mV[1] );
-    printf("LO \t%d\t%d\t%d\r\n",
-           (int)adc_data[0].device_voltages_mV[0],
-           (int)adc_data[1].device_voltages_mV[0],
-           (int)adc_data[2].device_voltages_mV[0] );
-    printf("T  \t%d\t%d\t%d\r\n",
-           (int)temp_sensor_data[0].T_mdegC,
-           (int)temp_sensor_data[1].T_mdegC,
-           (int)temp_sensor_data[2].T_mdegC );
+/// debug output via UART
+printf("SW \t0x%02X\t0x%02X\t0x%02X\r\n",
+       octal_spst_data[0].prev,
+       octal_spst_data[1].prev,
+       octal_spst_data[2].prev );
+printf("HI \t%d\t%d\t%d\r\n",
+       (int)adc_data[0].device_voltages_mV[1],
+       (int)adc_data[1].device_voltages_mV[1],
+       (int)adc_data[2].device_voltages_mV[1] );
+printf("LO \t%d\t%d\t%d\r\n",
+       (int)adc_data[0].device_voltages_mV[0],
+       (int)adc_data[1].device_voltages_mV[0],
+       (int)adc_data[2].device_voltages_mV[0] );
+printf("T  \t%d\t%d\t%d\r\n",
+       (int)temp_sensor_data[0].T_mdegC,
+       (int)temp_sensor_data[1].T_mdegC,
+       (int)temp_sensor_data[2].T_mdegC );
 
-    return success;
+return success;
 }
 
 /* ---------------------------------------------------------------------------*/
@@ -433,16 +449,23 @@ uint8_t DeviceGroupIndex = 0;
 
 bool Devices_init_0( ) {
     bool res;
-    printf("I2C1 :\r\n");
+    printf("INIT0 I2C1 :\r\n");
     res  = DeviceGroup[0].init_0(&hi2c1, 0);
-    printf("I2C2 :\r\n");
+    printf("INIT0 I2C2 :\r\n");
     res &= DeviceGroup[1].init_0(&hi2c2, 1);
     return res;
 };
 
 bool Devices_configure_defaults_0() {
     bool res;
+    // set group-specific defaults (general defaults are already initialized)
+    printf("CONF0 I2C1 :\r\n");
+    DeviceGroup[0].status_display_rotated180 = false;
+    strcpy(DeviceGroup[0].identifier_string, "BSiCS-DRV-2A  LS");
     res  = DeviceGroup[0].configureDefaults_0();
+    printf("CONF0 I2C2 :\r\n");
+    DeviceGroup[1].status_display_rotated180 = true;
+    strcpy(DeviceGroup[1].identifier_string, "BSiCS-DRV-2A  HS");
     res &= DeviceGroup[1].configureDefaults_0();
     printf("\n");
     return res;
@@ -450,21 +473,15 @@ bool Devices_configure_defaults_0() {
 
 bool Devices_init_1( ) {
     bool res;
-    printf("I2C1 :\r\n");
+    printf("INIT1 I2C1 :\r\n");
     res  = DeviceGroup[0].init_1();
-    printf("I2C2 :\r\n");
+    printf("INIT1 I2C2 :\r\n");
     res &= DeviceGroup[1].init_1();
     return res;
 };
 
 bool Devices_configure_defaults_1() {
     bool res;
-    // set group-specific defaults (general defaults are already initialized)
-    DeviceGroup[0].status_display_rotated180 = false;
-    strcpy(DeviceGroup[0].identifier_string, "BSiCS-DRV-2A  LO");
-    DeviceGroup[1].status_display_rotated180 = true;
-    strcpy(DeviceGroup[1].identifier_string, "BSiCS-DRV-2A  HI");
-
     // TODO: read and apply presets from EEPROM if available (identifier strings, calibration coefficients)
 
     // set-up peripherals with default configuration

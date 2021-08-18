@@ -185,6 +185,8 @@ int main(void)
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
 
+  MX_LWIP_Init_Addresses();
+
   char buf[] = "UART OK\r\n";
   HAL_UART_Transmit(&huart3, buf, 9, HAL_MAX_DELAY);
 
@@ -193,7 +195,6 @@ int main(void)
   Devices_configure_defaults_0();
   // stage 1
   Devices_init_1();
-  MX_LWIP_Init_Addresses();
   Devices_configure_defaults_1();
   /* USER CODE END 2 */
 
