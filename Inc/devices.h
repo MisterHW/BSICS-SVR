@@ -65,6 +65,16 @@ public:
         int32_t T_mdegC = 0;
     } temp_sensor_data[3];
 
+    typedef struct dcdc_data {
+        uint16_t VOUT_mV;
+        uint16_t VOUT_prev_mV;
+        MP8862_REG_CTL1_bits CTL1;
+        MP8862_REG_CTL1_bits CTL1_prev;
+        uint16_t fault_counter;
+    };
+    dcdc_data dcdc_hi_data { 3900 , 3900 , MP8862_CTL1_DEFAULT_OUTPUT_ON , MP8862_CTL1_DEFAULT_OUTPUT_ON};
+    dcdc_data dcdc_lo_data { 2700 , 2700 , MP8862_CTL1_DEFAULT_OUTPUT_ON , MP8862_CTL1_DEFAULT_OUTPUT_ON};
+
     // common devices
     PCA9536 gpio_exp{};
     MP8862 dcdc_hi{};

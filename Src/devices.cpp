@@ -83,8 +83,8 @@ bool PeripheralDeviceGroup::configureDefaults_0() {
 
     success = dcdc_hi.hardwarePowerUp( dcdc_hw_EN , DCDC_ID(group_index, DCDC_DEVICE_HI) , MP8862_RETRY_I2C_400kHz );
     if( success ) {
-        dcdc_hi.setVoltageSetpoint_mV(3900);
-        dcdc_hi.write(MP8862_REG_CTL1, MP8862_CTL1_DEFAULT_OUTPUT_ON);
+        dcdc_hi.setVoltageSetpoint_mV(dcdc_hi_data.VOUT_mV);
+        dcdc_hi.write(MP8862_REG_CTL1, dcdc_hi_data.CTL1);
         for(int i = 0; i < 250000 / 50; i++){ // timeout ~ 250 ms (assume readPG takes 50µs at 400 kHz I2C clock - adjust when changing bus speed)
             if(dcdc_hi.readPG()){
                 break;
@@ -98,8 +98,8 @@ bool PeripheralDeviceGroup::configureDefaults_0() {
 
     success = dcdc_lo.hardwarePowerUp( dcdc_hw_EN , DCDC_ID(group_index, DCDC_DEVICE_LO) , MP8862_RETRY_I2C_400kHz );
     if( success ) {
-        dcdc_lo.setVoltageSetpoint_mV(2700);
-        dcdc_lo.write(MP8862_REG_CTL1, MP8862_CTL1_DEFAULT_OUTPUT_ON);
+        dcdc_lo.setVoltageSetpoint_mV(dcdc_lo_data.VOUT_mV);
+        dcdc_lo.write(MP8862_REG_CTL1, dcdc_lo_data.CTL1);
         for(int i = 0; i < 250000 / 50; i++){ // timeout ~ 250 ms (assume readPG takes 50µs at 400 kHz I2C clock - adjust when changing bus speed)
             if(dcdc_lo.readPG()){
                 break;
@@ -266,7 +266,7 @@ bool PeripheralDeviceGroup::writeChanges() {
     bool res = true;
 
     // readConversionResults common devices
-    if(gpio_exp.initialized && (gpio_exp_data.gpo != gpio_exp_data.prev_gpo)){
+    if(gpio_exp.initialized && (gpio_exp_data.prev_gpo != gpio_exp_data.gpo)){
         if(gpio_exp.writeRegister(PCA9536_PORT0_OUTPUT, gpio_exp_data.gpo)){
             gpio_exp_data.prev_gpo = gpio_exp_data.gpo;
             res &= gpio_exp.readRegister(PCA9536_PORT0_INPUT, gpio_exp_data.gpi);
@@ -278,7 +278,7 @@ bool PeripheralDeviceGroup::writeChanges() {
 
     for(int i = 0; i < 3; i++) {
         // update SPSTs
-        if (octal_spst[i].initialized && (octal_spst_data[i].value != octal_spst_data[i].prev)) {
+        if (octal_spst[i].initialized && (octal_spst_data[i].prev != octal_spst_data[i].value)) {
             if (octal_spst[i].writeSwitchStates((ADG715_switches) octal_spst_data[i].value)) {
                 octal_spst_data[i].prev = octal_spst_data[i].value;
             } else {
@@ -289,25 +289,74 @@ bool PeripheralDeviceGroup::writeChanges() {
     }
 
     if(dcdc_hi.initialized){
-        if(not dcdc_hi.isReady()){
-            // count down
-            // if device has not ACKed multiple times, set EN pin 0 and set dcdc_hi.initialized = false
-        } else {
-            // if counter dropped a bit, ensure voltage setpoints are still valid (brownout safety)
-            // re-initalize?
-            // reset counter
+        bool update_attempted  = false;
+        bool update_failed     = false;
+
+        if (dcdc_hi_data.VOUT_prev_mV != dcdc_hi_data.VOUT_mV) {
+            update_attempted = true;
+            if(dcdc_hi.setVoltageSetpoint_mV(dcdc_hi_data.VOUT_mV)){
+                dcdc_hi_data.VOUT_prev_mV  = dcdc_hi_data.VOUT_mV;
+            } else {
+                update_failed = true;
+            }
+        }
+
+        if (dcdc_hi_data.CTL1_prev != dcdc_hi_data.CTL1) {
+            update_attempted = true;
+            if(dcdc_hi.write(MP8862_REG_CTL1, dcdc_hi_data.CTL1)){
+                dcdc_hi_data.CTL1_prev = dcdc_hi_data.CTL1;
+            } else {
+                update_failed = true;
+            }
+        }
+
+        // Uncomment if() below to make periodic communication test mandatory.
+        if(not update_attempted){
+            update_attempted = true;
+            update_failed |= not dcdc_hi.isReady();
+        }
+
+        if(update_attempted && update_failed){
+            // Increment dcdc_hi_data.fault_counter.
+            // If dcdc_hi_data.fault_counter exceeds limit, there could have been a communication or brown-out problem.
+            // In this case, re-initialize gpio_exp and set all hardware EN pins to 0, set dcdc_hi.initialized = false.
         }
     }
+    
     if(dcdc_lo.initialized){
-        if(not dcdc_lo.isReady()){
-            //  count down
-            // if device has not ACKed multiple times, set EN pin 0 and set dcdc_lo.initialized = false
-        } else {
-            // if counter dropped a bit, ensure voltage setpoints are still valid (brownout safety)
-            // re-initalize?
-            // reset counter
+        bool update_attempted  = false;
+        bool update_failed     = false;
+
+        if (dcdc_lo_data.VOUT_prev_mV != dcdc_lo_data.VOUT_mV) {
+            update_attempted = true;
+            if(dcdc_lo.setVoltageSetpoint_mV(dcdc_lo_data.VOUT_mV)){
+                dcdc_lo_data.VOUT_prev_mV  = dcdc_lo_data.VOUT_mV;
+            } else {
+                update_failed = true;
+            }
         }
-    }
+
+        if (dcdc_lo_data.CTL1_prev != dcdc_lo_data.CTL1) {
+            update_attempted = true;
+            if(dcdc_lo.write(MP8862_REG_CTL1, dcdc_lo_data.CTL1)){
+                dcdc_lo_data.CTL1_prev = dcdc_lo_data.CTL1;
+            } else {
+                update_failed = true;
+            }
+        }
+
+        // Uncomment if() below to make periodic communication test mandatory.
+        if(not update_attempted){
+            update_attempted = true;
+            update_failed |= not dcdc_lo.isReady();
+        }
+
+        if(update_attempted && update_failed){
+            // Increment dcdc_lo_data.fault_counter.
+            // If dcdc_lo_data.fault_counter exceeds limit, there could have been a communication or brown-out problem.
+            // In this case, re-initialize gpio_exp and set all hardware EN pins to 0, set dcdc_lo.initialized = false.
+        }
+    }    
 
     return res;
 }
