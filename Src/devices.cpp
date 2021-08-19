@@ -288,6 +288,27 @@ bool PeripheralDeviceGroup::writeChanges() {
         }
     }
 
+    if(dcdc_hi.initialized){
+        if(not dcdc_hi.isReady()){
+            // count down
+            // if device has not ACKed multiple times, set EN pin 0 and set dcdc_hi.initialized = false
+        } else {
+            // if counter dropped a bit, ensure voltage setpoints are still valid (brownout safety)
+            // re-initalize?
+            // reset counter
+        }
+    }
+    if(dcdc_lo.initialized){
+        if(not dcdc_lo.isReady()){
+            //  count down
+            // if device has not ACKed multiple times, set EN pin 0 and set dcdc_lo.initialized = false
+        } else {
+            // if counter dropped a bit, ensure voltage setpoints are still valid (brownout safety)
+            // re-initalize?
+            // reset counter
+        }
+    }
+
     return res;
 }
 
@@ -315,6 +336,78 @@ void PeripheralDeviceGroup::draw_start_screen() {
     }
 }
 
+void printBinary(char* buf, uint8_t val, uint8_t digits = 8){
+    buf += (digits - 1);
+    for(uint8_t i = 0; i < digits; i++){
+        *buf-- = '0' + (val & 0x01);
+        val >>= 1;
+    }
+}
+
+#define max(A,B) ((A) > (B) ? (A) : (B))
+#define min(A,B) ((A) < (B) ? (A) : (B))
+
+void printDecimalFP(char* buf, int32_t val, uint8_t size,
+                    uint8_t max_decimal_places = 0 , uint8_t log10_denominator = 0 ){
+    /*
+     *  max_decp  log_denom    size 5            out      description
+     *                         |-----|         |-----|
+     *     1          0       -654321           -####     overflow
+     *     1          1        -65432.1         -####     overflow
+     *     1          2         -6543.21        -6543
+     *     1          3         -654.321         -654     orphaned decimal point
+     *     1          4         -65.4321        -65.4
+     *     1          5         -6.54321         -6.5     limited by max_decimal_places
+     *     1          6         -0.654321        -0.6     begin 0 padding
+     *     1          7         -0.0654321       -0.0     maximum 0 padding
+     */
+    bool neg = val < 0;
+    if(val < 0){
+        val = (int16_t)(-val);
+    }
+
+    char tmp[22];
+    int8_t n_total = sprintf(tmp, "%d", val); // digits before division, without sign
+    int8_t n_left  = n_total - log10_denominator; // absolute digits after division
+    int8_t n_left_printed  = (neg ? 1 : 0) + max( n_left , 1 ); // printed digits, at least leading zero if decimal places are printed
+
+    if(n_left_printed > size){ // handle overflow if signed number without decimal places cannot be printed
+        memset(buf + 1, '#', size - 1);
+        buf[0] = neg ? '-' : '+';
+        return;
+    }
+
+    bool leading_zero  = n_left <= 0;
+    bool decimal_point = ( size - n_left_printed >= 2 ) && ( max_decimal_places > 0 );
+
+    int8_t n_remaining        = size - n_left_printed - (decimal_point ? 1 : 0);
+    int8_t n_right_printed    = decimal_point ? min( n_remaining , max_decimal_places ) : 0 ;
+    int8_t n_left_whitespaces = n_remaining - n_right_printed;
+
+    for(int8_t i = 0; i < n_left_whitespaces ; i++){
+        *buf++ = ' ';
+    }
+    if(neg){
+        *buf++ = '-';
+    }
+    if(leading_zero){
+        *buf++ = '0';
+    } else {
+        for(int8_t i = 0; i < n_left ; i++){
+            *buf++ = tmp[i];
+        }
+    }
+    if(decimal_point){
+        *buf++ = '.';
+        for(int8_t i = n_left ; i < n_left + n_right_printed; i++){
+            if((i >= 0) && (i < n_total)){
+                *buf++ = tmp[i];
+            } else {
+                *buf++ = '0';
+            }
+        }
+    }
+}
 
 void PeripheralDeviceGroup::draw_page_summary() {
     if(status_display.initialized){
@@ -338,12 +431,16 @@ void PeripheralDeviceGroup::draw_page_summary() {
         // print line 1
         status_display.setCursor(0, (Font_7x10.FontHeight + 1) * 1 - 1);
         strcpy(line, "VHI xx.x xx.x xx.x");
-        // ...
+        printDecimalFP(&line[ 4], adc_data[ch_idx[0]].device_voltages_mV[1], 4, 1, 3);
+        printDecimalFP(&line[ 9], adc_data[ch_idx[1]].device_voltages_mV[1], 4, 1, 3);
+        printDecimalFP(&line[14], adc_data[ch_idx[2]].device_voltages_mV[1], 4, 1, 3);
         status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
         // print line 2
         status_display.setCursor(0, (Font_7x10.FontHeight + 1) * 2 - 1);
         strcpy(line, "VLO xx.x xx.x xx.x");
-        // ...
+        printDecimalFP(&line[ 4], adc_data[ch_idx[0]].device_voltages_mV[0], 4, 1, 3);
+        printDecimalFP(&line[ 9], adc_data[ch_idx[1]].device_voltages_mV[0], 4, 1, 3);
+        printDecimalFP(&line[14], adc_data[ch_idx[2]].device_voltages_mV[0], 4, 1, 3);
         status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
 
 
@@ -351,15 +448,6 @@ void PeripheralDeviceGroup::draw_page_summary() {
         // success = false; // Uncomment to intepret missing display as failure to update.
     }
 }
-
-void printBinary(char* buf, uint8_t val, uint8_t digits = 8){
-    buf += (digits - 1);
-    for(uint8_t i = 0; i < digits; i++){
-        *buf-- = '0' + (val & 0x01);
-        val >>= 1;
-    }
-}
-
 
 
 void PeripheralDeviceGroup::draw_page_channel_info() {
@@ -386,12 +474,13 @@ if(status_display.initialized){
     // print line 1
     status_display.setCursor(0, (Font_7x10.FontHeight + 1) * 1 - 1);
     strcpy(line, "VHI xx.xx T xxx.xC");
-    // ...
+    printDecimalFP(&line[ 4], adc_data[ch_idx[display_page_index - 1]].device_voltages_mV[1], 5, 2, 3);
+    printDecimalFP(&line[12], temp_sensor_data[ch_idx[display_page_index - 1]].T_mdegC, 5, 2, 3);
     status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
     // print line 2
     status_display.setCursor(0, (Font_7x10.FontHeight + 1) * 2 - 1);
     strcpy(line, "VLO -x.xx         ");
-    // ...
+    printDecimalFP(&line[ 4], adc_data[ch_idx[display_page_index - 1]].device_voltages_mV[0], 5, 2, 3);
     status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
 } else {
     // success = false; // Uncomment to intepret missing display as failure to update.
