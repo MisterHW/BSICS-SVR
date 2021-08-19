@@ -39,8 +39,8 @@ enum MP8862_REG_CTL2_bits {
     MP8862_SS_00_300us           = 0x0 << 4 , // output start-up soft-start timer
     MP8862_SS_01_500us           = 0x1 << 4 ,
     MP8862_SS_10_700us           = 0x2 << 4 ,
-    MP8862_SS_11_900us           = 0x3 << 4 ,
-    MP8862_LINE_COMP_00_OFF      = 0x0 << 6 , // output voltage compensation vs. load current
+    MP8862_SS_11_900us           = 0x3 << 4 , // (SS default 900 µs)
+    MP8862_LINE_COMP_00_OFF      = 0x0 << 6 , // output voltage compensation vs. load current (default OFF)
     MP8862_LINE_COMP_01_2A_100mV = 0x1 << 6 ,
     MP8862_LINE_COMP_10_2A_200mV = 0x2 << 6 ,
     MP8862_LINE_COMP_11_2A_400mV = 0x3 << 6 ,
