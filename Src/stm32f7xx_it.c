@@ -140,8 +140,8 @@ void MemManage_Handler(void)
      * MMFAR 0xE000ED34 : MemManage Fault Address Register (dword access)
      * cy_stc_fault_cfsr_t sr = SCB->CFSR;
      */
-    printf("MMFSR : 0x%2x\r\n", SCB->CFSR & 0xFF);
-    printf("MMFAR : 0x%8x\r\n", SCB->MMFAR);
+    printf("MMFSR : 0x%02x\r\n", SCB->CFSR & 0xFF);
+    printf("MMFAR : 0x%08x\r\n", SCB->MMFAR);
 
   /* USER CODE END MemoryManagement_IRQn 0 */
   while (1)
@@ -162,8 +162,8 @@ void BusFault_Handler(void)
      * BFSR 0xE000ED29 : Bus Fault Status register (byte access)
      * BFAR 0xE000ED38 : BusFault Address Register
      */
-    printf("BFSR : 0x%2x\r\n", (SCB->CFSR >> 8) & 0xFF);
-    printf("BFAR : 0x%8x\r\n", SCB->BFAR);
+    printf("BFSR : 0x%02x\r\n", (SCB->CFSR >> 8) & 0xFF);
+    printf("BFAR : 0x%08x\r\n", SCB->BFAR);
   /* USER CODE END BusFault_IRQn 0 */
   while (1)
   {
@@ -182,7 +182,7 @@ void UsageFault_Handler(void)
     /* See PM0253 and SCB registers https://developer.arm.com/documentation/dui0646/a/CIHFDJCA .
      * UFSR 0xE000ED2A : UsageFault Status Register (word access)
      */
-    printf("UFSR : 0x%4x\r\n", (SCB->CFSR >> 16) & 0xFFFF);
+    printf("UFSR : 0x%04x\r\n", (SCB->CFSR >> 16) & 0xFFFF);
   /* USER CODE END UsageFault_IRQn 0 */
   while (1)
   {

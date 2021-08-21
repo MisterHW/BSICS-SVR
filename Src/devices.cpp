@@ -13,10 +13,6 @@ extern uint8_t IP_ADDRESS[4];
 #define DCDC_ID(group_idx, device_idx) (((group_idx) << 8) | ((device_idx) & 0xFF))
 #define DCDC_ID_TO_GROUP(ID)  ((ID) >> 8)
 #define DCDC_ID_TO_DEVICE(ID) ((ID) & 0xFF)
-enum dcdc_device_idx {
-    DCDC_DEVICE_HI = 0,
-    DCDC_DEVICE_LO = 1
-};
 
 bool dcdc_hw_EN(uint16_t ID, uint8_t state){
     uint8_t gidx = DCDC_ID_TO_GROUP(ID);
@@ -24,11 +20,11 @@ bool dcdc_hw_EN(uint16_t ID, uint8_t state){
     uint8_t gpio_bit_mask;
 
     switch(DCDC_ID_TO_DEVICE(ID)){
-        case DCDC_DEVICE_HI:
+        case PeripheralDeviceGroup::dcdc_list_indices::dcdc_hi :
             gpio_bit_val  = state == 0 ? 0 : GPIO_EXP_0_DC_EN1_HI ;
             gpio_bit_mask = ~GPIO_EXP_0_DC_EN1_HI;
             break;
-        case DCDC_DEVICE_LO:
+        case PeripheralDeviceGroup::dcdc_list_indices::dcdc_lo:
             gpio_bit_val  = state == 0 ? 0 : GPIO_EXP_1_DC_EN2_LO ;
             gpio_bit_mask = ~GPIO_EXP_1_DC_EN2_LO;
             break;
@@ -60,8 +56,8 @@ bool PeripheralDeviceGroup::init_0(I2C_HandleTypeDef* _hI2C, uint8_t index)
     res &= report(gpio_exp.init(hI2C, PCA9536_ADDR_0x41) , "0x41 PCA9536" );
 
     // Set up MP8862 class instances, result may be false if device is in power-down.
-    dcdc_hi.init(hI2C, MP8862_ADDR_0x6D);
-    dcdc_lo.init(hI2C, MP8862_ADDR_0x6F);
+    dcdc[dcdc_hi].init(hI2C, MP8862_ADDR_0x6D);
+    dcdc[dcdc_lo].init(hI2C, MP8862_ADDR_0x6F);
 
     res &= report(status_display.init(hI2C, SSD1306_ADDR_0x3C, false, false), "0x3C SSD1306" );
 
@@ -81,35 +77,28 @@ bool PeripheralDeviceGroup::configureDefaults_0() {
     res &= gpio_exp.writeRegister( PCA9536_PORT0_OUTPUT   , 0x0 ); // all outputs will be LOW
     res &= gpio_exp.writeRegister( PCA9536_PORT0_DIRECTION, PCA9536::REG_VALUE_SET_AS_OUTPUTS(GPIO_EXP_0_DC_EN1_HI | GPIO_EXP_1_DC_EN2_LO) );
 
-    success = dcdc_hi.hardwarePowerUp( dcdc_hw_EN , DCDC_ID(group_index, DCDC_DEVICE_HI) , MP8862_RETRY_I2C_400kHz );
-    if( success ) {
-        dcdc_hi.setVoltageSetpoint_mV(dcdc_hi_data.VOUT_mV);
-        dcdc_hi.write(MP8862_REG_CTL1, dcdc_hi_data.CTL1);
-        for(int i = 0; i < 250000 / 50; i++){ // timeout ~ 250 ms (assume readPG takes 50µs at 400 kHz I2C clock - adjust when changing bus speed)
-            if(dcdc_hi.readPG()){
-                break;
+    for(int i = 0; i < n_dcdcs; i++){
+        success = dcdc[i].hardwarePowerUp( dcdc_hw_EN , DCDC_ID(group_index, i) , MP8862_RETRY_I2C_400kHz );
+        if( success ) {
+            dcdc[i].setVoltageSetpoint_mV(dcdc_data[i].VOUT_mV);
+            dcdc[i].write(MP8862_REG_CTL1, dcdc_data[i].CTL1);
+            for(int t = 0; i < 250000 / 50; t++){ // timeout ~ 250 ms (assume readPG takes 50µs at 400 kHz I2C clock - adjust when changing bus speed)
+                if(dcdc[i].readPG()){
+                    break;
+                }
             }
+            success &= dcdc[i].readPG();
+        } else {
+            res = false;
         }
-        success &= dcdc_hi.readPG();
-    } else {
-        res = false;
-    }
-    report(success, "Power-Up : 0x6D HI MP8862");
 
-    success = dcdc_lo.hardwarePowerUp( dcdc_hw_EN , DCDC_ID(group_index, DCDC_DEVICE_LO) , MP8862_RETRY_I2C_400kHz );
-    if( success ) {
-        dcdc_lo.setVoltageSetpoint_mV(dcdc_lo_data.VOUT_mV);
-        dcdc_lo.write(MP8862_REG_CTL1, dcdc_lo_data.CTL1);
-        for(int i = 0; i < 250000 / 50; i++){ // timeout ~ 250 ms (assume readPG takes 50µs at 400 kHz I2C clock - adjust when changing bus speed)
-            if(dcdc_lo.readPG()){
-                break;
-            }
+        switch(i){
+            case dcdc_list_indices::dcdc_hi : report(success, "Power-Up : 0x6D HI MP8862"); break;
+            case dcdc_list_indices::dcdc_lo : report(success, "Power-Up : 0x6F LO MP8862"); break;
+            default:;
         }
-        success &= dcdc_lo.readPG();
-    } else {
-        res = false;
+
     }
-    report(success, "Power-Up : 0x6F LO MP8862");
 
     return res;
 }
@@ -122,8 +111,8 @@ bool PeripheralDeviceGroup::init_1()
 {
     bool res = true;
 
-    res &= report( dcdc_hi.init(hI2C, MP8862_ADDR_0x6D), "0x6D HI MP8862" );
-    res &= report( dcdc_lo.init(hI2C, MP8862_ADDR_0x6F), "0x6F LO MP8862" );
+    res &= report( dcdc[dcdc_hi].init(hI2C, MP8862_ADDR_0x6D), "0x6D HI MP8862" );
+    res &= report( dcdc[dcdc_lo].init(hI2C, MP8862_ADDR_0x6F), "0x6F LO MP8862" );
 
     res &= report( octal_spst[0].init(hI2C, ADG715_ADDR_0x49) , "0x49 CH1 ADG715" );
     res &= report( octal_spst[1].init(hI2C, ADG715_ADDR_0x4A) , "0x4A CH2 ADG715" );
@@ -288,73 +277,41 @@ bool PeripheralDeviceGroup::writeChanges() {
         }
     }
 
-    if(dcdc_hi.initialized){
-        bool update_attempted  = false;
-        bool update_failed     = false;
+    for(int i = 0; i < PeripheralDeviceGroup::n_dcdcs; i++) {
+        if (dcdc[i].initialized) {
 
-        if (dcdc_hi_data.VOUT_prev_mV != dcdc_hi_data.VOUT_mV) {
-            update_attempted = true;
-            if(dcdc_hi.setVoltageSetpoint_mV(dcdc_hi_data.VOUT_mV)){
-                dcdc_hi_data.VOUT_prev_mV  = dcdc_hi_data.VOUT_mV;
-            } else {
-                update_failed = true;
+            bool update_attempted = false;
+            bool update_failed    = false;
+
+            if (dcdc_data[i].VOUT_prev_mV != dcdc_data[i].VOUT_mV) {
+                update_attempted = true;
+                if (dcdc[i].setVoltageSetpoint_mV(dcdc_data[i].VOUT_mV)) {
+                    dcdc_data[i].VOUT_prev_mV = dcdc_data[i].VOUT_mV;
+                } else {
+                    update_failed = true;
+                }
             }
-        }
 
-        if (dcdc_hi_data.CTL1_prev != dcdc_hi_data.CTL1) {
-            update_attempted = true;
-            if(dcdc_hi.write(MP8862_REG_CTL1, dcdc_hi_data.CTL1)){
-                dcdc_hi_data.CTL1_prev = dcdc_hi_data.CTL1;
-            } else {
-                update_failed = true;
+            if (dcdc_data[i].CTL1_prev != dcdc_data[i].CTL1) {
+                update_attempted = true;
+                if (dcdc[i].write(MP8862_REG_CTL1, dcdc_data[i].CTL1)) {
+                    dcdc_data[i].CTL1_prev = dcdc_data[i].CTL1;
+                } else {
+                    update_failed = true;
+                }
             }
-        }
 
-        // Uncomment if() below to make periodic communication test mandatory.
-        if(not update_attempted){
-            update_attempted = true;
-            update_failed |= not dcdc_hi.isReady();
-        }
-
-        if(update_attempted && update_failed){
-            // Increment dcdc_hi_data.fault_counter.
-            // If dcdc_hi_data.fault_counter exceeds limit, there could have been a communication or brown-out problem.
-            // In this case, re-initialize gpio_exp and set all hardware EN pins to 0, set dcdc_hi.initialized = false.
-        }
-    }
-    
-    if(dcdc_lo.initialized){
-        bool update_attempted  = false;
-        bool update_failed     = false;
-
-        if (dcdc_lo_data.VOUT_prev_mV != dcdc_lo_data.VOUT_mV) {
-            update_attempted = true;
-            if(dcdc_lo.setVoltageSetpoint_mV(dcdc_lo_data.VOUT_mV)){
-                dcdc_lo_data.VOUT_prev_mV  = dcdc_lo_data.VOUT_mV;
-            } else {
-                update_failed = true;
+            // Uncomment if() below to make periodic communication test mandatory.
+            if (not update_attempted) {
+                update_attempted = true;
+                update_failed |= not dcdc[i].isReady();
             }
-        }
 
-        if (dcdc_lo_data.CTL1_prev != dcdc_lo_data.CTL1) {
-            update_attempted = true;
-            if(dcdc_lo.write(MP8862_REG_CTL1, dcdc_lo_data.CTL1)){
-                dcdc_lo_data.CTL1_prev = dcdc_lo_data.CTL1;
-            } else {
-                update_failed = true;
+            if (update_attempted && update_failed) {
+                // Increment dcdc_hi_data.fault_counter.
+                // If dcdc_hi_data.fault_counter exceeds limit, there could have been a communication or brown-out problem.
+                // In this case, re-initialize gpio_exp and set all hardware EN pins to 0, set dcdc_hi.initialized = false.
             }
-        }
-
-        // Uncomment if() below to make periodic communication test mandatory.
-        if(not update_attempted){
-            update_attempted = true;
-            update_failed |= not dcdc_lo.isReady();
-        }
-
-        if(update_attempted && update_failed){
-            // Increment dcdc_lo_data.fault_counter.
-            // If dcdc_lo_data.fault_counter exceeds limit, there could have been a communication or brown-out problem.
-            // In this case, re-initialize gpio_exp and set all hardware EN pins to 0, set dcdc_lo.initialized = false.
         }
     }
 
@@ -399,16 +356,16 @@ void printBinary(char* buf, uint8_t val, uint8_t digits = 8){
 void printDecimalFP(char* buf, int32_t val, uint8_t size,
                     uint8_t max_decimal_places = 0 , uint8_t log10_denominator = 0 ){
     /*
-     *  max_decp  log_denom    size 5            out      description
-     *                         |-----|         |-----|
-     *     1          0       -654321           -####     overflow
-     *     1          1        -65432.1         -####     overflow
-     *     1          2         -6543.21        -6543
-     *     1          3         -654.321         -654     orphaned decimal point
-     *     1          4         -65.4321        -65.4
-     *     1          5         -6.54321         -6.5     limited by max_decimal_places
-     *     1          6         -0.654321        -0.6     begin 0 padding
-     *     1          7         -0.0654321       -0.0     maximum 0 padding
+     *  log_denom    size 5          out
+     *               |-----|       |-----|
+     *      0       -654321         -####
+     *      1        -65432.1       -####
+     *      2         -6543.21      -6543
+     *      3          -654.321      -654
+     *      4         -65.4321      -65.4
+     *      5          -6.54321      -6.5
+     *      6          -0.654321     -0.6
+     *      7          -0.0654321    -0.0
      */
     bool neg = val < 0;
     if(val < 0){

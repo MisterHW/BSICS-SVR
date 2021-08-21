@@ -39,6 +39,12 @@ private:
 public:
     static const size_t n_channels = 3;
 
+    enum dcdc_list_indices {
+        dcdc_hi = 0, // "DCDC1" address 0x6D
+        dcdc_lo = 1, // "DCDC2" address 0x6F
+        n_dcdcs // length (last index + 1)
+    };
+
     struct {
         uint8_t gpo = 0;      // value to be sent to device (async mode)
         uint8_t prev_gpo = 0; // last value sent
@@ -64,23 +70,24 @@ public:
 
     struct {
         MCP9808_T T_raw {};
-        int32_t T_mdegC = 0;
+        int32_t T_mdegC {};
     } temp_sensor_data[n_channels];
 
-    typedef struct {
-        uint16_t VOUT_mV;
-        uint16_t VOUT_prev_mV;
-        MP8862_REG_CTL1_bits CTL1;
-        MP8862_REG_CTL1_bits CTL1_prev;
-        uint16_t fault_counter;
-    } dcdc_data;
-    dcdc_data dcdc_hi_data { 3900 , 3900 , MP8862_CTL1_DEFAULT_OUTPUT_ON , MP8862_CTL1_DEFAULT_OUTPUT_ON, 0};
-    dcdc_data dcdc_lo_data { 2700 , 2700 , MP8862_CTL1_DEFAULT_OUTPUT_ON , MP8862_CTL1_DEFAULT_OUTPUT_ON, 0};
+    struct {
+        uint16_t VOUT_mV      {};
+        uint16_t VOUT_prev_mV {};
+        MP8862_REG_CTL1_bits CTL1      {MP8862_CTL1_DEFAULT_OUTPUT_ON};
+        MP8862_REG_CTL1_bits CTL1_prev {MP8862_CTL1_DEFAULT_OUTPUT_ON};
+        uint16_t fault_counter {};
+    } dcdc_data[n_dcdcs] = {
+            // start-up defaults
+            { 3900 , 3900},
+            { 2700 , 2700}
+    };
 
     // common devices
     PCA9536 gpio_exp{};
-    MP8862 dcdc_hi{};
-    MP8862 dcdc_lo{};
+    MP8862 dcdc[n_dcdcs];
     SSD1306_128x32 status_display;
     bool status_display_rotated180 {false};
     char identifier_string[21] {};
@@ -88,9 +95,9 @@ public:
     // 24CXX eeprom;
 
     // per-channel devices (CH1, CH2, CH3)
-    ADG715  octal_spst[3]{};
-    MCP9808 temp_sensor[3]{};
-    MCP3423 adc[3]{}; // MCP3423 dual-channel 18 bit ADC
+    ADG715  octal_spst[n_channels]{};
+    MCP9808 temp_sensor[n_channels]{};
+    MCP3423 adc[n_channels]{}; // MCP3423 dual-channel 18 bit ADC
 
     // device group state and peripheral device handle
     bool initialized {false};
@@ -112,7 +119,6 @@ public:
 };
 
 #define DeviceGroupCount 2
-#define DeviceGroupChannelCount 3
 extern PeripheralDeviceGroup DeviceGroup[DeviceGroupCount];
 extern uint8_t DeviceGroupIndex;
 
