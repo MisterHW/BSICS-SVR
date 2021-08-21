@@ -37,6 +37,8 @@ private:
     void draw_page_summary();
     void draw_page_channel_info();
 public:
+    static const size_t n_channels = 3;
+
     struct {
         uint8_t gpo = 0;      // value to be sent to device (async mode)
         uint8_t prev_gpo = 0; // last value sent
@@ -46,7 +48,7 @@ public:
     struct {
         uint8_t value = 0; // value to be sent to device (async mode)
         uint8_t prev  = 0; // last value sent
-    } octal_spst_data[3];
+    } octal_spst_data[n_channels];
 
     struct {
         /* CH1 : V_COM = 3.371428(5) * V_CH1 -> coef_x1024 ~= 3.3714285 * 1024 ~=  3452
@@ -58,22 +60,22 @@ public:
         int16_t coef_x1024[2] = {3452, 13995};  // mV conversion factors (reflecting input scaling x PGA)
         int32_t ch_raw[2] = {0, 0};             // conversion results
         int32_t device_voltages_mV[2] = {0, 0}; // calculated voltages (V_lo, V_hi w.r.t. COM)
-    } adc_data[3];
+    } adc_data[n_channels];
 
     struct {
         MCP9808_T T_raw {};
         int32_t T_mdegC = 0;
-    } temp_sensor_data[3];
+    } temp_sensor_data[n_channels];
 
-    typedef struct dcdc_data {
+    typedef struct {
         uint16_t VOUT_mV;
         uint16_t VOUT_prev_mV;
         MP8862_REG_CTL1_bits CTL1;
         MP8862_REG_CTL1_bits CTL1_prev;
         uint16_t fault_counter;
-    };
-    dcdc_data dcdc_hi_data { 3900 , 3900 , MP8862_CTL1_DEFAULT_OUTPUT_ON , MP8862_CTL1_DEFAULT_OUTPUT_ON};
-    dcdc_data dcdc_lo_data { 2700 , 2700 , MP8862_CTL1_DEFAULT_OUTPUT_ON , MP8862_CTL1_DEFAULT_OUTPUT_ON};
+    } dcdc_data;
+    dcdc_data dcdc_hi_data { 3900 , 3900 , MP8862_CTL1_DEFAULT_OUTPUT_ON , MP8862_CTL1_DEFAULT_OUTPUT_ON, 0};
+    dcdc_data dcdc_lo_data { 2700 , 2700 , MP8862_CTL1_DEFAULT_OUTPUT_ON , MP8862_CTL1_DEFAULT_OUTPUT_ON, 0};
 
     // common devices
     PCA9536 gpio_exp{};

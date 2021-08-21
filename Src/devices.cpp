@@ -197,7 +197,7 @@ bool PeripheralDeviceGroup::readConversionResults() {
         }
     }
 
-    for(int i = 0; i < 3; i++)
+    for(int i = 0; i < PeripheralDeviceGroup::n_channels; i++)
     {
         // read temperature sensors
         if(temp_sensor[i].initialized){
@@ -276,7 +276,7 @@ bool PeripheralDeviceGroup::writeChanges() {
         }
     }
 
-    for(int i = 0; i < 3; i++) {
+    for(int i = 0; i < PeripheralDeviceGroup::n_channels; i++) {
         // update SPSTs
         if (octal_spst[i].initialized && (octal_spst_data[i].prev != octal_spst_data[i].value)) {
             if (octal_spst[i].writeSwitchStates((ADG715_switches) octal_spst_data[i].value)) {
@@ -356,7 +356,7 @@ bool PeripheralDeviceGroup::writeChanges() {
             // If dcdc_lo_data.fault_counter exceeds limit, there could have been a communication or brown-out problem.
             // In this case, re-initialize gpio_exp and set all hardware EN pins to 0, set dcdc_lo.initialized = false.
         }
-    }    
+    }
 
     return res;
 }
@@ -500,81 +500,83 @@ void PeripheralDeviceGroup::draw_page_summary() {
 
 
 void PeripheralDeviceGroup::draw_page_channel_info() {
-if(status_display.initialized){
-    uint8_t ch_idx[3] = {2, 1, 0}; // normal display: CH3, CH2, CH1.
-    if( status_display_rotated180 ){ // HS group: rotated 180° (upside-down, reverse order)
-        ch_idx[0] = 0;
-        ch_idx[2] = 2;
+    if(status_display.initialized){
+        uint8_t ch_idx[3] = {2, 1, 0}; // normal display: CH3, CH2, CH1.
+        if( status_display_rotated180 ){ // HS group: rotated 180° (upside-down, reverse order)
+            ch_idx[0] = 0;
+            ch_idx[2] = 2;
+        }
+
+        status_display.clearBuffer();
+
+        // print line 0
+        status_display.setCursor(0, 0);
+        char line[22];
+        sprintf( line, "CH%d hhhh-llll 0x%02X",
+                    ch_idx[display_page_index - 1] + 1,
+                    octal_spst_data[ch_idx[display_page_index - 1]].prev );
+        printBinary(&line[4],octal_spst_data[ch_idx[display_page_index - 1]].prev >> 4, 4);
+        printBinary(&line[9],octal_spst_data[ch_idx[display_page_index - 1]].prev     , 4);
+
+        status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
+
+        // print line 1
+        status_display.setCursor(0, (Font_7x10.FontHeight + 1) * 1 - 1);
+        strcpy(line, "VHI xx.xx T xxx.xC");
+        printDecimalFP(&line[ 4], adc_data[ch_idx[display_page_index - 1]].device_voltages_mV[1], 5, 2, 3);
+        printDecimalFP(&line[12], temp_sensor_data[ch_idx[display_page_index - 1]].T_mdegC, 5, 2, 3);
+        status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
+        // print line 2
+        status_display.setCursor(0, (Font_7x10.FontHeight + 1) * 2 - 1);
+        strcpy(line, "VLO -x.xx         ");
+        printDecimalFP(&line[ 4], adc_data[ch_idx[display_page_index - 1]].device_voltages_mV[0], 5, 2, 3);
+        status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
+    } else {
+        // success = false; // Uncomment to intepret missing display as failure to update.
     }
-
-    status_display.clearBuffer();
-
-    // print line 0
-    status_display.setCursor(0, 0);
-    char line[22];
-    sprintf( line, "CH%d hhhh-llll 0x%02X",
-                ch_idx[display_page_index - 1] + 1,
-                octal_spst_data[ch_idx[display_page_index - 1]].prev );
-    printBinary(&line[4],octal_spst_data[ch_idx[display_page_index - 1]].prev >> 4, 4);
-    printBinary(&line[9],octal_spst_data[ch_idx[display_page_index - 1]].prev     , 4);
-
-    status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
-
-    // print line 1
-    status_display.setCursor(0, (Font_7x10.FontHeight + 1) * 1 - 1);
-    strcpy(line, "VHI xx.xx T xxx.xC");
-    printDecimalFP(&line[ 4], adc_data[ch_idx[display_page_index - 1]].device_voltages_mV[1], 5, 2, 3);
-    printDecimalFP(&line[12], temp_sensor_data[ch_idx[display_page_index - 1]].T_mdegC, 5, 2, 3);
-    status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
-    // print line 2
-    status_display.setCursor(0, (Font_7x10.FontHeight + 1) * 2 - 1);
-    strcpy(line, "VLO -x.xx         ");
-    printDecimalFP(&line[ 4], adc_data[ch_idx[display_page_index - 1]].device_voltages_mV[0], 5, 2, 3);
-    status_display.writeString(line, Font_7x10, SSD1306_color::monochrome_white);
-} else {
-    // success = false; // Uncomment to intepret missing display as failure to update.
-}
 }
 
 
 bool PeripheralDeviceGroup::updateDisplay() {
-bool success = true;
-printf("\r\nGroup%d:\r\n   \tCH1\tCH2\tCH3\r\n", group_index);
+    bool success = true;
+    printf("\r\nGroup%d:\r\n   \tCH1\tCH2\tCH3\r\n", group_index);
 
-// draw display contents
-switch( display_page_index ){
-    case 1:
-    case 2:
-    case 3:
-        draw_page_channel_info();
-        break;
-    default:
-        draw_page_summary();
-}
+    // draw display contents
+    switch( display_page_index ){
+        case 1:
+        case 2:
+        case 3:
+            draw_page_channel_info();
+            break;
+        default:
+            draw_page_summary();
+    }
 
-// update display contents
-success &= status_display.configure_orientation( status_display_rotated180, status_display_rotated180 );
-success &= status_display.updateDisplay();
+    // update display contents
+    if(status_display.initialized){
+        success &= status_display.configure_orientation( status_display_rotated180, status_display_rotated180 );
+        success &= status_display.updateDisplay();
+    }
 
-/// debug output via UART
-printf("SW \t0x%02X\t0x%02X\t0x%02X\r\n",
-       octal_spst_data[0].prev,
-       octal_spst_data[1].prev,
-       octal_spst_data[2].prev );
-printf("HI \t%d\t%d\t%d\r\n",
-       (int)adc_data[0].device_voltages_mV[1],
-       (int)adc_data[1].device_voltages_mV[1],
-       (int)adc_data[2].device_voltages_mV[1] );
-printf("LO \t%d\t%d\t%d\r\n",
-       (int)adc_data[0].device_voltages_mV[0],
-       (int)adc_data[1].device_voltages_mV[0],
-       (int)adc_data[2].device_voltages_mV[0] );
-printf("T  \t%d\t%d\t%d\r\n",
-       (int)temp_sensor_data[0].T_mdegC,
-       (int)temp_sensor_data[1].T_mdegC,
-       (int)temp_sensor_data[2].T_mdegC );
+    /// debug output via UART
+    printf("SW \t0x%02X\t0x%02X\t0x%02X\r\n",
+           octal_spst_data[0].prev,
+           octal_spst_data[1].prev,
+           octal_spst_data[2].prev );
+    printf("HI \t%d\t%d\t%d\r\n",
+           (int)adc_data[0].device_voltages_mV[1],
+           (int)adc_data[1].device_voltages_mV[1],
+           (int)adc_data[2].device_voltages_mV[1] );
+    printf("LO \t%d\t%d\t%d\r\n",
+           (int)adc_data[0].device_voltages_mV[0],
+           (int)adc_data[1].device_voltages_mV[0],
+           (int)adc_data[2].device_voltages_mV[0] );
+    printf("T  \t%d\t%d\t%d\r\n",
+           (int)temp_sensor_data[0].T_mdegC,
+           (int)temp_sensor_data[1].T_mdegC,
+           (int)temp_sensor_data[2].T_mdegC );
 
-return success;
+    return success;
 }
 
 /* ---------------------------------------------------------------------------*/
@@ -625,7 +627,7 @@ bool Devices_configure_defaults_1() {
     // set-up peripherals with default configuration
     res  = DeviceGroup[0].configureDefaults_1();
     res &= DeviceGroup[1].configureDefaults_1();
-    printf("\n");
+    printf("\r\n");
     return res;
 };
 
