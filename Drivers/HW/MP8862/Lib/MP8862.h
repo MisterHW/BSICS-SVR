@@ -132,6 +132,7 @@ class MP8862 {
 public:
     bool initialized {false};
     uint16_t VOUT_soft_limit_mV {}; // Prevent setVoltageSetpoint_mV() from setting values exceeding this limit.
+    uint16_t IOUT_soft_limit_mA {}; // Prevent setCurrentLimit_mA()    from setting values exceeding this limit.
 
     bool init(I2C_HandleTypeDef *_hI2C, MP8862_address addr);
     bool isReady( );

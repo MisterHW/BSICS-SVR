@@ -9,6 +9,7 @@ bool MP8862::init(I2C_HandleTypeDef *_hI2C, MP8862_address addr) {
     deviceAddress = addr;
     initialized   = isReady();
     VOUT_soft_limit_mV = 5500;
+    IOUT_soft_limit_mA = 3000;
     return initialized;
 }
 
@@ -83,6 +84,9 @@ bool MP8862::setEnable(bool soft_EN) {
 }
 
 bool MP8862::setCurrentLimit_mA(uint16_t current_mA) {
+    if( current_mA  > IOUT_soft_limit_mA ){
+        return false;
+    }
     if(current_mA > 4025){ // highest permitted value producing int part 80
         current_mA = 4025; // 4.0 A max (I_LIM = 0x50)
     }
