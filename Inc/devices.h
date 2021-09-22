@@ -76,13 +76,15 @@ public:
     struct {
         uint16_t VOUT_mV      {};
         uint16_t VOUT_prev_mV {};
+        uint16_t IOUT_mA      {};
+        uint16_t IOUT_prev_mA {};
         MP8862_REG_CTL1_bits CTL1      {MP8862_CTL1_DEFAULT_OUTPUT_ON};
         MP8862_REG_CTL1_bits CTL1_prev {MP8862_CTL1_DEFAULT_OUTPUT_ON};
         uint16_t fault_counter {};
     } dcdc_data[n_dcdcs] = {
             // start-up defaults
-            { 3900 , 3900},
-            { 2700 , 2700}
+            { 3900 , 3900, 3000 , 3000},
+            { 2700 , 2700, 3000 , 3000},
     };
 
     // common devices

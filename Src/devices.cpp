@@ -292,6 +292,15 @@ bool PeripheralDeviceGroup::writeChanges() {
                 }
             }
 
+            if (dcdc_data[i].IOUT_prev_mA != dcdc_data[i].IOUT_mA) {
+                update_attempted = true;
+                if (dcdc[i].setCurrentLimit_mA(dcdc_data[i].IOUT_mA)) {
+                    dcdc_data[i].IOUT_prev_mA = dcdc_data[i].IOUT_mA;
+                } else {
+                    update_failed = true;
+                }
+            }
+
             if (dcdc_data[i].CTL1_prev != dcdc_data[i].CTL1) {
                 update_attempted = true;
                 if (dcdc[i].write(MP8862_REG_CTL1, dcdc_data[i].CTL1)) {
