@@ -75,24 +75,90 @@ static scpi_result_t BSICS_GroupQ(scpi_t * context) {
     return SCPI_RES_OK;
 }
 
+
+//static scpi_result_t DMM_ConfigureVoltageDc(scpi_t * context) {
+//    double param1, param2;
+//    fprintf(stderr, "conf:volt:dc\r\n"); /* debug command name */
+//
+//    /* read first parameter if present */
+//    if (!SCPI_ParamDouble(context, &param1, TRUE)) {
+//        return SCPI_RES_ERR;
+//    }
+//
+//    /* read second paraeter if present */
+//    if (!SCPI_ParamDouble(context, &param2, FALSE)) {
+//        /* do something, if parameter not present */
+//    }
+//
+//    fprintf(stderr, "\tP1=%lf\r\n", param1);
+//    fprintf(stderr, "\tP2=%lf\r\n", param2);
+//
+//    return SCPI_RES_OK;
+//}
+
+enum BSICS_SetValue_dest {
+    BSICS_group_voltage_lo,
+    BSICS_group_voltage_hi,
+    BSICS_group_current_lo,
+    BSICS_group_current_hi,
+};
+
+/* BSICS_SetFloatingPointValue : [GRP#]:SOURce:(VOLTage, CURrent):(LO, HI) <double value> [<unit>]
+ * param0 : int, optional
+ * param1 : double
+ */
+static scpi_result_t BSICS_SetFloatingPointValue(scpi_t * context, BSICS_SetValue_dest dest, scpi_unit_t optional_unit) {
+    // optionally read param0 (group index)
+    int32_t param0;
+    if ( SCPI_ParamInt32(context, &param0, FALSE) ) {
+        if ( (param0 < 0) || (param0 >= DeviceGroupCount) ) {
+            return SCPI_RES_ERR;
+        } else {
+            // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
+            // DeviceGroupIndex = param0; // also set DeviceGroupIndex for subsequent operations
+        }
+    } else {
+        param0 = DeviceGroupIndex;
+    }
+
+    // read param1 (new setpoint, float)
+    scpi_number_t param1;
+    if (!SCPI_ParamNumber(context, scpi_special_numbers_def, &param1, TRUE)
+        || (not ((param1.unit == SCPI_UNIT_NONE) || (param1.unit == optional_unit)))
+        || (param1.content.value > 65.535) || (param1.content.value < 0) ) {
+        return SCPI_RES_ERR;
+    }
+    uint16_t val_x1000 = (uint16_t)(param1.content.value * 1000 + 0.5);
+
+    switch(dest){
+        case BSICS_group_voltage_lo: DeviceGroup[param0].dcdc_data[PeripheralDeviceGroup::dcdc_lo].VOUT_mV = val_x1000; break;
+        case BSICS_group_voltage_hi: DeviceGroup[param0].dcdc_data[PeripheralDeviceGroup::dcdc_hi].VOUT_mV = val_x1000; break;
+        case BSICS_group_current_lo: DeviceGroup[param0].dcdc_data[PeripheralDeviceGroup::dcdc_lo].IOUT_mA = val_x1000; break;
+        case BSICS_group_current_hi: DeviceGroup[param0].dcdc_data[PeripheralDeviceGroup::dcdc_hi].IOUT_mA = val_x1000; break;
+        default:; // handle unknown dest
+    };
+
+    return SCPI_RES_OK;
+}
+
 // set DCDC_lo output voltage
 static scpi_result_t BSICS_SetVoltageLo(scpi_t * context) {
-    return SCPI_RES_OK;
+    return BSICS_SetFloatingPointValue(context, BSICS_group_voltage_lo, SCPI_UNIT_VOLT);
 }
 
 // set DCDC_hi output voltage
 static scpi_result_t BSICS_SetVoltageHi(scpi_t * context) {
-    return SCPI_RES_OK;
+    return BSICS_SetFloatingPointValue(context, BSICS_group_voltage_hi, SCPI_UNIT_VOLT);
 }
 
 // set DCDC_lo current limit
 static scpi_result_t BSICS_SetCurrentLo(scpi_t * context) {
-    return SCPI_RES_OK;
+    return BSICS_SetFloatingPointValue(context, BSICS_group_current_lo, SCPI_UNIT_AMPER);
 }
 
 // set DCDC_hi current limit
 static scpi_result_t BSICS_SetCurrentHi(scpi_t * context) {
-    return SCPI_RES_OK;
+    return BSICS_SetFloatingPointValue(context, BSICS_group_current_hi, SCPI_UNIT_AMPER);
 }
 
 // Return last DRV2A-CHn negative supply voltage (scaled ADC.ch0).
@@ -102,7 +168,7 @@ static scpi_result_t BSICS_ChannelVoltageLoQ(scpi_t * context) {
     if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
         || (commandNumber[0] >= DeviceGroupCount)
         || (commandNumber[1] < 1)
-        || (commandNumber[1] > DeviceGroupChannelCount) )
+        || (commandNumber[1] > PeripheralDeviceGroup::n_channels) )
     { return SCPI_RES_ERR; }
 
     if(commandNumber[0] < 0){
@@ -124,7 +190,7 @@ static scpi_result_t BSICS_ChannelVoltageHiQ(scpi_t * context) {
     if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
         || (commandNumber[0] >= DeviceGroupCount)
         || (commandNumber[1] < 1)
-        || (commandNumber[1] > DeviceGroupChannelCount) )
+        || (commandNumber[1] > PeripheralDeviceGroup::n_channels) )
     { return SCPI_RES_ERR; }
 
     if(commandNumber[0] < 0){
@@ -144,7 +210,7 @@ static scpi_result_t BSICS_ChannelTemperatureQ(scpi_t * context) {
     if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
         || (commandNumber[0] >= DeviceGroupCount)
         || (commandNumber[1] < 1)
-        || (commandNumber[1] > DeviceGroupChannelCount) )
+        || (commandNumber[1] > PeripheralDeviceGroup::n_channels) )
     { return SCPI_RES_ERR; }
 
     if(commandNumber[0] < 0){
@@ -174,7 +240,7 @@ static scpi_result_t BSICS_SetChannelDriverMux(scpi_t * context) {
     if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
         || (commandNumber[0] >= DeviceGroupCount)
         || (commandNumber[1] < 1)
-        || (commandNumber[1] > DeviceGroupChannelCount) )
+        || (commandNumber[1] > PeripheralDeviceGroup::n_channels) )
     { return SCPI_RES_ERR; }
 
     if(commandNumber[0] < 0){
@@ -200,7 +266,7 @@ static scpi_result_t BSICS_ChannelDriverMuxQ(scpi_t * context) {
     if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
         || (commandNumber[0] >= DeviceGroupCount)
         || (commandNumber[1] < 1)
-        || (commandNumber[1] > DeviceGroupChannelCount) )
+        || (commandNumber[1] > PeripheralDeviceGroup::n_channels) )
     { return SCPI_RES_ERR; }
 
     if(commandNumber[0] < 0){
