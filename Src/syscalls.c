@@ -13,7 +13,7 @@
 **
 **  Target      : STMicroelectronics STM32
 **
-**  Distribution: The file is distributed “as is,” without any warranty
+**  Distribution: The file is distributed ï¿½as is,ï¿½ without any warranty
 **                of any kind.
 **
 *****************************************************************************
@@ -114,7 +114,7 @@ __attribute__((weak)) int _write(int file, char *ptr, int len)
 	return len;
 }
 
-caddr_t _sbrk(int incr)
+__attribute__((weak)) caddr_t _sbrk(int incr)
 {
 	extern char end asm("end");
 	static char *heap_end;

@@ -51,6 +51,7 @@ The author does not claim to be an expert and code is provided as-is. Correction
 
 * [Basic project creation with CLion and STM32CubeMX](doc/readme_project_creation.md)
 	- [Introduction to the Cortex-M7 MPU](doc/readme_mpu.md)
+	- [Modifications for Thread Safety (newlib)](doc/readme_newlib.md)
 * debug ouput via USART and virtual COM port
 * establishing and testing ethernet functionality
 * adding libscpi

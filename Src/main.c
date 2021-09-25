@@ -101,15 +101,15 @@ void MX_LWIP_Init_Addresses(){
     //
     // also requires lwip.c insertions:
     //
-    // /* USER CODE BEGIN 2 */
+    // / * USER CODE BEGIN 2 * /
     // extern uint8_t peek_MX_LWIP_Init;
-    // /* USER CODE END 2 */
+    // / * USER CODE END 2 * /
     //
-    // /* USER CODE BEGIN IP_ADDRESSES */
+    // / * USER CODE BEGIN IP_ADDRESSES * /
     // if (peek_MX_LWIP_Init != 0){
     //     return;
     // }
-    // /* USER CODE END IP_ADDRESSES */
+    // / * USER CODE END IP_ADDRESSES * /
     //
     peek_MX_LWIP_Init = 1; // STM32CubeMX workaround: IPv4 address originates from MX_LWIP_Init() scope
     MX_LWIP_Init();        // peek_MX_LWIP_Init != 0 ? return in USER CODE BEGIN IP_ADDRESSES
