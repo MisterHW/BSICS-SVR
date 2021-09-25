@@ -68,7 +68,7 @@ Taking a step back - for thread-safety, each task needs to have a dedicated newl
 
 ![FreeRTOS memory allocation API](img/freertos_heap_4.png)
 
-"Memory Management scheme" selects which *heap_x.c* file will be copied when the project is generated. *heap_4.c* is the default include, where *pvPortMalloc()* and *vPortFree()* are implemented. Continuing with the above,
+"Memory Management scheme" selects which *heap_x.c* file will be copied when the project is generated. *heap_4.c* is the file included by default, where *pvPortMalloc()* and *vPortFree()* are implemented. Continuing with the above,
 
 	To get around this problem, FreeRTOS keeps the memory allocation API in 
 	its portable layer. The portable layer is outside of the source files 
