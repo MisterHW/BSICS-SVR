@@ -27,6 +27,7 @@
 //#include "stm32f7xx_nucleo_144.h"
 #include "lwip/netif.h"
 #include "lwip/tcpip.h"
+
 // #include "app_ethernet.h"
 // #include "httpserver-netconn.h"
 #include "scpi_server.h"
@@ -114,6 +115,52 @@ void MX_LWIP_Init_Addresses(){
     peek_MX_LWIP_Init = 1; // STM32CubeMX workaround: IPv4 address originates from MX_LWIP_Init() scope
     MX_LWIP_Init();        // peek_MX_LWIP_Init != 0 ? return in USER CODE BEGIN IP_ADDRESSES
     peek_MX_LWIP_Init = 0; // restore MX_LWIP_Init() to normal
+}
+
+
+#define NUM_TIMERS 1
+TimerHandle_t xTimers[ NUM_TIMERS ];
+
+void keyscan_timer_callback( TimerHandle_t xTimer )
+{
+    configASSERT( xTimer );
+    /*
+    uint32_t ulCount;
+    ulCount = ( uint32_t ) pvTimerGetTimerID( xTimer );
+    xTimerStop( xTimer, 0 );
+    vTimerSetTimerID( xTimer, ( void * ) ulCount );
+     */
+}
+
+
+void Timers_init(){
+    /* Create then start some timers.  Starting the timers before the RTOS scheduler has been started means
+     * the timers will start running immediately that the RTOS scheduler starts.
+     * see: https://www.freertos.org/FreeRTOS-timers-xTimerCreate.html
+     * For xTimerCreate RTOS API function to be available:
+     *    configUSE_TIMERS (CubeMX FreeRTOS -> enable software timers) and
+     *      configSUPPORT_DYNAMIC_ALLOCATION must both be set to 1 in FreeRTOSConfig.h
+     *      (configSUPPORT_DYNAMIC_ALLOCATION can also be left undefined, in which case
+     *      it will default to 1).
+     *    The FreeRTOS/Source/timers.c C source file must be included in the build.
+     */
+    xTimers[ 0 ] = xTimerCreate (
+        "Timer", /* Just a text name, not used by the RTOS kernel. */
+        1, /* The timer period in ticks, must be greater than 0. */
+        pdTRUE, /* The timers will auto-reload themselves when they expire. */
+        ( void * ) 0, /* pvTimerID is used to store a count of
+            * the number of times the timer has expired, which is initialised to 0. */
+        keyscan_timer_callback /* callback called when it expires. */
+        );
+
+    if( xTimers[ 0 ] != NULL ) {
+        /* Start the timer. No block time is specified, and even if one was it would be
+         * ignored because the RTOS scheduler has not yet been started. */
+        if( xTimerStart( xTimers[ 0 ], 0 ) == pdPASS )
+        {
+            /* Timer successfully created and set into the Active state. */
+        }
+    }
 }
 
 /* USER CODE END 0 */
@@ -207,7 +254,7 @@ int main(void)
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
+  Timers_init();
   /* USER CODE END RTOS_TIMERS */
 
   /* USER CODE BEGIN RTOS_QUEUES */

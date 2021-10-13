@@ -75,6 +75,20 @@ static scpi_result_t BSICS_GroupQ(scpi_t * context) {
     return SCPI_RES_OK;
 }
 
+static scpi_result_t BSICS_SetReporting(scpi_t * context) {
+    scpi_bool_t param0;
+    if (!SCPI_ParamBool(context, &param0, TRUE)) {
+        return SCPI_RES_ERR;
+    }
+    UARTReportingEnabled = param0;
+    return SCPI_RES_OK;
+}
+
+// read back DeviceGroupIndex
+static scpi_result_t BSICS_ReportingQ(scpi_t * context) {
+    SCPI_ResultBool(context, UARTReportingEnabled);
+    return SCPI_RES_OK;
+}
 
 //static scpi_result_t DMM_ConfigureVoltageDc(scpi_t * context) {
 //    double param1, param2;
@@ -108,33 +122,30 @@ enum BSICS_SetValue_dest {
  * param1 : double
  */
 static scpi_result_t BSICS_SetFloatingPointValue(scpi_t * context, BSICS_SetValue_dest dest, scpi_unit_t optional_unit) {
-    // optionally read param0 (group index)
-    int32_t param0;
-    if ( SCPI_ParamInt32(context, &param0, FALSE) ) {
-        if ( (param0 < 0) || (param0 >= DeviceGroupCount) ) {
-            return SCPI_RES_ERR;
-        } else {
-            // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
-            // DeviceGroupIndex = param0; // also set DeviceGroupIndex for subsequent operations
+    // parse optional argument0 (group index GRP0, GRP1)
+    int32_t idx = DeviceGroupIndex, new_idx;
+    if(SCPI_CommandNumbers(context, &new_idx, 1, -1)){
+        if( (new_idx >= 0) && (new_idx < DeviceGroupCount)){
+            idx = new_idx;
+            // Optionally set group index to last used value here.
+            // DeviceGroupIndex = idx;
         }
-    } else {
-        param0 = DeviceGroupIndex;
     }
 
-    // read param1 (new setpoint, float)
-    scpi_number_t param1;
-    if (!SCPI_ParamNumber(context, scpi_special_numbers_def, &param1, TRUE)
-        || (not ((param1.unit == SCPI_UNIT_NONE) || (param1.unit == optional_unit)))
-        || (param1.content.value > 65.535) || (param1.content.value < 0) ) {
+    // read param0 (new setpoint, float)
+    scpi_number_t param0;
+    if (!SCPI_ParamNumber(context, scpi_special_numbers_def, &param0, TRUE)
+        || (not ((param0.unit == SCPI_UNIT_NONE) || (param0.unit == optional_unit)))
+        || (param0.content.value > 65.535) || (param0.content.value < 0) ) {
         return SCPI_RES_ERR;
     }
-    uint16_t val_x1000 = (uint16_t)(param1.content.value * 1000 + 0.5);
+    uint16_t val_x1000 = (uint16_t)(param0.content.value * 1000 + 0.5);
 
     switch(dest){
-        case BSICS_group_voltage_lo: DeviceGroup[param0].dcdc_data[PeripheralDeviceGroup::dcdc_lo].VOUT_mV = val_x1000; break;
-        case BSICS_group_voltage_hi: DeviceGroup[param0].dcdc_data[PeripheralDeviceGroup::dcdc_hi].VOUT_mV = val_x1000; break;
-        case BSICS_group_current_lo: DeviceGroup[param0].dcdc_data[PeripheralDeviceGroup::dcdc_lo].IOUT_mA = val_x1000; break;
-        case BSICS_group_current_hi: DeviceGroup[param0].dcdc_data[PeripheralDeviceGroup::dcdc_hi].IOUT_mA = val_x1000; break;
+        case BSICS_group_voltage_lo: DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_lo].VOUT_mV = val_x1000; break;
+        case BSICS_group_voltage_hi: DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_hi].VOUT_mV = val_x1000; break;
+        case BSICS_group_current_lo: DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_lo].IOUT_mA = val_x1000; break;
+        case BSICS_group_current_hi: DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_hi].IOUT_mA = val_x1000; break;
         default:; // handle unknown dest
     };
 
@@ -645,6 +656,8 @@ const scpi_command_t scpi_commands[] = {
     // {.pattern = "STATus:OPERation:CONDition?", .callback = scpi_stub_callback,},
     // {.pattern = "STATus:OPERation:ENABle", .callback = scpi_stub_callback,},
     // {.pattern = "STATus:OPERation:ENABle?", .callback = scpi_stub_callback,},
+    {.pattern = "STATus:REPorting:ENAble", .callback = BSICS_SetReporting,},
+    {.pattern = "STATus:REPorting:ENAble?", .callback = BSICS_ReportingQ,},
     {.pattern = "STATus:QUEStionable[:EVENt]?", .callback = SCPI_StatusQuestionableEventQ,},
     // {.pattern = "STATus:QUEStionable:CONDition?", .callback = scpi_stub_callback,},
     {.pattern = "STATus:QUEStionable:ENABle", .callback = SCPI_StatusQuestionableEnable,},
@@ -656,10 +669,10 @@ const scpi_command_t scpi_commands[] = {
     {.pattern = "GRP[:SELect]", .callback = BSICS_SelectGroup,},
     {.pattern = "GRP?", .callback = BSICS_GroupQ,},
 
-    {.pattern = "[GRP#]:SOURce:VOLtage:LO", .callback = BSICS_SetVoltageLo,},
-    {.pattern = "[GRP#]:SOURce:VOLtage:HI", .callback = BSICS_SetVoltageHi,},
-    {.pattern = "[GRP#]:SOURce:CURrent:LO", .callback = BSICS_SetCurrentLo,},
-    {.pattern = "[GRP#]:SOURce:CURrent:HI", .callback = BSICS_SetCurrentHi,},
+    {.pattern = "[GRP#]:SOURce:VOLTage:LO", .callback = BSICS_SetVoltageLo,},
+    {.pattern = "[GRP#]:SOURce:VOLTage:HI", .callback = BSICS_SetVoltageHi,},
+    {.pattern = "[GRP#]:SOURce:CURRent:LO", .callback = BSICS_SetCurrentLo,},
+    {.pattern = "[GRP#]:SOURce:CURRent:HI", .callback = BSICS_SetCurrentHi,},
 
     {.pattern = "[GRP#]:MEASure:CH#:LO?", .callback = BSICS_ChannelVoltageLoQ,},
     {.pattern = "[GRP#]:MEASure:CH#:HI?", .callback = BSICS_ChannelVoltageHiQ,},

@@ -505,8 +505,9 @@ void PeripheralDeviceGroup::draw_page_channel_info() {
 
 bool PeripheralDeviceGroup::updateDisplay() {
     bool success = true;
-    printf("\r\nGroup%d:\r\n   \tCH1\tCH2\tCH3\r\n", group_index);
-
+    if(UARTReportingEnabled) {
+        printf("\r\nGroup%d:\r\n   \tCH1\tCH2\tCH3\r\n", group_index);
+    }
     // draw display contents
     switch( display_page_index ){
         case 1:
@@ -525,22 +526,24 @@ bool PeripheralDeviceGroup::updateDisplay() {
     }
 
     /// debug output via UART
-    printf("SW \t0x%02X\t0x%02X\t0x%02X\r\n",
-           octal_spst_data[0].prev,
-           octal_spst_data[1].prev,
-           octal_spst_data[2].prev );
-    printf("HI \t%d\t%d\t%d\r\n",
-           (int)adc_data[0].device_voltages_mV[1],
-           (int)adc_data[1].device_voltages_mV[1],
-           (int)adc_data[2].device_voltages_mV[1] );
-    printf("LO \t%d\t%d\t%d\r\n",
-           (int)adc_data[0].device_voltages_mV[0],
-           (int)adc_data[1].device_voltages_mV[0],
-           (int)adc_data[2].device_voltages_mV[0] );
-    printf("T  \t%d\t%d\t%d\r\n",
-           (int)temp_sensor_data[0].T_mdegC,
-           (int)temp_sensor_data[1].T_mdegC,
-           (int)temp_sensor_data[2].T_mdegC );
+    if(UARTReportingEnabled){
+        printf("SW \t0x%02X\t0x%02X\t0x%02X\r\n",
+               octal_spst_data[0].prev,
+               octal_spst_data[1].prev,
+               octal_spst_data[2].prev );
+        printf("HI \t%d\t%d\t%d\r\n",
+               (int)adc_data[0].device_voltages_mV[1],
+               (int)adc_data[1].device_voltages_mV[1],
+               (int)adc_data[2].device_voltages_mV[1] );
+        printf("LO \t%d\t%d\t%d\r\n",
+               (int)adc_data[0].device_voltages_mV[0],
+               (int)adc_data[1].device_voltages_mV[0],
+               (int)adc_data[2].device_voltages_mV[0] );
+        printf("T  \t%d\t%d\t%d\r\n",
+               (int)temp_sensor_data[0].T_mdegC,
+               (int)temp_sensor_data[1].T_mdegC,
+               (int)temp_sensor_data[2].T_mdegC );
+    }
 
     return success;
 }
@@ -552,6 +555,7 @@ extern I2C_HandleTypeDef hi2c2;
 
 PeripheralDeviceGroup DeviceGroup[DeviceGroupCount];
 uint8_t DeviceGroupIndex = 0;
+bool UARTReportingEnabled = true;
 
 bool Devices_init_0( ) {
     bool res;
