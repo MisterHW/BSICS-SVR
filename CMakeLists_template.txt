@@ -68,17 +68,19 @@ include_directories(Drivers/HW/ADG715/Lib Drivers/HW/PCA953x/Lib Drivers/HW/MCP3
 
 add_definitions(${defines})
 
-set(EXCLUDE_DIR "/example/") # added
+set(EXCLUDE_DIRS "example/" "Middlewares/Third_Party/libscpi/src/" "Middlewares/Third_Party/libscpi/test/") # added
 
 file(GLOB_RECURSE SOURCES ${sources})
 file(GLOB_RECURSE SOURCES ${SOURCES} "Applications/SCPI_Server/Src/*.*") # added
 
 # see https://stackoverflow.com/questions/24491129/excluding-directory-somewhere-in-file-structure-from-cmake-sourcefile-list
 foreach (TMP_PATH ${SOURCES})  # added
-    string (FIND ${TMP_PATH} ${EXCLUDE_DIR} EXCLUDE_DIR_FOUND)  # added
-    if (NOT ${EXCLUDE_DIR_FOUND} EQUAL -1)  # added
-        list (REMOVE_ITEM SOURCES ${TMP_PATH})  # added
-    endif ()  # added
+    foreach (EXCLUDE_DIR ${EXCLUDE_DIRS}) # added
+        string (FIND ${TMP_PATH} ${EXCLUDE_DIR} EXCLUDE_DIR_FOUND)  # added
+        if (NOT ${EXCLUDE_DIR_FOUND} EQUAL -1)  # added
+            list (REMOVE_ITEM SOURCES ${TMP_PATH})  # added
+        endif ()  # added
+    endforeach(EXCLUDE_DIR)
 endforeach(TMP_PATH)  # added
 
 

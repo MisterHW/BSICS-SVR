@@ -260,7 +260,7 @@ bool PeripheralDeviceGroup::writeChanges() {
             gpio_exp_data.prev_gpo = gpio_exp_data.gpo;
             res &= gpio_exp.readRegister(PCA9536_PORT0_INPUT, gpio_exp_data.gpi);
         } else {
-            // gpio_exp.initialized = false; // un-commment to remove device and prevent retry
+            // gpio_exp.initialized = false; // un-comment to remove device and prevent retry
             res = false;
         }
     }
@@ -271,7 +271,7 @@ bool PeripheralDeviceGroup::writeChanges() {
             if (octal_spst[i].writeSwitchStates((ADG715_switches) octal_spst_data[i].value)) {
                 octal_spst_data[i].prev = octal_spst_data[i].value;
             } else {
-                // octal_spst[i].initialized = false; // un-commment to remove device and prevent retry
+                // octal_spst[i].initialized = false; // un-comment to remove device and prevent retry
                 res = false;
             }
         }
