@@ -505,7 +505,7 @@ void PeripheralDeviceGroup::draw_page_channel_info() {
 
 bool PeripheralDeviceGroup::updateDisplay() {
     bool success = true;
-    if(UARTReportingEnabled) {
+    if(PeriodMeasReportingViaUART) {
         printf("\r\nGroup%d:\r\n   \tCH1\tCH2\tCH3\r\n", group_index);
     }
     // draw display contents
@@ -526,7 +526,7 @@ bool PeripheralDeviceGroup::updateDisplay() {
     }
 
     /// debug output via UART
-    if(UARTReportingEnabled){
+    if(PeriodMeasReportingViaUART){
         printf("SW \t0x%02X\t0x%02X\t0x%02X\r\n",
                octal_spst_data[0].prev,
                octal_spst_data[1].prev,
@@ -555,7 +555,7 @@ extern I2C_HandleTypeDef hi2c2;
 
 PeripheralDeviceGroup DeviceGroup[DeviceGroupCount];
 uint8_t DeviceGroupIndex = 0;
-bool UARTReportingEnabled = true;
+bool PeriodMeasReportingViaUART = false;
 
 bool Devices_init_0( ) {
     bool res;

@@ -123,7 +123,7 @@ public:
 #define DeviceGroupCount 2
 extern PeripheralDeviceGroup DeviceGroup[DeviceGroupCount];
 extern uint8_t DeviceGroupIndex;
-extern bool UARTReportingEnabled;
+extern bool PeriodMeasReportingViaUART;
 
 /* --------------------------------------------------------------------------- */
 #endif
