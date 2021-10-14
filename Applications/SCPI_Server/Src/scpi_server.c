@@ -90,12 +90,23 @@ user_data_t user_data = {
     .evtQueue = 0,
 };
 
+/* SCPI_Write
+ * calls netconn_write_partly(), its result is of type err_t. See api_lib.c err_enum_t for possible values.
+ * ERR_OK : success
+ * ERR_MEM : out of memory
+ * ERR_BUF : buffer error
+ * ERR_TIMEOUT : timeout [...] */
 size_t SCPI_Write(scpi_t * context, const char * data, size_t len) {
-    if (context->user_context != NULL) {
+    if ((context->user_context != NULL) && (data != NULL)) {
         user_data_t * u = (user_data_t *) (context->user_context);
         if (u->io) {
-            // printf("%.*s\n", (int)(len), data); // un-comment for debug output
-            return (netconn_write(u->io, data, len, NETCONN_COPY) == ERR_OK) ? len : 0;
+            // printf("%.*s\r\n", (int)(len), data); // un-comment for debug output
+            err_t result = netconn_write(u->io, data, len, NETCONN_COPY);
+            if(result != ERR_OK){
+                printf("\r\nSCPI_Write ERROR %d\r\n", result);
+                return 0;
+            }
+            return len;
         }
     }
     return 0;
