@@ -50,11 +50,11 @@
  * Write data to SCPI output
  * @param context
  * @param data
- * @param len - lenght of data to be written
+ * @param len - length of data to be written
  * @return number of bytes written
  */
 static size_t writeData(scpi_t * context, const char * data, size_t len) {
-    if (len > 0) {
+    if ((len > 0) && (data != NULL)) {
         return context->interface->write(context, data, len);
     } else {
         return 0;
@@ -506,7 +506,7 @@ size_t SCPI_ResultDouble(scpi_t * context, double val) {
 }
 
 /**
- * Write string withn " to the result
+ * Write string within "" to the result
  * @param context
  * @param data
  * @return
