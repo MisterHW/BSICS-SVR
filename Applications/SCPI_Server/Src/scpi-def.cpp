@@ -1,40 +1,3 @@
-/*-
- * BSD 2-Clause License
- *
- * Copyright (c) 2012-2018, Jan Breuer
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * * Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * * Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-/**
- * @file   scpi-def.c
- * @date   Thu Nov 15 10:58:45 UTC 2012
- *
- * @brief  SCPI parser test
- *
- *
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -80,68 +43,6 @@ void SpecifyOperationFinishedIn(uint32_t from_now_ms) {
     }
 }
 
-size_t SCPI_ResultCommand(scpi_t * context){
-    // detected pattern with unresolved argument placeholders (escaped):
-    // return SCPI_ResultText(context, context->param_list.cmd->pattern);
-
-    // detected pattern with unresolved argument placeholders (non-escaped):
-    // return SCPI_ResultMnemonic(context, context->param_list.cmd->pattern);
-
-    // received command with arguments and abbreviations :
-    size_t trim = 0;
-    if(*(char*)(context->param_list.cmd_raw.data + context->param_list.cmd_raw.length -1) == '?') {
-        trim = 1;
-    }
-    return SCPI_ResultCharacters( context, context->param_list.cmd_raw.data + context->param_list.cmd_raw.position, context->param_list.cmd_raw.length - trim);
-}
-
-/* Chained commands can produce multiple returned values, separated with ';'.
- * To make responses identifiable, they ought to be formatted as key-value pairs.
- * Here, the SCPI command itself is chosen as a key string to identify the value returned.
- * When BSICS_PrependCommandToResult == true, the reply e.g.to  is
- *     cmd1?;cmd2?
- * can be
- *     "cmd1?",0;"cmd2?",0
- */
-bool BSICS_PrependCommandToResult = true;
-
-size_t PrependCommandToResult(scpi_t * context){
-    if(BSICS_PrependCommandToResult){
-        return SCPI_ResultCommand(context);
-    } else {
-        return 0;
-    }
-}
-
-static scpi_result_t BSICS_SetPrependCommandToResponse(scpi_t * context) {
-    scpi_bool_t param0;
-    if (!SCPI_ParamBool(context, &param0, TRUE)) {
-        return SCPI_RES_ERR;
-    }
-    BSICS_PrependCommandToResult = param0;
-    return SCPI_RES_OK;
-}
-
-
-static scpi_result_t BSICS_PrependCommandToResponseQ(scpi_t * context) {
-    PrependCommandToResult(context);
-    SCPI_ResultBool(context, BSICS_PrependCommandToResult);
-    return SCPI_RES_OK;
-}
-
-/**
- * Reimplement IEEE488.2 *TST?
- *
- * Result should be 0 if everything is ok
- * Result should be 1 if something goes wrong
- *
- * Return SCPI_RES_OK
- */
-static scpi_result_t My_CoreTstQ(scpi_t * context) {
-    SCPI_ResultInt32(context, 0);
-    return SCPI_RES_OK;
-}
-
 static scpi_result_t My_CoreWai(scpi_t * context) {
     uint32_t timestamp =  HAL_GetTick();
     bool wrap_around = busy_state_data.end_ticks < busy_state_data.start_ticks ;
@@ -167,6 +68,69 @@ static scpi_result_t My_CoreWai(scpi_t * context) {
     return SCPI_RES_OK;
 }
 
+
+/* Chained commands can produce multiple returned values, separated with ';'.
+ * To make responses identifiable, they ought to be formatted as key-value pairs.
+ * Here, the SCPI command itself is chosen as a key string to identify the value returned.
+ * When BSICS_PrependCommandToResult == true, the reply e.g.to  is
+ *     cmd1?;cmd2?
+ * can be
+ *     "cmd1?",0;"cmd2?",0
+ */
+bool do_prepend_command_to_result = true;
+
+size_t SCPI_ResultCommand(scpi_t * context){
+    // detected pattern with unresolved argument placeholders (escaped):
+    // return SCPI_ResultText(context, context->param_list.cmd->pattern);
+
+    // detected pattern with unresolved argument placeholders (non-escaped):
+    // return SCPI_ResultMnemonic(context, context->param_list.cmd->pattern);
+
+    // received command with arguments and abbreviations :
+    size_t trim = 0;
+    if(*(char*)(context->param_list.cmd_raw.data + context->param_list.cmd_raw.length -1) == '?') {
+        trim = 1;
+    }
+    return SCPI_ResultCharacters( context, context->param_list.cmd_raw.data + context->param_list.cmd_raw.position, context->param_list.cmd_raw.length - trim);
+}
+
+size_t BSICS_PrependCommandToResult(scpi_t * context){
+    if( do_prepend_command_to_result){
+        return SCPI_ResultCommand(context);
+    } else {
+        return 0;
+    }
+}
+
+static scpi_result_t BSICS_SetPrependCommandToResponse(scpi_t * context) {
+    scpi_bool_t param0;
+    if (!SCPI_ParamBool(context, &param0, TRUE)) {
+        return SCPI_RES_ERR;
+    }
+     do_prepend_command_to_result = param0;
+    return SCPI_RES_OK;
+}
+
+static scpi_result_t BSICS_PrependCommandToResponseQ(scpi_t * context) {
+    BSICS_PrependCommandToResult(context);
+    SCPI_ResultBool(context,  do_prepend_command_to_result);
+    return SCPI_RES_OK;
+}
+
+
+/**
+ * Reimplement IEEE488.2 *TST?
+ *
+ * Result should be 0 if everything is ok
+ * Result should be 1 if something goes wrong
+ *
+ * Return SCPI_RES_OK
+ */
+static scpi_result_t My_CoreTstQ(scpi_t * context) {
+    SCPI_ResultInt32(context, 0);
+    return SCPI_RES_OK;
+}
+
 /* set DeviceGroupIndex
  * param: integer from 0 to DeviceGroupCount - 1 */
 static scpi_result_t BSICS_SelectGroup(scpi_t * context) {
@@ -182,7 +146,7 @@ static scpi_result_t BSICS_SelectGroup(scpi_t * context) {
 
 // read back DeviceGroupIndex
 static scpi_result_t BSICS_GroupQ(scpi_t * context) {
-    PrependCommandToResult(context);
+    BSICS_PrependCommandToResult(context);
     SCPI_ResultInt32(context, DeviceGroupIndex);
     return SCPI_RES_OK;
 }
@@ -198,31 +162,10 @@ static scpi_result_t BSICS_SetPeriodicMeasReporting(scpi_t * context) {
 
 // read back DeviceGroupIndex
 static scpi_result_t BSICS_PeriodicMeasReportingQ(scpi_t * context) {
-    PrependCommandToResult(context);
+    BSICS_PrependCommandToResult(context);
     SCPI_ResultBool(context, PeriodMeasReportingViaUART);
     return SCPI_RES_OK;
 }
-
-
-//static scpi_result_t DMM_ConfigureVoltageDc(scpi_t * context) {
-//    double param1, param2;
-//    fprintf(stderr, "conf:volt:dc\r\n"); /* debug command name */
-//
-//    /* read first parameter if present */
-//    if (!SCPI_ParamDouble(context, &param1, TRUE)) {
-//        return SCPI_RES_ERR;
-//    }
-//
-//    /* read second paraeter if present */
-//    if (!SCPI_ParamDouble(context, &param2, FALSE)) {
-//        /* do something, if parameter not present */
-//    }
-//
-//    fprintf(stderr, "\tP1=%lf\r\n", param1);
-//    fprintf(stderr, "\tP2=%lf\r\n", param2);
-//
-//    return SCPI_RES_OK;
-//}
 
 enum BSICS_SetValue_dest {
     BSICS_group_voltage_lo,
@@ -305,7 +248,7 @@ static scpi_result_t BSICS_ChannelVoltageLoQ(scpi_t * context) {
         // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
     }
 
-    PrependCommandToResult(context);
+    BSICS_PrependCommandToResult(context);
     SCPI_ResultFloat(context, (float)(DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].device_voltages_mV[0] / 1000.0) );
     return SCPI_RES_OK;
 }
@@ -328,7 +271,7 @@ static scpi_result_t BSICS_ChannelVoltageHiQ(scpi_t * context) {
         // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
     }
 
-    PrependCommandToResult(context);
+    BSICS_PrependCommandToResult(context);
     SCPI_ResultFloat(context, (float)(DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].device_voltages_mV[1] / 1000.0) );
     return SCPI_RES_OK;
 }
@@ -349,7 +292,7 @@ static scpi_result_t BSICS_ChannelTemperatureQ(scpi_t * context) {
         // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
     }
 
-    PrependCommandToResult(context);
+    BSICS_PrependCommandToResult(context);
     SCPI_ResultFloat(context, (float)(DeviceGroup[commandNumber[0]].temp_sensor_data[commandNumber[1]-1].T_mdegC / 1000.0) );
     return SCPI_RES_OK;
 }
@@ -364,7 +307,7 @@ static scpi_result_t BSICS_SetDriversEna(scpi_t * context) {
 // return group drivers enable status (XRDVEN)
 static scpi_result_t BSICS_DriversEnaQ(scpi_t * context) {
     // ...
-    PrependCommandToResult(context);
+    BSICS_PrependCommandToResult(context);
     SCPI_ResultBool(context, false);
     return SCPI_RES_OK;
 }
@@ -410,7 +353,7 @@ static scpi_result_t BSICS_ChannelDriverMuxQ(scpi_t * context) {
         // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
     }
 
-    PrependCommandToResult(context);
+    BSICS_PrependCommandToResult(context);
     SCPI_ResultUInt8( context, (uint8_t)(DeviceGroup[commandNumber[0]].octal_spst_data[commandNumber[1]-1].prev) );
     return SCPI_RES_OK;
 }
