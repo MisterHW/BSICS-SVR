@@ -38,10 +38,47 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "cmsis_os.h"
 #include "scpi/scpi.h"
 #include "scpi-def.h"
 #include "devices.h"
 
+typedef struct {
+    uint32_t start_ticks;
+    uint32_t end_ticks;
+} tick_interval_t;
+
+volatile tick_interval_t busy_state_data {0, 0};
+
+void SpecifyOperationFinishedIn(uint32_t from_now_ms) {
+    tick_interval_t tmp;
+    tmp.start_ticks = HAL_GetTick();
+    uint32_t interval_duration_ticks = from_now_ms / HAL_GetTickFreq();
+    if(interval_duration_ticks < 1){
+        interval_duration_ticks = 1;
+    }
+    tmp.end_ticks = (uint32_t)(tmp.start_ticks + interval_duration_ticks);
+
+    bool mixed_wrap_around =
+            (busy_state_data.end_ticks < busy_state_data.start_ticks) ^
+            (tmp.end_ticks < tmp.start_ticks);
+
+    // bool update = false;
+    // // Distinguish 4 possible cases:
+    // if (mixed_wrap_around) {
+    //     // 2 cases: one of two intervals wraps around, update only if tmp has wrap-around.
+    //     update = tmp.end_ticks < busy_state_data.end_ticks;
+    // } else {
+    //     // 2 cases: default case, no wrap-around in either, or both ends are wrapped-around already.
+    //     update = tmp.end_ticks > busy_state_data.end_ticks;
+    // }
+    bool update = (tmp.end_ticks > busy_state_data.end_ticks) ^ mixed_wrap_around;
+
+    if(update){
+        busy_state_data.start_ticks = tmp.start_ticks;
+        busy_state_data.end_ticks   = tmp.end_ticks;
+    }
+}
 
 size_t SCPI_ResultCommand(scpi_t * context){
     // detected pattern with unresolved argument placeholders (escaped):
@@ -102,6 +139,31 @@ static scpi_result_t BSICS_PrependCommandToResponseQ(scpi_t * context) {
  */
 static scpi_result_t My_CoreTstQ(scpi_t * context) {
     SCPI_ResultInt32(context, 0);
+    return SCPI_RES_OK;
+}
+
+static scpi_result_t My_CoreWai(scpi_t * context) {
+    uint32_t timestamp =  HAL_GetTick();
+    bool wrap_around = busy_state_data.end_ticks < busy_state_data.start_ticks ;
+    bool gte_start = timestamp >= busy_state_data.start_ticks;
+    bool lt_end    = timestamp <  busy_state_data.end_ticks;
+    // Device is busy only when timestamp is within interval. When wrap_around is true, test for
+    // "not inside the interval with swapped bounds" :
+    bool busy = ((gte_start ^ wrap_around) && (lt_end ^ wrap_around)) ^ wrap_around ;
+    if(busy){
+        uint32_t delay_ms;
+        if ( wrap_around && gte_start ) {
+            // Wrap-around and timestamp is in the high part of the split interval. Piece together total remaining ms.
+            delay_ms = (busy_state_data.end_ticks + (INT32_MAX - timestamp)) * HAL_GetTickFreq();
+        } else {
+            // No wrap-around or timestamp is in the low part of the split interval.
+            delay_ms = (busy_state_data.end_ticks - timestamp) * HAL_GetTickFreq();
+        }
+        osDelay( delay_ms );
+        // Finally, invalidate interval to no delay interval is entered twice.
+        busy_state_data.start_ticks = busy_state_data.end_ticks;
+
+    }
     return SCPI_RES_OK;
 }
 
@@ -206,11 +268,13 @@ static scpi_result_t BSICS_SetFloatingPointValue(scpi_t * context, BSICS_SetValu
 
 // set DCDC_lo output voltage
 static scpi_result_t BSICS_SetVoltageLo(scpi_t * context) {
+    SpecifyOperationFinishedIn(500); // specify settling time estimate
     return BSICS_SetFloatingPointValue(context, BSICS_group_voltage_lo, SCPI_UNIT_VOLT);
 }
 
 // set DCDC_hi output voltage
 static scpi_result_t BSICS_SetVoltageHi(scpi_t * context) {
+    SpecifyOperationFinishedIn(500); // specify settling time estimate
     return BSICS_SetFloatingPointValue(context, BSICS_group_voltage_hi, SCPI_UNIT_VOLT);
 }
 
@@ -293,6 +357,7 @@ static scpi_result_t BSICS_ChannelTemperatureQ(scpi_t * context) {
 // Set/Clear group drivers enable (GPIO -> XRDVEN)
 static scpi_result_t BSICS_SetDriversEna(scpi_t * context) {
     // ...
+    SpecifyOperationFinishedIn(100); // specify settling time estimate
     return SCPI_RES_OK;
 }
 
@@ -421,7 +486,7 @@ const scpi_command_t scpi_commands[] = {
     { .pattern = "*SRE?", .callback = SCPI_CoreSreQ,},
     { .pattern = "*STB?", .callback = SCPI_CoreStbQ,},
     { .pattern = "*TST?", .callback = My_CoreTstQ,},
-    { .pattern = "*WAI", .callback = SCPI_CoreWai,},
+    { .pattern = "*WAI", .callback = My_CoreWai,},
 
     /* Required SCPI commands (SCPI std V1999.0 4.2.1) */
 
