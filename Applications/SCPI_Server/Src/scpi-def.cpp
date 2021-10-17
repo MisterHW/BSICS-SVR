@@ -387,6 +387,63 @@ static scpi_result_t BSICS_ChannelDriverMuxQ(scpi_t * context) {
     return SCPI_RES_OK;
 }
 
+static scpi_result_t BSICS_SetCalibration(scpi_t * context) {
+    int32_t commandNumber[2];
+    if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
+        || (commandNumber[0] >= DeviceGroupCount)
+        || (commandNumber[1] < 1)
+        || (commandNumber[1] > PeripheralDeviceGroup::n_channels) )
+    { return SCPI_RES_ERR; }
+
+    if(commandNumber[0] < 0){
+        commandNumber[0] = DeviceGroupIndex;
+    } else {
+        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
+        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
+    }
+
+    size_t o_count;
+    int32_t data[4];
+    if(not SCPI_ParamArrayInt32(context, data, 4, &o_count, SCPI_FORMAT_ASCII, true)
+        || (o_count != 4)
+        || (data[0] < 0) || (data[1] < 0) || (data[2] < 0) || (data[3] < 0)
+        || (data[0] > INT16_MAX) || (data[1] > INT16_MAX) || (data[2] > INT16_MAX) || (data[3] > INT16_MAX) )
+    { return SCPI_RES_ERR; }
+
+    DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x1024[0] = data[0];
+    DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x4000[0] = data[1];
+    DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x1024[1] = data[2];
+    DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x4000[1] = data[3];
+
+    return SCPI_RES_OK;
+}
+
+static scpi_result_t BSICS_CalibrationQ(scpi_t * context) {
+    int32_t commandNumber[2];
+    if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
+        || (commandNumber[0] >= DeviceGroupCount)
+        || (commandNumber[1] < 1)
+        || (commandNumber[1] > PeripheralDeviceGroup::n_channels) )
+    { return SCPI_RES_ERR; }
+
+    if(commandNumber[0] < 0){
+        commandNumber[0] = DeviceGroupIndex;
+    } else {
+        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
+        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
+    }
+
+    uint16_t data[4];
+    data[0] = DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x1024[0];
+    data[1] = DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x4000[0];
+    data[2] = DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x1024[1];
+    data[3] = DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x4000[1];
+
+    BSICS_PrependCommandToResult(context);
+    SCPI_ResultArrayUInt16(context, data, 4, SCPI_FORMAT_ASCII);
+    return SCPI_RES_OK;
+}
+
 // return most recent shared ~DCDC_ALT
 static scpi_result_t BSICS_StatusDCDCsQ(scpi_t * context) {
     return SCPI_RES_OK;
@@ -477,13 +534,13 @@ const scpi_command_t scpi_commands[] = {
     {.pattern = "COMMunication:REPorting[:ENAble]", .callback = BSICS_SetPeriodicMeasReporting,},
     {.pattern = "COMMunication:REPorting[:ENAble]?", .callback = BSICS_PeriodicMeasReportingQ,},
 
-    {.pattern = "GRP[:SELect]", .callback = BSICS_SelectGroup,},
-    {.pattern = "GRP?", .callback = BSICS_GroupQ,},
-
     {.pattern = "GPIO:OUTput[:SET]", .callback = BSICS_SetDigitalOut,},
     {.pattern = "GPIO:OUTput?", .callback = BSICS_DigitalOutQ,},
     {.pattern = "GPIO:BIT#[:SET]", .callback = BSICS_SetDigitalBit,},
     {.pattern = "GPIO:BIT#?", .callback = BSICS_DigitalBitQ,},
+
+    {.pattern = "GRP[:SELect]", .callback = BSICS_SelectGroup,},
+    {.pattern = "GRP?", .callback = BSICS_GroupQ,},
 
     {.pattern = "[GRP#]:SOURce:VOLTage:LO", .callback = BSICS_SetVoltageLo,},
     {.pattern = "[GRP#]:SOURce:VOLTage:HI", .callback = BSICS_SetVoltageHi,},
@@ -500,13 +557,13 @@ const scpi_command_t scpi_commands[] = {
     {.pattern = "[GRP#]:STATus:DCDC[:OPERating]?", .callback = BSICS_StatusDCDCsQ,},
     {.pattern = "[GRP#]:STATus:DRIVers[:RDY]?", .callback = BSICS_StatusDriversReadyQ,},
 
-    {.pattern = "[GRP#]:DISPlay:TEXT", .callback = BSICS_SetDisplayText,},
-    {.pattern = "[GRP#]:DISPlay:TEXT?", .callback = BSICS_DisplayTextQ,},
+//    {.pattern = "[GRP#]:DISPlay:TEXT", .callback = BSICS_SetDisplayText,},
+//    {.pattern = "[GRP#]:DISPlay:TEXT?", .callback = BSICS_DisplayTextQ,},
 
-    {.pattern = "[GRP#]:CALibration:STOre", .callback = BSICS_StoreCalibration,},
-    {.pattern = "[GRP#]:CALibration:RECall", .callback = BSICS_RecallCalibration,},
-    {.pattern = "[GRP#]:CALibration:CH#:ADC#", .callback = BSICS_SetChannelADCCalibration,},
-    {.pattern = "[GRP#]:CALibration:CH#:ADC#?", .callback = BSICS_ChannelADCCalibrationQ,},
+    {.pattern = "[GRP#]:CALibration:CH#[:SET]", .callback = BSICS_SetCalibration,},
+    {.pattern = "[GRP#]:CALibration:CH#?", .callback = BSICS_CalibrationQ,},
+//    {.pattern = "[GRP#]:CALibration:STOre", .callback = BSICS_StoreCalibration,},
+//    {.pattern = "[GRP#]:CALibration:RECall", .callback = BSICS_RecallCalibration,},
 
     SCPI_CMD_LIST_END
 };
