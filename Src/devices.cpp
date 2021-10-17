@@ -21,12 +21,12 @@ bool dcdc_hw_EN(uint16_t ID, uint8_t state){
 
     switch(DCDC_ID_TO_DEVICE(ID)){
         case PeripheralDeviceGroup::dcdc_list_indices::dcdc_hi :
-            gpio_bit_val  = state == 0 ? 0 : GPIO_EXP_0_DC_EN1_HI ;
-            gpio_bit_mask = ~GPIO_EXP_0_DC_EN1_HI;
+            gpio_bit_val  = state == 0 ? 0 : PeripheralDeviceGroup::GPIO_EXP_0_DC_EN1_HI ;
+            gpio_bit_mask = ~PeripheralDeviceGroup::GPIO_EXP_0_DC_EN1_HI;
             break;
         case PeripheralDeviceGroup::dcdc_list_indices::dcdc_lo:
-            gpio_bit_val  = state == 0 ? 0 : GPIO_EXP_1_DC_EN2_LO ;
-            gpio_bit_mask = ~GPIO_EXP_1_DC_EN2_LO;
+            gpio_bit_val  = state == 0 ? 0 : PeripheralDeviceGroup::GPIO_EXP_1_DC_EN2_LO ;
+            gpio_bit_mask = ~PeripheralDeviceGroup::GPIO_EXP_1_DC_EN2_LO;
             break;
         default:
             return false; // Invalid device index.
@@ -255,14 +255,17 @@ bool PeripheralDeviceGroup::writeChanges() {
     bool res = true;
 
     // readConversionResults common devices
-    if(gpio_exp.initialized && (gpio_exp_data.prev_gpo != gpio_exp_data.gpo)){
-        if(gpio_exp.writeRegister(PCA9536_PORT0_OUTPUT, gpio_exp_data.gpo)){
-            gpio_exp_data.prev_gpo = gpio_exp_data.gpo;
-            res &= gpio_exp.readRegister(PCA9536_PORT0_INPUT, gpio_exp_data.gpi);
-        } else {
-            // gpio_exp.initialized = false; // un-comment to remove device and prevent retry
-            res = false;
+    if(gpio_exp.initialized) {
+        if ( gpio_exp_data.prev_gpo != gpio_exp_data.gpo ) {
+            if (gpio_exp.writeRegister(PCA9536_PORT0_OUTPUT, gpio_exp_data.gpo)) {
+                gpio_exp_data.prev_gpo = gpio_exp_data.gpo;
+            } else {
+                // gpio_exp.initialized = false; // un-comment to remove device and prevent retry
+                res = false;
+            }
         }
+        // always read gpi register (!ALT, RDY)
+        res &= gpio_exp.readRegister(PCA9536_PORT0_INPUT, gpio_exp_data.gpi);
     }
 
     for(int i = 0; i < PeripheralDeviceGroup::n_channels; i++) {
@@ -611,4 +614,32 @@ bool Devices_refresh(bool read_slow_conversion_results) {
         res &= DeviceGroup[1].readConversionResults();
     }
     return res;
+}
+
+
+void updateDigitalOutputs(GPIO_packed_bits_t mask, GPIO_packed_bits_t bits) {
+    for(int i = 0; i < GPIO_map_size; i++){
+        if(mask & 1){
+            HAL_GPIO_WritePin(GPIO_map[i].port, GPIO_map[i].pin, (GPIO_PinState)(bits & 1));
+        }
+       bits = bits >> 1;
+       mask = mask >> 1;
+    }
+}
+
+GPIO_packed_bits_t getDigitalOutputs(){
+    GPIO_packed_bits_t tmp = 0;
+    for(int i = GPIO_map_size-1; i >= 0 ; i--) {
+        tmp |= HAL_GPIO_ReadPin( GPIO_map[i].port, GPIO_map[i].pin );
+        tmp = tmp << 1;
+    }
+    return tmp;
+}
+
+bool getDigitalOutput(uint8_t n){
+    assert_param(n < GPIO_map_size);
+    if(n >= GPIO_map_size){
+        return false;
+    }
+    return GPIO_PIN_SET == HAL_GPIO_ReadPin( GPIO_map[n].port, GPIO_map[n].pin );
 }

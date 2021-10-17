@@ -297,18 +297,47 @@ static scpi_result_t BSICS_ChannelTemperatureQ(scpi_t * context) {
     return SCPI_RES_OK;
 }
 
-// Set/Clear group drivers enable (GPIO -> XRDVEN)
-static scpi_result_t BSICS_SetDriversEna(scpi_t * context) {
-    // ...
-    SpecifyOperationFinishedIn(100); // specify settling time estimate
+static scpi_result_t BSICS_SetDigitalOut(scpi_t * context) {
+    uint32_t param0;
+    if (!SCPI_ParamUInt32(context, &param0, TRUE)) {
+        return SCPI_RES_ERR;
+    }
+    uint32_t mask = (1 << GPIO_map_size) - 1; // select all mapped bits
+    updateDigitalOutputs(mask , param0);
     return SCPI_RES_OK;
 }
 
-// return group drivers enable status (XRDVEN)
-static scpi_result_t BSICS_DriversEnaQ(scpi_t * context) {
-    // ...
+static scpi_result_t BSICS_DigitalOutQ(scpi_t * context) {
     BSICS_PrependCommandToResult(context);
-    SCPI_ResultBool(context, false);
+    SCPI_ResultUInt32(context, getDigitalOutputs());
+    return SCPI_RES_OK;
+}
+
+static scpi_result_t BSICS_SetDigitalBit(scpi_t * context) {
+    int32_t commandNumber[1];
+    if( not SCPI_CommandNumbers(context, commandNumber, 1, -1)
+        || (commandNumber[0] < 0)
+        || (commandNumber[0] >= GPIO_map_size) )
+    { return SCPI_RES_ERR; }
+    GPIO_packed_bits_t tmp = 1 << commandNumber[0];
+
+    scpi_bool_t value;
+    if( not SCPI_ParamBool(context, &value, true) )
+    { return SCPI_RES_ERR; }
+
+    updateDigitalOutputs(tmp, value ? tmp : 0);
+    return SCPI_RES_OK;
+}
+
+static scpi_result_t BSICS_DigitalBitQ(scpi_t * context) {
+    int32_t commandNumber[1];
+    if( not SCPI_CommandNumbers(context, commandNumber, 1, -1)
+        || (commandNumber[0] < 0)
+        || (commandNumber[0] >= GPIO_map_size) )
+    { return SCPI_RES_ERR; }
+
+    BSICS_PrependCommandToResult(context);
+    SCPI_ResultBool( context, getDigitalOutput(commandNumber[0]) );
     return SCPI_RES_OK;
 }
 
@@ -451,6 +480,11 @@ const scpi_command_t scpi_commands[] = {
     {.pattern = "GRP[:SELect]", .callback = BSICS_SelectGroup,},
     {.pattern = "GRP?", .callback = BSICS_GroupQ,},
 
+    {.pattern = "GPIO:OUTput[:SET]", .callback = BSICS_SetDigitalOut,},
+    {.pattern = "GPIO:OUTput?", .callback = BSICS_DigitalOutQ,},
+    {.pattern = "GPIO:BIT#[:SET]", .callback = BSICS_SetDigitalBit,},
+    {.pattern = "GPIO:BIT#?", .callback = BSICS_DigitalBitQ,},
+
     {.pattern = "[GRP#]:SOURce:VOLTage:LO", .callback = BSICS_SetVoltageLo,},
     {.pattern = "[GRP#]:SOURce:VOLTage:HI", .callback = BSICS_SetVoltageHi,},
     {.pattern = "[GRP#]:SOURce:CURRent:LO", .callback = BSICS_SetCurrentLo,},
@@ -460,8 +494,6 @@ const scpi_command_t scpi_commands[] = {
     {.pattern = "[GRP#]:MEASure:CH#:HI?", .callback = BSICS_ChannelVoltageHiQ,},
     {.pattern = "[GRP#]:MEASure:CH#:TEMP?", .callback = BSICS_ChannelTemperatureQ,},
 
-    {.pattern = "[GRP#]:CONFigure:DRIVers[:ENAble]", .callback = BSICS_SetDriversEna,},
-    {.pattern = "[GRP#]:CONFigure:DRIVers[:ENAble]?", .callback = BSICS_DriversEnaQ,},
     {.pattern = "[GRP#]:CONFigure:CH#:DRIVer[:STATe]", .callback = BSICS_SetChannelDriverMux,},
     {.pattern = "[GRP#]:CONFigure:CH#:DRIVer[:STATe]?", .callback = BSICS_ChannelDriverMuxQ,},
 
