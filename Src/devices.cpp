@@ -630,8 +630,8 @@ void updateDigitalOutputs(GPIO_packed_bits_t mask, GPIO_packed_bits_t bits) {
 GPIO_packed_bits_t getDigitalOutputs(){
     GPIO_packed_bits_t tmp = 0;
     for(int i = GPIO_map_size-1; i >= 0 ; i--) {
-        tmp |= HAL_GPIO_ReadPin( GPIO_map[i].port, GPIO_map[i].pin );
         tmp = tmp << 1;
+        tmp |= HAL_GPIO_ReadPin( GPIO_map[i].port, GPIO_map[i].pin );
     }
     return tmp;
 }
