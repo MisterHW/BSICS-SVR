@@ -204,8 +204,8 @@ static scpi_result_t BSICS_SetFloatingPointValue(scpi_t * context, BSICS_SetValu
     // read param0 (new setpoint, float)
     scpi_number_t param0;
     if (!SCPI_ParamNumber(context, scpi_special_numbers_def, &param0, TRUE)
-        || (not ((param0.unit == SCPI_UNIT_NONE) || (param0.unit == optional_unit)))
-        || (param0.content.value > 65.535) || (param0.content.value < 0) ) {
+        || not ((param0.unit == SCPI_UNIT_NONE) || (param0.unit == optional_unit))
+        || not inRange<double>(0, param0.content.value, 65.535 ) ) {
         return SCPI_RES_ERR;
     }
     uint16_t val_x1000 = (uint16_t)(param0.content.value * 1000 + 0.5);
