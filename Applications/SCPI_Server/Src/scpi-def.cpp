@@ -294,7 +294,7 @@ static scpi_result_t BSICS_SetDigitalOut(scpi_t * context) {
 
 static scpi_result_t BSICS_DigitalOutQ(scpi_t * context) {
     BSICS_PrependCommandToResult(context);
-    SCPI_ResultUInt32(context, getDigitalOutputs());
+    SCPI_ResultUInt32Base(context, getDigitalOutputs(), 16);
     return SCPI_RES_OK;
 }
 
