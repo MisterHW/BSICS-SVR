@@ -117,6 +117,25 @@ static scpi_result_t BSICS_PrependCommandToResponseQ(scpi_t * context) {
     return SCPI_RES_OK;
 }
 
+bool BSICS_GetGroupCommandNumbers(scpi_t * context, int32_t * numbers, size_t count){
+    if( not SCPI_CommandNumbers(context, numbers, count, -1)
+        || (numbers[0] >= DeviceGroupCount) )
+    { return false; }
+
+    if(numbers[0] < 0){
+        numbers[0] = DeviceGroupIndex;
+    } else {
+        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
+        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
+    }
+    return true;
+}
+
+template<typename T>
+inline bool inRange(T min, T number, T max){
+    return (number >= min) && (number <= max);
+}
+
 
 /**
  * Reimplement IEEE488.2 *TST?
@@ -134,13 +153,12 @@ static scpi_result_t My_CoreTstQ(scpi_t * context) {
 /* set DeviceGroupIndex
  * param: integer from 0 to DeviceGroupCount - 1 */
 static scpi_result_t BSICS_SelectGroup(scpi_t * context) {
-    scpi_number_t param0;
-    if (!SCPI_ParamNumber(context, scpi_special_numbers_def, &param0, TRUE)
-        || (param0.unit != SCPI_UNIT_NONE)
-        || (param0.content.value < 0) || (param0.content.value >= DeviceGroupCount) )
+    int32_t param0;
+    if ( not SCPI_ParamInt32(context, &param0, TRUE) ||
+         not inRange<int32_t>(0, param0, DeviceGroupCount) )
     { return SCPI_RES_ERR; }
 
-    DeviceGroupIndex = (uint8_t)param0.content.value;
+    DeviceGroupIndex = (uint8_t)param0;
     return SCPI_RES_OK;
 }
 
@@ -153,9 +171,9 @@ static scpi_result_t BSICS_GroupQ(scpi_t * context) {
 
 static scpi_result_t BSICS_SetPeriodicMeasReporting(scpi_t * context) {
     scpi_bool_t param0;
-    if (!SCPI_ParamBool(context, &param0, TRUE)) {
-        return SCPI_RES_ERR;
-    }
+    if ( not SCPI_ParamBool(context, &param0, TRUE) )
+    { return SCPI_RES_ERR; }
+
     PeriodMeasReportingViaUART = param0;
     return SCPI_RES_OK;
 }
@@ -179,15 +197,9 @@ enum BSICS_SetValue_dest {
  * param1 : double
  */
 static scpi_result_t BSICS_SetFloatingPointValue(scpi_t * context, BSICS_SetValue_dest dest, scpi_unit_t optional_unit) {
-    // parse optional argument0 (group index GRP0, GRP1)
-    int32_t idx = DeviceGroupIndex, new_idx;
-    if(SCPI_CommandNumbers(context, &new_idx, 1, -1)){
-        if( (new_idx >= 0) && (new_idx < DeviceGroupCount)){
-            idx = new_idx;
-            // Optionally set group index to last used value here.
-            // DeviceGroupIndex = idx;
-        }
-    }
+    int32_t idx;
+    if( not BSICS_GetGroupCommandNumbers(context, &idx, 1) )
+    { return SCPI_RES_ERR; }
 
     // read param0 (new setpoint, float)
     scpi_number_t param0;
@@ -235,18 +247,9 @@ static scpi_result_t BSICS_SetCurrentHi(scpi_t * context) {
 // Previously read value will be returned for simplicity.
 static scpi_result_t BSICS_ChannelVoltageLoQ(scpi_t * context) {
     int32_t commandNumber[2];
-    if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
-        || (commandNumber[0] >= DeviceGroupCount)
-        || (commandNumber[1] < 1)
-        || (commandNumber[1] > PeripheralDeviceGroup::n_channels) )
+    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 2) ||
+        not inRange<int32_t>(1, commandNumber[1], PeripheralDeviceGroup::n_channels) )
     { return SCPI_RES_ERR; }
-
-    if(commandNumber[0] < 0){
-        commandNumber[0] = DeviceGroupIndex;
-    } else {
-        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
-        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
-    }
 
     BSICS_PrependCommandToResult(context);
     SCPI_ResultFloat(context, (float)(DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].device_voltages_mV[0] / 1000.0) );
@@ -258,18 +261,9 @@ static scpi_result_t BSICS_ChannelVoltageLoQ(scpi_t * context) {
  * to be converted sequentially and read back asynchonously. */
 static scpi_result_t BSICS_ChannelVoltageHiQ(scpi_t * context) {
     int32_t commandNumber[2];
-    if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
-        || (commandNumber[0] >= DeviceGroupCount)
-        || (commandNumber[1] < 1)
-        || (commandNumber[1] > PeripheralDeviceGroup::n_channels) )
+    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 2) ||
+        not inRange<int32_t>(1, commandNumber[1], PeripheralDeviceGroup::n_channels) )
     { return SCPI_RES_ERR; }
-
-    if(commandNumber[0] < 0){
-        commandNumber[0] = DeviceGroupIndex;
-    } else {
-        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
-        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
-    }
 
     BSICS_PrependCommandToResult(context);
     SCPI_ResultFloat(context, (float)(DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].device_voltages_mV[1] / 1000.0) );
@@ -279,18 +273,9 @@ static scpi_result_t BSICS_ChannelVoltageHiQ(scpi_t * context) {
 // Return most recent CHn board temperature recorded near driver ICs.
 static scpi_result_t BSICS_ChannelTemperatureQ(scpi_t * context) {
     int32_t commandNumber[2];
-    if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
-        || (commandNumber[0] >= DeviceGroupCount)
-        || (commandNumber[1] < 1)
-        || (commandNumber[1] > PeripheralDeviceGroup::n_channels) )
+    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 2) ||
+        not inRange<int32_t>(1, commandNumber[1], PeripheralDeviceGroup::n_channels) )
     { return SCPI_RES_ERR; }
-
-    if(commandNumber[0] < 0){
-        commandNumber[0] = DeviceGroupIndex;
-    } else {
-        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
-        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
-    }
 
     BSICS_PrependCommandToResult(context);
     SCPI_ResultFloat(context, (float)(DeviceGroup[commandNumber[0]].temp_sensor_data[commandNumber[1]-1].T_mdegC / 1000.0) );
@@ -299,9 +284,9 @@ static scpi_result_t BSICS_ChannelTemperatureQ(scpi_t * context) {
 
 static scpi_result_t BSICS_SetDigitalOut(scpi_t * context) {
     uint32_t param0;
-    if (!SCPI_ParamUInt32(context, &param0, TRUE)) {
-        return SCPI_RES_ERR;
-    }
+    if ( not SCPI_ParamUInt32(context, &param0, TRUE) )
+    { return SCPI_RES_ERR; }
+
     uint32_t mask = (1 << GPIO_map_size) - 1; // select all mapped bits
     updateDigitalOutputs(mask , param0);
     return SCPI_RES_OK;
@@ -315,9 +300,8 @@ static scpi_result_t BSICS_DigitalOutQ(scpi_t * context) {
 
 static scpi_result_t BSICS_SetDigitalBit(scpi_t * context) {
     int32_t commandNumber[1];
-    if( not SCPI_CommandNumbers(context, commandNumber, 1, -1)
-        || (commandNumber[0] < 0)
-        || (commandNumber[0] >= GPIO_map_size) )
+    if( not SCPI_CommandNumbers(context, commandNumber, 1, -1) ||
+        not inRange<int32_t>(0, commandNumber[0], GPIO_map_size-1) )
     { return SCPI_RES_ERR; }
     GPIO_packed_bits_t tmp = 1 << commandNumber[0];
 
@@ -331,9 +315,8 @@ static scpi_result_t BSICS_SetDigitalBit(scpi_t * context) {
 
 static scpi_result_t BSICS_DigitalBitQ(scpi_t * context) {
     int32_t commandNumber[1];
-    if( not SCPI_CommandNumbers(context, commandNumber, 1, -1)
-        || (commandNumber[0] < 0)
-        || (commandNumber[0] >= GPIO_map_size) )
+    if( not SCPI_CommandNumbers(context, commandNumber, 1, -1) ||
+        not inRange<int32_t>(0, commandNumber[0], GPIO_map_size-1) )
     { return SCPI_RES_ERR; }
 
     BSICS_PrependCommandToResult(context);
@@ -344,18 +327,9 @@ static scpi_result_t BSICS_DigitalBitQ(scpi_t * context) {
 // Configure CHn mux configuration
 static scpi_result_t BSICS_SetChannelDriverMux(scpi_t * context) {
     int32_t commandNumber[2];
-    if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
-        || (commandNumber[0] >= DeviceGroupCount)
-        || (commandNumber[1] < 1)
-        || (commandNumber[1] > PeripheralDeviceGroup::n_channels) )
+    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 2) ||
+        not inRange<int32_t>(1, commandNumber[1], PeripheralDeviceGroup::n_channels) )
     { return SCPI_RES_ERR; }
-
-    if(commandNumber[0] < 0){
-        commandNumber[0] = DeviceGroupIndex;
-    } else {
-        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
-        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
-    }
 
     int32_t param0;
     if (!SCPI_ParamInt32(context, &param0, TRUE)
@@ -369,18 +343,9 @@ static scpi_result_t BSICS_SetChannelDriverMux(scpi_t * context) {
 // read back CHn mux configuration
 static scpi_result_t BSICS_ChannelDriverMuxQ(scpi_t * context) {
     int32_t commandNumber[2];
-    if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
-        || (commandNumber[0] >= DeviceGroupCount)
-        || (commandNumber[1] < 1)
-        || (commandNumber[1] > PeripheralDeviceGroup::n_channels) )
+    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 2) ||
+        not inRange<int32_t>(1, commandNumber[1], PeripheralDeviceGroup::n_channels) )
     { return SCPI_RES_ERR; }
-
-    if(commandNumber[0] < 0){
-        commandNumber[0] = DeviceGroupIndex;
-    } else {
-        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
-        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
-    }
 
     BSICS_PrependCommandToResult(context);
     SCPI_ResultUInt8( context, (uint8_t)(DeviceGroup[commandNumber[0]].octal_spst_data[commandNumber[1]-1].prev) );
@@ -389,18 +354,9 @@ static scpi_result_t BSICS_ChannelDriverMuxQ(scpi_t * context) {
 
 static scpi_result_t BSICS_SetCalibration(scpi_t * context) {
     int32_t commandNumber[2];
-    if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
-        || (commandNumber[0] >= DeviceGroupCount)
-        || (commandNumber[1] < 1)
-        || (commandNumber[1] > PeripheralDeviceGroup::n_channels) )
+    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 2) ||
+        not inRange<int32_t>(1, commandNumber[1], PeripheralDeviceGroup::n_channels) )
     { return SCPI_RES_ERR; }
-
-    if(commandNumber[0] < 0){
-        commandNumber[0] = DeviceGroupIndex;
-    } else {
-        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
-        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
-    }
 
     size_t o_count;
     int32_t data[4];
@@ -420,43 +376,26 @@ static scpi_result_t BSICS_SetCalibration(scpi_t * context) {
 
 static scpi_result_t BSICS_CalibrationQ(scpi_t * context) {
     int32_t commandNumber[2];
-    if( not SCPI_CommandNumbers(context, commandNumber, 2, -1)
-        || (commandNumber[0] >= DeviceGroupCount)
-        || (commandNumber[1] < 1)
-        || (commandNumber[1] > PeripheralDeviceGroup::n_channels) )
+    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 2) ||
+        not inRange<int32_t>(1, commandNumber[1], PeripheralDeviceGroup::n_channels) )
     { return SCPI_RES_ERR; }
 
-    if(commandNumber[0] < 0){
-        commandNumber[0] = DeviceGroupIndex;
-    } else {
-        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
-        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
-    }
-
-    uint16_t data[4];
+    int16_t data[4];
     data[0] = DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x1024[0];
     data[1] = DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x4000[0];
     data[2] = DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x1024[1];
     data[3] = DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x4000[1];
 
     BSICS_PrependCommandToResult(context);
-    SCPI_ResultArrayUInt16(context, data, 4, SCPI_FORMAT_ASCII);
+    SCPI_ResultArrayInt16(context, data, 4, SCPI_FORMAT_ASCII);
     return SCPI_RES_OK;
 }
 
 // return most recent shared ~DCDC_ALT
 static scpi_result_t BSICS_StatusDCDCsQ(scpi_t * context) {
     int32_t commandNumber[1];
-    if( not SCPI_CommandNumbers(context, commandNumber, 1, -1)
-        || (commandNumber[0] >= DeviceGroupCount) )
+    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 2) )
     { return SCPI_RES_ERR; }
-
-    if(commandNumber[0] < 0){
-        commandNumber[0] = DeviceGroupIndex;
-    } else {
-        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
-        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
-    }
 
     BSICS_PrependCommandToResult(context);
     SCPI_ResultBool(context,not ( DeviceGroup[commandNumber[0]].gpio_exp_data.gpi & PeripheralDeviceGroup::GPIO_EXP_2_DC_ALTN) );
@@ -466,16 +405,8 @@ static scpi_result_t BSICS_StatusDCDCsQ(scpi_t * context) {
 // return most recent group combined drivers RDY flag
 static scpi_result_t BSICS_StatusDriversReadyQ(scpi_t * context) {
     int32_t commandNumber[1];
-    if( not SCPI_CommandNumbers(context, commandNumber, 1, -1)
-        || (commandNumber[0] >= DeviceGroupCount) )
+    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 1) )
     { return SCPI_RES_ERR; }
-
-    if(commandNumber[0] < 0){
-        commandNumber[0] = DeviceGroupIndex;
-    } else {
-        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
-        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
-    }
 
     BSICS_PrependCommandToResult(context);
     SCPI_ResultBool(context, DeviceGroup[commandNumber[0]].gpio_exp_data.gpi & PeripheralDeviceGroup::GPIO_EXP_3_RDY);
@@ -489,6 +420,12 @@ static scpi_result_t BSICS_SetDisplayText(scpi_t * context) {
 
 // read back display text (shadowed but optionally read from EEPROM when recalled)
 static scpi_result_t BSICS_DisplayTextQ(scpi_t * context) {
+    int32_t commandNumber[1];
+    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 1) )
+    { return SCPI_RES_ERR; }
+
+    BSICS_PrependCommandToResult(context);
+    SCPI_ResultText(context, DeviceGroup[commandNumber[0]].identifier_string);
     return SCPI_RES_OK;
 }
 
@@ -576,7 +513,7 @@ const scpi_command_t scpi_commands[] = {
     {.pattern = "[GRP#]:STATus:DRIVers[:RDY]?", .callback = BSICS_StatusDriversReadyQ,},
 
 //    {.pattern = "[GRP#]:DISPlay:TEXT", .callback = BSICS_SetDisplayText,},
-//    {.pattern = "[GRP#]:DISPlay:TEXT?", .callback = BSICS_DisplayTextQ,},
+    {.pattern = "[GRP#]:DISPlay:TEXT?", .callback = BSICS_DisplayTextQ,},
 
     {.pattern = "[GRP#]:CALibration:CH#[:SET]", .callback = BSICS_SetCalibration,},
     {.pattern = "[GRP#]:CALibration:CH#?", .callback = BSICS_CalibrationQ,},
