@@ -182,9 +182,10 @@ bool Devices_configure_defaults_1();
 
 bool Devices_refresh(bool read_slow_conversion_results);
 
-void updateDigitalOutputs(GPIO_packed_bits_t mask, GPIO_packed_bits_t bits);
 GPIO_packed_bits_t getDigitalOutputs();
+void updateDigitalOutputs(GPIO_packed_bits_t mask, GPIO_packed_bits_t bits);
 bool getDigitalOutput(uint8_t n);
+void setDigitalOutput(uint8_t n, bool value);
 
 #ifdef __cplusplus
 }

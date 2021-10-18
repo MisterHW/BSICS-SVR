@@ -303,13 +303,12 @@ static scpi_result_t BSICS_SetDigitalBit(scpi_t * context) {
     if( not SCPI_CommandNumbers(context, commandNumber, 1, -1) ||
         not inRange<int32_t>(0, commandNumber[0], GPIO_map_size-1) )
     { return SCPI_RES_ERR; }
-    GPIO_packed_bits_t tmp = 1 << commandNumber[0];
 
     scpi_bool_t value;
     if( not SCPI_ParamBool(context, &value, true) )
     { return SCPI_RES_ERR; }
 
-    updateDigitalOutputs(tmp, value ? tmp : 0);
+    setDigitalOutput(commandNumber[0], value);
     return SCPI_RES_OK;
 }
 
