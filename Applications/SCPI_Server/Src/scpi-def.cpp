@@ -410,10 +410,10 @@ static scpi_result_t BSICS_SetCalibration(scpi_t * context) {
         || (data[0] > INT16_MAX) || (data[1] > INT16_MAX) || (data[2] > INT16_MAX) || (data[3] > INT16_MAX) )
     { return SCPI_RES_ERR; }
 
-    DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x1024[0] = data[0];
-    DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x4000[0] = data[1];
-    DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x1024[1] = data[2];
-    DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x4000[1] = data[3];
+    DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x1024[0] = (int16_t)data[0];
+    DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x4000[0] = (int16_t)data[1];
+    DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x1024[1] = (int16_t)data[2];
+    DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x4000[1] = (int16_t)data[3];
 
     return SCPI_RES_OK;
 }
@@ -446,11 +446,39 @@ static scpi_result_t BSICS_CalibrationQ(scpi_t * context) {
 
 // return most recent shared ~DCDC_ALT
 static scpi_result_t BSICS_StatusDCDCsQ(scpi_t * context) {
+    int32_t commandNumber[1];
+    if( not SCPI_CommandNumbers(context, commandNumber, 1, -1)
+        || (commandNumber[0] >= DeviceGroupCount) )
+    { return SCPI_RES_ERR; }
+
+    if(commandNumber[0] < 0){
+        commandNumber[0] = DeviceGroupIndex;
+    } else {
+        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
+        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
+    }
+
+    BSICS_PrependCommandToResult(context);
+    SCPI_ResultBool(context,not ( DeviceGroup[commandNumber[0]].gpio_exp_data.gpi & PeripheralDeviceGroup::GPIO_EXP_2_DC_ALTN) );
     return SCPI_RES_OK;
 }
 
 // return most recent group combined drivers RDY flag
 static scpi_result_t BSICS_StatusDriversReadyQ(scpi_t * context) {
+    int32_t commandNumber[1];
+    if( not SCPI_CommandNumbers(context, commandNumber, 1, -1)
+        || (commandNumber[0] >= DeviceGroupCount) )
+    { return SCPI_RES_ERR; }
+
+    if(commandNumber[0] < 0){
+        commandNumber[0] = DeviceGroupIndex;
+    } else {
+        // Un-comment to cause explicit GRPx:MEAS:... to change DeviceGroupIndex to x.
+        // DeviceGroupIndex = commandNumber[0]; // also set DeviceGroupIndex for subsequent operations
+    }
+
+    BSICS_PrependCommandToResult(context);
+    SCPI_ResultBool(context, DeviceGroup[commandNumber[0]].gpio_exp_data.gpi & PeripheralDeviceGroup::GPIO_EXP_3_RDY);
     return SCPI_RES_OK;
 }
 
@@ -471,16 +499,6 @@ static scpi_result_t BSICS_StoreCalibration(scpi_t * context) {
 
 // recall group display text and ADC conversion coefficients
 static scpi_result_t BSICS_RecallCalibration(scpi_t * context) {
-    return SCPI_RES_OK;
-}
-
-// set CH_x ADC_ch_y conversion coefficient
-static scpi_result_t BSICS_SetChannelADCCalibration(scpi_t * context) {
-    return SCPI_RES_OK;
-}
-
-// return CH_x ADC_ch_y conversion coefficient (previously set or read from EEPROM when recalled)
-static scpi_result_t BSICS_ChannelADCCalibrationQ(scpi_t * context) {
     return SCPI_RES_OK;
 }
 
