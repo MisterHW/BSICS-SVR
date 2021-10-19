@@ -649,3 +649,13 @@ void setDigitalOutput(uint8_t n, bool value){
     }
     HAL_GPIO_WritePin( GPIO_map[n].port, GPIO_map[n].pin, value? GPIO_PIN_SET : GPIO_PIN_RESET);
 }
+
+
+void Devices_full_init(){
+    // stage 0
+    Devices_init_0();
+    Devices_configure_defaults_0();
+    // stage 1
+    Devices_init_1();
+    Devices_configure_defaults_1();
+}

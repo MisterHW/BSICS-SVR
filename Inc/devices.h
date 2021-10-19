@@ -180,6 +180,8 @@ bool Devices_configure_defaults_0();
 bool Devices_init_1();
 bool Devices_configure_defaults_1();
 
+void Devices_full_init();
+
 bool Devices_refresh(bool read_slow_conversion_results);
 
 GPIO_packed_bits_t getDigitalOutputs();

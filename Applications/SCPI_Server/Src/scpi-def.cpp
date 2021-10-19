@@ -150,6 +150,20 @@ static scpi_result_t My_CoreTstQ(scpi_t * context) {
     return SCPI_RES_OK;
 }
 
+/**
+ * *RST
+ * @param context
+ * @return
+ */
+scpi_result_t My_CoreRst(scpi_t * context) {
+    _scpi_result_t result = SCPI_RES_OK;
+    if (context && context->interface && context->interface->reset) {
+        result = context->interface->reset(context);
+    }
+    Devices_full_init();
+    return result;
+}
+
 /* set DeviceGroupIndex
  * param: integer from 0 to DeviceGroupCount - 1 */
 static scpi_result_t BSICS_SelectGroup(scpi_t * context) {
@@ -464,7 +478,7 @@ const scpi_command_t scpi_commands[] = {
     { .pattern = "*IDN?", .callback = SCPI_CoreIdnQ,},
     { .pattern = "*OPC", .callback = SCPI_CoreOpc,},
     { .pattern = "*OPC?", .callback = SCPI_CoreOpcQ,},
-    { .pattern = "*RST", .callback = SCPI_CoreRst,},
+    { .pattern = "*RST", .callback = My_CoreRst,},
     { .pattern = "*SRE", .callback = SCPI_CoreSre,},
     { .pattern = "*SRE?", .callback = SCPI_CoreSreQ,},
     { .pattern = "*STB?", .callback = SCPI_CoreStbQ,},
