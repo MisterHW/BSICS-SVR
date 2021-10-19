@@ -192,7 +192,7 @@ enum BSICS_SetValue_dest {
     BSICS_group_current_hi,
 };
 
-/* BSICS_SetFloatingPointValue : [GRP#]:SOURce:(VOLTage, CURrent):(LO, HI) <double value> [<unit>]
+/* BSICS_SetFloatingPointValue : GRP#:SOURce:(VOLTage, CURrent):(LO, HI) <double value> [<unit>]
  * param0 : int, optional
  * param1 : double
  */
@@ -496,28 +496,28 @@ const scpi_command_t scpi_commands[] = {
     {.pattern = "GRP[:SELect]", .callback = BSICS_SelectGroup,},
     {.pattern = "GRP?", .callback = BSICS_GroupQ,},
 
-    {.pattern = "[GRP#]:SOURce:VOLTage:LO", .callback = BSICS_SetVoltageLo,},
-    {.pattern = "[GRP#]:SOURce:VOLTage:HI", .callback = BSICS_SetVoltageHi,},
-    {.pattern = "[GRP#]:SOURce:CURRent:LO", .callback = BSICS_SetCurrentLo,},
-    {.pattern = "[GRP#]:SOURce:CURRent:HI", .callback = BSICS_SetCurrentHi,},
+    {.pattern = "GRP#:SOURce:VOLTage:LO", .callback = BSICS_SetVoltageLo,},
+    {.pattern = "GRP#:SOURce:VOLTage:HI", .callback = BSICS_SetVoltageHi,},
+    {.pattern = "GRP#:SOURce:CURRent:LO", .callback = BSICS_SetCurrentLo,},
+    {.pattern = "GRP#:SOURce:CURRent:HI", .callback = BSICS_SetCurrentHi,},
 
-    {.pattern = "[GRP#]:MEASure:CH#:LO?", .callback = BSICS_ChannelVoltageLoQ,},
-    {.pattern = "[GRP#]:MEASure:CH#:HI?", .callback = BSICS_ChannelVoltageHiQ,},
-    {.pattern = "[GRP#]:MEASure:CH#:TEMP?", .callback = BSICS_ChannelTemperatureQ,},
+    {.pattern = "GRP#:MEASure:CH#:LO?", .callback = BSICS_ChannelVoltageLoQ,},
+    {.pattern = "GRP#:MEASure:CH#:HI?", .callback = BSICS_ChannelVoltageHiQ,},
+    {.pattern = "GRP#:MEASure:CH#:TEMP?", .callback = BSICS_ChannelTemperatureQ,},
 
-    {.pattern = "[GRP#]:CONFigure:CH#:DRIVer[:STATe]", .callback = BSICS_SetChannelDriverMux,},
-    {.pattern = "[GRP#]:CONFigure:CH#:DRIVer[:STATe]?", .callback = BSICS_ChannelDriverMuxQ,},
+    {.pattern = "GRP#:CONFigure:CH#:DRIVer[:STATe]", .callback = BSICS_SetChannelDriverMux,},
+    {.pattern = "GRP#:CONFigure:CH#:DRIVer[:STATe]?", .callback = BSICS_ChannelDriverMuxQ,},
 
-    {.pattern = "[GRP#]:STATus:DCDC[:OPERating]?", .callback = BSICS_StatusDCDCsQ,},
-    {.pattern = "[GRP#]:STATus:DRIVers[:RDY]?", .callback = BSICS_StatusDriversReadyQ,},
+    {.pattern = "GRP#:STATus:DCDC[:OPERating]?", .callback = BSICS_StatusDCDCsQ,},
+    {.pattern = "GRP#:STATus:DRIVers[:RDY]?", .callback = BSICS_StatusDriversReadyQ,},
 
-//    {.pattern = "[GRP#]:DISPlay:TEXT", .callback = BSICS_SetDisplayText,},
-    {.pattern = "[GRP#]:DISPlay:TEXT?", .callback = BSICS_DisplayTextQ,},
+//    {.pattern = "GRP#:DISPlay:TEXT", .callback = BSICS_SetDisplayText,},
+    {.pattern = "GRP#:DISPlay:TEXT?", .callback = BSICS_DisplayTextQ,},
 
-    {.pattern = "[GRP#]:CALibration:CH#[:SET]", .callback = BSICS_SetCalibration,},
-    {.pattern = "[GRP#]:CALibration:CH#?", .callback = BSICS_CalibrationQ,},
-//    {.pattern = "[GRP#]:CALibration:STOre", .callback = BSICS_StoreCalibration,},
-//    {.pattern = "[GRP#]:CALibration:RECall", .callback = BSICS_RecallCalibration,},
+    {.pattern = "GRP#:CALibration:CH#[:SET]", .callback = BSICS_SetCalibration,},
+    {.pattern = "GRP#:CALibration:CH#?", .callback = BSICS_CalibrationQ,},
+//    {.pattern = "GRP#:CALibration:STOre", .callback = BSICS_StoreCalibration,},
+//    {.pattern = "GRP#:CALibration:RECall", .callback = BSICS_RecallCalibration,},
 
     SCPI_CMD_LIST_END
 };
