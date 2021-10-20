@@ -33,6 +33,13 @@
 
 // #define LWIP_DEBUG 1
 
+// LWIP_TCP_KEEPALIVE parameters ( cannot be configured in CubeMX, are overwritten in tcp_priv.h ...
+// ... so they have to be specified here. )
+// CubeMX seriously needs a mechanism to allow specifying user values for all parameters! )
+#define  TCP_KEEPIDLE_DEFAULT   15000UL /* Default KEEPALIVE timer in milliseconds */
+#define  TCP_KEEPINTVL_DEFAULT   5000UL /* Default Time between KEEPALIVE probes in milliseconds */
+#define  TCP_KEEPCNT_DEFAULT        3U  /* Default Counter for KEEPALIVE probes */
+
 /* USER CODE END 0 */
 
 #ifdef __cplusplus
@@ -85,6 +92,8 @@
 #define DEFAULT_TCP_RECVMBOX_SIZE 6
 /*----- Value in opt.h for DEFAULT_ACCEPTMBOX_SIZE: 0 -----*/
 #define DEFAULT_ACCEPTMBOX_SIZE 6
+/*----- Default Value for LWIP_TCP_KEEPALIVE: 0 ---*/
+#define LWIP_TCP_KEEPALIVE 1
 /*----- Value in opt.h for RECV_BUFSIZE_DEFAULT: INT_MAX -----*/
 #define RECV_BUFSIZE_DEFAULT 2000000000
 /*----- Value in opt.h for LWIP_STATS: 1 -----*/

@@ -27,6 +27,7 @@
 //#include "stm32f7xx_nucleo_144.h"
 #include "lwip/netif.h"
 #include "lwip/tcpip.h"
+#include "tcp_priv.h"
 
 // #include "app_ethernet.h"
 // #include "httpserver-netconn.h"
@@ -53,7 +54,6 @@
 
 I2C_HandleTypeDef hi2c1;
 I2C_HandleTypeDef hi2c2;
-volatile bool reinitialize_peripherals = false;
 
 UART_HandleTypeDef huart3;
 
@@ -61,7 +61,7 @@ osThreadId defaultTaskHandle;
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 uint8_t peek_MX_LWIP_Init = 0;
-
+volatile bool reinitialize_peripherals = false;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -119,7 +119,7 @@ void MX_LWIP_Init_Addresses(){
 }
 
 
-#define NUM_TIMERS 1
+#define NUM_TIMERS 2
 TimerHandle_t xTimers[ NUM_TIMERS ];
 
 void keyscan_timer_callback( TimerHandle_t xTimer )
@@ -133,8 +133,19 @@ void keyscan_timer_callback( TimerHandle_t xTimer )
      */
 }
 
+void tcp_tmr_callback( TimerHandle_t xTimer){
+    configASSERT( xTimer);
+    tcp_tmr();
+}
 
-void Timers_init(){
+
+
+bool Timer_Init(unsigned int number, unsigned int interval, TimerCallbackFunction_t callback){
+    configASSERT(number < NUM_TIMERS);
+    if(number >= NUM_TIMERS){
+        // Index out of range.
+        return false;
+    }
     /* Create then start some timers.  Starting the timers before the RTOS scheduler has been started means
      * the timers will start running immediately that the RTOS scheduler starts.
      * see: https://www.freertos.org/FreeRTOS-timers-xTimerCreate.html
@@ -145,24 +156,33 @@ void Timers_init(){
      *      it will default to 1).
      *    The FreeRTOS/Source/timers.c C source file must be included in the build.
      */
-    xTimers[ 0 ] = xTimerCreate (
+    xTimers[ number ] = xTimerCreate (
         "Timer", /* Just a text name, not used by the RTOS kernel. */
-        1, /* The timer period in ticks, must be greater than 0. */
+        interval, /* The timer period in ticks, must be greater than 0. */
         pdTRUE, /* The timers will auto-reload themselves when they expire. */
         ( void * ) 0, /* pvTimerID is used to store a count of
             * the number of times the timer has expired, which is initialised to 0. */
-        keyscan_timer_callback /* callback called when it expires. */
+        callback /* callback called when it expires. */
         );
 
-    if( xTimers[ 0 ] != NULL ) {
+    if( xTimers[ number ] != NULL ) {
         /* Start the timer. No block time is specified, and even if one was it would be
          * ignored because the RTOS scheduler has not yet been started. */
-        if( xTimerStart( xTimers[ 0 ], 0 ) == pdPASS )
+        if( xTimerStart( xTimers[ number ], 0 ) == pdPASS )
         {
             /* Timer successfully created and set into the Active state. */
+            return true;
         }
     }
+
+    return false;
 }
+
+bool Timers_Init(){
+    Timer_Init( 0,   5, keyscan_timer_callback );
+    Timer_Init( 1, 250, tcp_tmr_callback );
+}
+
 
 void I2C1_DeInit() {
     if (HAL_I2C_DeInit(&hi2c1) != HAL_OK) {
@@ -278,7 +298,7 @@ int main(void)
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* USER CODE BEGIN RTOS_TIMERS */
-  Timers_init();
+  Timers_Init();
   /* USER CODE END RTOS_TIMERS */
 
   /* USER CODE BEGIN RTOS_QUEUES */

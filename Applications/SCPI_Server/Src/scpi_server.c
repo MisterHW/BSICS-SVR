@@ -232,8 +232,9 @@ static struct netconn * createServer(int port) {
         netconn_delete(conn);
         return NULL;
     }
-
-
+    // keep_alive, keep_intvl and keep_cnt re being overwritten by netconn_listen (Why?).
+    // Specify TCP_KEEPIDLE_DEFAULT, TCP_KEEPINTVL_DEFAULT and TCP_KEEPCNT_DEFAULT in lwipopts.h instead, as
+    // Defaults are also being overwritten when tcp_priv.h is regenerated.
     netconn_listen(conn);
 
     return conn;
@@ -258,6 +259,13 @@ static int processIoListen(user_data_t * user_data) {
             /* connection established */
             HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_SET);
             iprintf("***Connection established %s\r\n", inet_ntoa(newconn->pcb.ip->remote_ip));
+
+            // Override TCP_KEEPIDLE_DEFAULT, TCP_KEEPINTVL_DEFAULT and TCP_KEEPCNT_DEFAULT values for this connection.
+            newconn->pcb.tcp->so_options |= SOF_KEEPALIVE;
+            newconn->pcb.tcp->keep_idle   = 2000; // (ms) quiet time after last transaction
+            newconn->pcb.tcp->keep_intvl  = 1000; // (ms) keepalive repeat interval
+            newconn->pcb.tcp->keep_cnt    =    4; // # attempts to get a keep-alive response before terminating connection.
+
             user_data->io = newconn;
         }
     }
