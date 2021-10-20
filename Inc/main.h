@@ -78,6 +78,8 @@ void Error_Handler(void);
 #define RMII_RXD0_GPIO_Port GPIOC
 #define RMII_RXD1_Pin GPIO_PIN_5
 #define RMII_RXD1_GPIO_Port GPIOC
+#define LD1_Pin GPIO_PIN_0
+#define LD1_GPIO_Port GPIOB
 #define D8_Pin GPIO_PIN_12
 #define D8_GPIO_Port GPIOF
 #define D7_Pin GPIO_PIN_13
@@ -135,6 +137,8 @@ void Error_Handler(void);
 #define LD2_Pin GPIO_PIN_7
 #define LD2_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
+
+void request_reinitialization();
 
 /* USER CODE END Private defines */
 

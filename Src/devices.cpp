@@ -606,12 +606,14 @@ bool Devices_configure_defaults_1() {
 
 bool Devices_refresh(bool read_slow_conversion_results) {
     bool res;
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
     res  = DeviceGroup[0].writeChanges();
     res &= DeviceGroup[1].writeChanges();
     if(read_slow_conversion_results) {
         res &= DeviceGroup[0].readConversionResults();
         res &= DeviceGroup[1].readConversionResults();
     }
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
     return res;
 }
 

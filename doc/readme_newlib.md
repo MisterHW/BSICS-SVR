@@ -2,6 +2,10 @@
 
 Some modifications are necessary to resolve BusFault and MemManageFault issues caused by broken code shipped with STM32CubeMX. For details, please see https://nadler.com/embedded/newlibAndFreeRTOS.html .
 
+Here's a simple example which managed to trigger a MemManage fault:
+
+	printf("T%d=%.2f\t", 0, 12.345); // test MemManage fault issue with newlib / STM32Cube code
+
 Problem description :
 
 	Note as of spring 2020: ST has attempted to solve some of problems discussed below, 

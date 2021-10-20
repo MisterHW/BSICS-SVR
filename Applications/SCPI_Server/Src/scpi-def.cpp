@@ -160,7 +160,8 @@ scpi_result_t My_CoreRst(scpi_t * context) {
     if (context && context->interface && context->interface->reset) {
         result = context->interface->reset(context);
     }
-    Devices_full_init();
+
+    request_reinitialization();
     return result;
 }
 

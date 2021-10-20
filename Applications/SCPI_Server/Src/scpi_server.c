@@ -40,6 +40,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "assert.h"
+#include "main.h"
 
 #include "scpi/scpi.h"
 #include "scpi-def.h"
@@ -255,6 +256,7 @@ static int processIoListen(user_data_t * user_data) {
             netconn_delete(newconn);
         } else {
             /* connection established */
+            HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_SET);
             iprintf("***Connection established %s\r\n", inet_ntoa(newconn->pcb.ip->remote_ip));
             user_data->io = newconn;
         }
@@ -286,6 +288,7 @@ static void closeIo(user_data_t * user_data) {
     netconn_delete(user_data->io);
     user_data->io = NULL;
     iprintf("***Connection closed\r\n");
+    HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
 }
 
 static void closeSrqIo(user_data_t * user_data) {

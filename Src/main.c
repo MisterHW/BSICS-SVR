@@ -53,6 +53,7 @@
 
 I2C_HandleTypeDef hi2c1;
 I2C_HandleTypeDef hi2c2;
+volatile bool reinitialize_peripherals = false;
 
 UART_HandleTypeDef huart3;
 
@@ -162,6 +163,34 @@ void Timers_init(){
         }
     }
 }
+
+void I2C1_DeInit() {
+    if (HAL_I2C_DeInit(&hi2c1) != HAL_OK) {
+        Error_Handler();
+    }
+}
+
+void I2C2_DeInit() {
+    if (HAL_I2C_DeInit(&hi2c2) != HAL_OK) {
+        Error_Handler();
+    }
+}
+
+void request_reinitialization(){
+    reinitialize_peripherals = true;
+}
+
+void process_reinitialization_request(){
+    if(reinitialize_peripherals){
+        I2C1_DeInit();
+        I2C2_DeInit();
+        MX_I2C1_Init();
+        MX_I2C2_Init();
+        Devices_full_init();
+        reinitialize_peripherals = false;
+    }
+}
+
 
 /* USER CODE END 0 */
 
@@ -484,8 +513,8 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOG_CLK_ENABLE();
 
@@ -493,13 +522,13 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOA, D13_Pin|D12_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD3_Pin|LD2_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOF, D8_Pin|D7_Pin|D4_Pin|D2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOE, D6_Pin|D5_Pin|D3_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, LD3_Pin|LD2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, D10_Pin|D9_Pin, GPIO_PIN_RESET);
@@ -520,6 +549,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : LD1_Pin LD3_Pin LD2_Pin */
+  GPIO_InitStruct.Pin = LD1_Pin|LD3_Pin|LD2_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
   /*Configure GPIO pins : D8_Pin D7_Pin D4_Pin D2_Pin */
   GPIO_InitStruct.Pin = D8_Pin|D7_Pin|D4_Pin|D2_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -533,13 +569,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : LD3_Pin LD2_Pin */
-  GPIO_InitStruct.Pin = LD3_Pin|LD2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pins : D10_Pin D9_Pin */
   GPIO_InitStruct.Pin = D10_Pin|D9_Pin;
@@ -609,9 +638,7 @@ void StartDefaultTask(void const * argument)
   for(;;)
   {
       osDelay(12);
-
-      // printf("T%d=%.2f\t", 0, 12.345); // test MemManage fault issue with newlib / STM32Cube code
-
+      process_reinitialization_request();
       Devices_refresh((state & 0x0F) == 0x0F);
       state++;
   }
