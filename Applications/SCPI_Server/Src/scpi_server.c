@@ -233,8 +233,12 @@ static struct netconn * createServer(int port) {
         return NULL;
     }
 
-
     netconn_listen(conn);
+
+    conn->pcb.tcp->so_options |= SOF_KEEPALIVE;
+    conn->pcb.tcp->keep_idle   = 3; // quiet time after last transaction
+    conn->pcb.tcp->keep_intvl  = 1; // keepalive repeat interval
+    conn->pcb.tcp->keep_cnt    = 3; // # attempts to get a keep-alive response before terminating connection.
 
     return conn;
 }
