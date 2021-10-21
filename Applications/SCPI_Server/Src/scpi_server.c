@@ -40,7 +40,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "assert.h"
-#include "main.h"
 
 #include "scpi/scpi.h"
 #include "scpi-def.h"
@@ -257,14 +256,13 @@ static int processIoListen(user_data_t * user_data) {
             netconn_delete(newconn);
         } else {
             /* connection established */
-            HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_SET);
+            SCPI_DeviceConnectedEvent();
             iprintf("***Connection established %s\r\n", inet_ntoa(newconn->pcb.ip->remote_ip));
 
-            // Override TCP_KEEPIDLE_DEFAULT, TCP_KEEPINTVL_DEFAULT and TCP_KEEPCNT_DEFAULT values for this connection.
             newconn->pcb.tcp->so_options |= SOF_KEEPALIVE;
-            newconn->pcb.tcp->keep_idle   = 2000; // (ms) quiet time after last transaction
-            newconn->pcb.tcp->keep_intvl  = 1000; // (ms) keepalive repeat interval
-            newconn->pcb.tcp->keep_cnt    =    4; // # attempts to get a keep-alive response before terminating connection.
+            newconn->pcb.tcp->keep_idle   = SCPI_KEEP_IDLE;  // Override TCP_KEEPIDLE_DEFAULT  for this connection.
+            newconn->pcb.tcp->keep_intvl  = SCPI_KEEP_INTVL; // Override TCP_KEEPINTVL_DEFAULT for this connection.
+            newconn->pcb.tcp->keep_cnt    = SCPI_KEEP_CNT;   // Override TCP_KEEPCNT_DEFAULT   for this connection.
 
             user_data->io = newconn;
         }
@@ -283,6 +281,12 @@ static int processSrqIoListen(user_data_t * user_data) {
         } else {
             /* control connection established */
             iprintf("***Control Connection established %s\r\n", inet_ntoa(newconn->pcb.ip->remote_ip));
+
+            newconn->pcb.tcp->so_options |= SOF_KEEPALIVE;
+            newconn->pcb.tcp->keep_idle   = SCPI_KEEP_IDLE;  // Override TCP_KEEPIDLE_DEFAULT  for this connection.
+            newconn->pcb.tcp->keep_intvl  = SCPI_KEEP_INTVL; // Override TCP_KEEPINTVL_DEFAULT for this connection.
+            newconn->pcb.tcp->keep_cnt    = SCPI_KEEP_CNT;   // Override TCP_KEEPCNT_DEFAULT   for this connection.
+
             user_data->control_io = newconn;
         }
     }
@@ -295,8 +299,8 @@ static void closeIo(user_data_t * user_data) {
     netconn_close(user_data->io);
     netconn_delete(user_data->io);
     user_data->io = NULL;
+    SCPI_DeviceDisconnectedEvent();
     iprintf("***Connection closed\r\n");
-    HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
 }
 
 static void closeSrqIo(user_data_t * user_data) {
@@ -438,4 +442,12 @@ void scpi_server_init(void) {
      * see FreeRTOSConfig.h: #define configTOTAL_HEAP_SIZE ( ( size_t ) ( 25 * 1024 )
      * or increase TOTAL_HEAP_SIZE in CubeMX > FreeRTOS > Memory management settings. */
     assert(SCPIThreadID);
+}
+
+void __attribute__((weak)) SCPI_DeviceConnectedEvent() {
+    // Called by processIoListen() for additional reporting. Override on demand.
+}
+
+void __attribute__((weak)) SCPI_DeviceDisconnectedEvent() {
+    // Called by closeIO() for additional reporting. Override on demand.
 }

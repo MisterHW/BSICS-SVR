@@ -34,6 +34,10 @@ extern "C" {
 
 #define SCPI_DEVICE_PORT  5025 // scpi-raw standard port
 #define SCPI_CONTROL_PORT 5026 // libscpi control port (not part of the standard)
+#define SCPI_KEEP_IDLE    2000 // (ms) keepalive quiet time after last TCP packet
+#define SCPI_KEEP_INTVL   1000 // (ms) keepalive repeat interval
+#define SCPI_KEEP_CNT        4 // Retry count before terminating connection (SCPI_KEEP_INTVL * SCPI_KEEP_INTVL (ms)).
+
 
 #include <stdint.h>
 
@@ -50,6 +54,9 @@ void SCPI_RequestControl(void);
     scpi_result_t SCPI_Control(scpi_t * context, scpi_ctrl_name_t ctrl, scpi_reg_val_t val);
     scpi_result_t SCPI_Reset(scpi_t * context);
 */
+
+void SCPI_DeviceConnectedEvent(); // Optional event handler
+void SCPI_DeviceDisconnectedEvent();
 
 #ifdef __cplusplus
 }

@@ -179,8 +179,10 @@ bool Timer_Init(unsigned int number, unsigned int interval, TimerCallbackFunctio
 }
 
 bool Timers_Init(){
-    Timer_Init( 0,   5, keyscan_timer_callback );
-    Timer_Init( 1, 250, tcp_tmr_callback );
+    bool result;
+    result  = Timer_Init( 0,   5, keyscan_timer_callback );
+    result &= Timer_Init( 1, 250, tcp_tmr_callback );
+    return result;
 }
 
 
@@ -211,6 +213,15 @@ void process_reinitialization_request(){
     }
 }
 
+// SCPI_DeviceConnectedEvent() overrides definition in scpi_server.c to activate LD1 SCPI device connection indicator.
+void SCPI_DeviceConnectedEvent() {
+    HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_SET);
+}
+
+// SCPI_DeviceDisconnectedEvent() overrides definition in scpi_server.c to turn off LD1 SCPI device connection indicator
+void SCPI_DeviceDisconnectedEvent() {
+    HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
+}
 
 /* USER CODE END 0 */
 
@@ -657,9 +668,9 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-      osDelay(12);
+      osDelay(15);
       process_reinitialization_request();
-      Devices_refresh((state & 0x0F) == 0x0F);
+      Devices_refresh((state & 0x07) == 0x07);
       state++;
   }
   /* USER CODE END 5 */
