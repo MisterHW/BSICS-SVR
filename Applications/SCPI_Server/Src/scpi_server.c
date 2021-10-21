@@ -256,7 +256,7 @@ static int processIoListen(user_data_t * user_data) {
             netconn_delete(newconn);
         } else {
             /* connection established */
-            SCPI_DeviceConnectedEvent();
+            SCPI_DeviceConnectedEvent(newconn);
             iprintf("***Connection established %s\r\n", inet_ntoa(newconn->pcb.ip->remote_ip));
 
             newconn->pcb.tcp->so_options |= SOF_KEEPALIVE;
@@ -296,10 +296,10 @@ static int processSrqIoListen(user_data_t * user_data) {
 
 static void closeIo(user_data_t * user_data) {
     /* connection closed */
+    SCPI_DeviceDisconnectedEvent(user_data->io);
     netconn_close(user_data->io);
     netconn_delete(user_data->io);
     user_data->io = NULL;
-    SCPI_DeviceDisconnectedEvent();
     iprintf("***Connection closed\r\n");
 }
 
@@ -444,10 +444,10 @@ void scpi_server_init(void) {
     assert(SCPIThreadID);
 }
 
-void __attribute__((weak)) SCPI_DeviceConnectedEvent() {
+void __attribute__((weak)) SCPI_DeviceConnectedEvent(struct netconn * conn) {
     // Called by processIoListen() for additional reporting. Override on demand.
 }
 
-void __attribute__((weak)) SCPI_DeviceDisconnectedEvent() {
+void __attribute__((weak)) SCPI_DeviceDisconnectedEvent(struct netconn * conn) {
     // Called by closeIO() for additional reporting. Override on demand.
 }

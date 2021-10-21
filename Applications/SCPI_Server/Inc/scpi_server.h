@@ -41,6 +41,8 @@ extern "C" {
 
 #include <stdint.h>
 
+#include "api.h"
+
 void scpi_server_init(void);
 
 void SCPI_AddError(int16_t err);
@@ -55,8 +57,8 @@ void SCPI_RequestControl(void);
     scpi_result_t SCPI_Reset(scpi_t * context);
 */
 
-void SCPI_DeviceConnectedEvent(); // Optional event handler
-void SCPI_DeviceDisconnectedEvent();
+void SCPI_DeviceConnectedEvent(struct netconn * conn); // Optional event handler
+void SCPI_DeviceDisconnectedEvent(struct netconn * conn); // Optional event handler
 
 #ifdef __cplusplus
 }
