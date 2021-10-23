@@ -221,7 +221,7 @@ scpi_bool_t SCPI_Parse(scpi_t * context, char * data, int len) {
                 cmd_prev = state->programHeader;
             } else {
                 /* place undefined header with error */
-                /* calculate length of errornouse header and trim \r\n */
+                /* calculate length of errorenous header and trim \r\n */
                 size_t r2 = r;
                 while (r2 > 0 && (data[r2 - 1] == '\r' || data[r2 - 1] == '\n')) r2--;
                 SCPI_ErrorPushEx(context, SCPI_ERROR_UNDEFINED_HEADER, data, r2);
@@ -238,7 +238,7 @@ scpi_bool_t SCPI_Parse(scpi_t * context, char * data, int len) {
 
     }
 
-    /* conditionaly write new line */
+    /* conditionally write new line */
     writeNewLine(context);
 
     return result;
