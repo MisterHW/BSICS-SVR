@@ -6,13 +6,15 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * <h2><center>BSiCS-SVR</center></h2>
   *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0044
+  * Ethernet-enabled Automated Test Equipment (ATE) controller firmware for
+  * STM32F7 microcontrollers, supports SCPI command interface on port 5025.
+  * BSiCS-SVR is currently intended to be used with Nucleo-F767ZI boards and
+  * essentially portable to other STM32F4 and STM32F7 devices.
+  *
+  * Parts of this file can be generated via STM32CubeMX.
+  * See www.st.com/SLA0044 for details.
   *
   ******************************************************************************
   */
@@ -671,9 +673,9 @@ void StartDefaultTask(void const * argument)
   for(;;)
   {
       osDelay(15);
-      process_reinitialization_request(); //
+      process_reinitialization_request(); // Combined use of UART and I2C from single task here (in ciritcal section).
       xSemaphoreTake(MTX_UART_I2C, portMAX_DELAY);
-      Devices_refresh((state & 0x07) == 0x07);
+      Devices_refresh((state & 0x07) == 0x07); // UART transmit suppressed here.
       xSemaphoreGive(MTX_UART_I2C);
       state++;
   }
