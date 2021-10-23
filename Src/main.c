@@ -62,6 +62,7 @@ osThreadId defaultTaskHandle;
 /* Private variables ---------------------------------------------------------*/
 uint8_t peek_MX_LWIP_Init = 0;
 volatile bool reinitialize_peripherals = false;
+static SemaphoreHandle_t MTX_UART_I2C;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -92,7 +93,9 @@ void disableStdioBuffering(void)
 
 int __io_putchar(int ch)
 {
+    xSemaphoreTake(MTX_UART_I2C, portMAX_DELAY);
     HAL_UART_Transmit(&huart3, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+    xSemaphoreGive(MTX_UART_I2C);
     return ch;
 }
 
@@ -204,12 +207,16 @@ void request_reinitialization(){
 
 void process_reinitialization_request(){
     if(reinitialize_peripherals){
-        I2C1_DeInit();
-        I2C2_DeInit();
-        MX_I2C1_Init();
-        MX_I2C2_Init();
-        Devices_full_init();
-        reinitialize_peripherals = false;
+        taskENTER_CRITICAL(); // Prevent UART transmissions from other tasks from interfering with I2C transfers within.
+        {
+            I2C1_DeInit();
+            I2C2_DeInit();
+            MX_I2C1_Init();
+            MX_I2C2_Init();
+            Devices_full_init();
+            reinitialize_peripherals = false;
+        }
+        taskEXIT_CRITICAL();
     }
 }
 
@@ -278,11 +285,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
-    /*configure LED1 and LED3 */
-  //  BSP_LED_Init(LED1);
-  //  BSP_LED_Init(LED3);
-
+  MTX_UART_I2C = xSemaphoreCreateMutex(); // Create before User Code 2 section to prevent timeout caused by UART transmits within I2C transfers.
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -293,11 +296,10 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   MX_LWIP_Init_Addresses();
-
   char buf[] = "UART OK\r\n";
   HAL_UART_Transmit(&huart3, buf, 9, HAL_MAX_DELAY);
-
   Devices_full_init();
+
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -669,8 +671,10 @@ void StartDefaultTask(void const * argument)
   for(;;)
   {
       osDelay(15);
-      process_reinitialization_request();
+      process_reinitialization_request(); //
+      xSemaphoreTake(MTX_UART_I2C, portMAX_DELAY);
       Devices_refresh((state & 0x07) == 0x07);
+      xSemaphoreGive(MTX_UART_I2C);
       state++;
   }
   /* USER CODE END 5 */
