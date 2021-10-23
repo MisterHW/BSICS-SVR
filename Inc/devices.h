@@ -70,6 +70,7 @@ private:
     void draw_page_channel_info();
 public:
     static const size_t n_channels = 3;
+    static const uint8_t DisplayPageCount = 4;
 
     enum dcdc_list_indices {
         dcdc_hi = 0, // "DCDC1" address 0x6D
@@ -183,6 +184,8 @@ bool Devices_configure_defaults_1();
 void Devices_full_init();
 
 bool Devices_refresh(bool read_slow_conversion_results);
+
+void Devices_increment_display_page_index();
 
 GPIO_packed_bits_t getDigitalOutputs();
 void updateDigitalOutputs(GPIO_packed_bits_t mask, GPIO_packed_bits_t bits);

@@ -127,15 +127,40 @@ void MX_LWIP_Init_Addresses(){
 #define NUM_TIMERS 2
 TimerHandle_t xTimers[ NUM_TIMERS ];
 
+#define DEBOUNCE_MAX 10
+#define DEBOUNCE_THR  5
+typedef struct __attribute__((__packed__)) {
+    uint8_t x;
+    bool state;
+} debounce_counter_t;
+debounce_counter_t debounce_ctr[1] = {};
+
+bool update_and_detect_transition(debounce_counter_t *item, const bool momentary_state ){
+    if(momentary_state) {
+        // conditionally increment
+        if(item->x < DEBOUNCE_MAX){
+            item->x++;
+        } else if(!item->state){
+            item->state = true;
+            return true;
+        }
+
+    } else if (item->x != 0) {
+        item->x--;
+        if(item->x < DEBOUNCE_THR){
+            item->state = false;
+        }
+    }
+    return false;
+}
+
 void keyscan_timer_callback( TimerHandle_t xTimer )
-{
+{ // see also pvTimerGetTimerID(), vTimerSetTimerID() and xTimerStop().
     configASSERT( xTimer );
-    /*
-    uint32_t ulCount;
-    ulCount = ( uint32_t ) pvTimerGetTimerID( xTimer );
-    xTimerStop( xTimer, 0 );
-    vTimerSetTimerID( xTimer, ( void * ) ulCount );
-     */
+
+    if(update_and_detect_transition(&debounce_ctr[0], GPIO_PIN_SET == HAL_GPIO_ReadPin(USER_Btn_GPIO_Port, USER_Btn_Pin))){
+        Devices_increment_display_page_index();
+    }
 }
 
 void tcp_tmr_callback( TimerHandle_t xTimer){
@@ -185,7 +210,7 @@ bool Timer_Init(unsigned int number, unsigned int interval, TimerCallbackFunctio
 
 bool Timers_Init(){
     bool result;
-    result  = Timer_Init( 0,   5, keyscan_timer_callback );
+    result  = Timer_Init( 0,   3, keyscan_timer_callback );
     result &= Timer_Init( 1, 250, tcp_tmr_callback );
     return result;
 }

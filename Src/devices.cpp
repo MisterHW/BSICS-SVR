@@ -617,6 +617,14 @@ bool Devices_refresh(bool read_slow_conversion_results) {
     return res;
 }
 
+void Devices_increment_display_page_index(){
+    for(int i = 0; i < DeviceGroupCount; i++){
+        uint8_t idx = DeviceGroup[i].display_page_index;
+        idx = (idx + 1) % PeripheralDeviceGroup::DisplayPageCount;
+        DeviceGroup[i].display_page_index = idx;
+    }
+}
+
 GPIO_packed_bits_t getDigitalOutputs(){
     GPIO_packed_bits_t tmp = 0;
     for(int i = GPIO_map_size-1; i >= 0 ; i--) {
