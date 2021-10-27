@@ -629,15 +629,17 @@ GPIO_packed_bits_t getDigitalOutputs(){
     GPIO_packed_bits_t tmp = 0;
     for(int i = GPIO_map_size-1; i >= 0 ; i--) {
         tmp = tmp << 1;
-        tmp |= HAL_GPIO_ReadPin( GPIO_map[i].port, GPIO_map[i].pin );
+        if(GPIO_map[i].port != NULL) {
+            tmp |= HAL_GPIO_ReadPin(GPIO_map[i].port, GPIO_map[i].pin);
+        }
     }
     return tmp;
 }
 
 void updateDigitalOutputs(GPIO_packed_bits_t mask, GPIO_packed_bits_t bits) {
     for(int i = 0; i < GPIO_map_size; i++){
-        if(mask & 1){
-            HAL_GPIO_WritePin(GPIO_map[i].port, GPIO_map[i].pin, (GPIO_PinState)(bits & 1));
+        if((mask & 1) && (GPIO_map[i].port != NULL)){
+            HAL_GPIO_WritePin(GPIO_map[i].port, GPIO_map[i].pin, (GPIO_PinState)(bits & 1) ? GPIO_PIN_SET : GPIO_PIN_RESET);
         }
        bits = bits >> 1;
        mask = mask >> 1;
