@@ -236,6 +236,23 @@ static scpi_result_t BSICS_SetFloatingPointValue(scpi_t * context, BSICS_SetValu
     return SCPI_RES_OK;
 }
 
+static scpi_result_t BSICS_GetFloatingPointValue(scpi_t * context, BSICS_SetValue_dest dest, scpi_unit_t unit) {
+    int32_t idx;
+    if (not BSICS_GetGroupCommandNumbers(context, &idx, 1)) { return SCPI_RES_ERR; }
+
+    uint16_t val_x1000 = 0;
+    switch(dest){
+        case BSICS_group_voltage_lo: val_x1000 = DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_lo].VOUT_mV; break;
+        case BSICS_group_voltage_hi: val_x1000 = DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_hi].VOUT_mV; break;
+        case BSICS_group_current_lo: val_x1000 = DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_lo].IOUT_mA; break;
+        case BSICS_group_current_hi: val_x1000 = DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_hi].IOUT_mA; break;
+        default:; // handle unknown dest
+    };
+
+    SCPI_ResultFloat(context, (float)(val_x1000/1000.0));
+    return SCPI_RES_OK;
+}
+
 // set DCDC_lo output voltage
 static scpi_result_t BSICS_SetVoltageLo(scpi_t * context) {
     SpecifyOperationFinishedIn(500); // specify settling time estimate
@@ -256,6 +273,22 @@ static scpi_result_t BSICS_SetCurrentLo(scpi_t * context) {
 // set DCDC_hi current limit
 static scpi_result_t BSICS_SetCurrentHi(scpi_t * context) {
     return BSICS_SetFloatingPointValue(context, BSICS_group_current_hi, SCPI_UNIT_AMPER);
+}
+
+static scpi_result_t BSICS_VoltageLoQ(scpi_t * context) {
+    return BSICS_GetFloatingPointValue(context, BSICS_group_voltage_lo, SCPI_UNIT_VOLT);
+}
+
+static scpi_result_t BSICS_VoltageHiQ(scpi_t * context) {
+    return BSICS_GetFloatingPointValue(context, BSICS_group_voltage_hi, SCPI_UNIT_VOLT);
+}
+
+static scpi_result_t BSICS_CurrentLoQ(scpi_t * context) {
+    return BSICS_GetFloatingPointValue(context, BSICS_group_current_lo, SCPI_UNIT_AMPER);
+}
+
+static scpi_result_t BSICS_CurrentHiQ(scpi_t * context) {
+    return BSICS_GetFloatingPointValue(context, BSICS_group_current_hi, SCPI_UNIT_AMPER);
 }
 
 // Return last DRV2A-CHn negative supply voltage (scaled ADC.ch0).
@@ -362,7 +395,7 @@ static scpi_result_t BSICS_ChannelDriverMuxQ(scpi_t * context) {
     { return SCPI_RES_ERR; }
 
     BSICS_PrependCommandToResult(context);
-    SCPI_ResultUInt8( context, (uint8_t)(DeviceGroup[commandNumber[0]].octal_spst_data[commandNumber[1]-1].prev) );
+    SCPI_ResultUInt32Base(context, DeviceGroup[commandNumber[0]].octal_spst_data[commandNumber[1]-1].prev, 16);
     return SCPI_RES_OK;
 }
 
@@ -512,9 +545,14 @@ const scpi_command_t scpi_commands[] = {
     {.pattern = "GRP?", .callback = BSICS_GroupQ,},
 
     {.pattern = "GRP#:SOURce:VOLTage:LO", .callback = BSICS_SetVoltageLo,},
+    {.pattern = "GRP#:SOURce:VOLTage:LO?", .callback = BSICS_VoltageLoQ,},
     {.pattern = "GRP#:SOURce:VOLTage:HI", .callback = BSICS_SetVoltageHi,},
+    {.pattern = "GRP#:SOURce:VOLTage:HI?", .callback = BSICS_VoltageHiQ,},
+
     {.pattern = "GRP#:SOURce:CURRent:LO", .callback = BSICS_SetCurrentLo,},
+    {.pattern = "GRP#:SOURce:CURRent:LO?", .callback = BSICS_CurrentLoQ,},
     {.pattern = "GRP#:SOURce:CURRent:HI", .callback = BSICS_SetCurrentHi,},
+    {.pattern = "GRP#:SOURce:CURRent:HI?", .callback = BSICS_CurrentHiQ,},
 
     {.pattern = "GRP#:MEASure:CH#:LO?", .callback = BSICS_ChannelVoltageLoQ,},
     {.pattern = "GRP#:MEASure:CH#:HI?", .callback = BSICS_ChannelVoltageHiQ,},

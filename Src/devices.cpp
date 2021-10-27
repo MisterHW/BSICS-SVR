@@ -137,9 +137,9 @@ bool PeripheralDeviceGroup::configureDefaults_1() {
     // apply contents (calibration coefficients, ...)
     // ...
 
-    octal_spst_data[0].value = ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4;
-    octal_spst_data[1].value = ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4;
-    octal_spst_data[2].value = ADG715_S1 | ADG715_S2 | ADG715_S3 | ADG715_S4;
+    octal_spst_data[0].value = ADG715_S1 | ADG715_S4 | ADG715_S5 | ADG715_S8;
+    octal_spst_data[1].value = ADG715_S1 | ADG715_S4 | ADG715_S5 | ADG715_S8;
+    octal_spst_data[2].value = ADG715_S1 | ADG715_S4 | ADG715_S5 | ADG715_S8;
     octal_spst_data[0].prev = octal_spst_data[0].value;
     octal_spst_data[1].prev = octal_spst_data[1].value;
     octal_spst_data[2].prev = octal_spst_data[2].value;
