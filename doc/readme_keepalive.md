@@ -1,6 +1,6 @@
 ## TCP Connection Time-out
 
-The server implemented in the libscpi starting example permits a single connection. If the remote host network cable is unplugged or something causes the remote host connection to time-out, the scpi server will wait for a very long (default) time, effectively needing a reset. 
+The server implemented in the libscpi starting example permits a single connection. If the remote host network cable is unplugged or something causes the remote host connection to time-out, the scpi server will be inaccessible for a very long (default) waiting time, effectively needing a reset. 
 
 To close stale connections within a few seconds, the server is configured to wait a bit, then test whether the client (remote host) responds. After a number of failed attempts, the connection can be considered lost and will be closed.
 
@@ -30,7 +30,7 @@ In LwIP, this is achieved using [zero window probe](https://www.freesoft.org/CIE
 * Three values define the keep-alive behavior: in tcp\_priv.h, TCP\_KEEPIDLE\_DEFAULT, TCP\_KEEPINTVL\_DEFAULT and TCP\_KEEPCNT_DEFAULT can be superseded by definition in an lwipopts.h user code section.
 * As a new protocol control block (pcb) gets allocated (tcp\_alloc()) when a connection is accepted, the pcb is initialized with defaults. To localize the keep-alive behavior to scpi server connections, the defaults need to be replaced in every newly created pcb.
 	- Introduce particular keep-alive values in scpi\_server.h. 
-	- Update new pcb in scpi\_server.c processIoListen() and processSrqIoListen(). Note the pcb created in createServer() is being re-purposed when calling netconn\_listen(conn), being partially zero-filled, and an address pointer is put in place keep\_idle. It does not serve as a template for incoming connections.
+	- Update new pcb in scpi\_server.c processIoListen() and processSrqIoListen(). Note the pcb created in createServer() is being re-purposed when calling netconn\_listen(conn), being partially zero-filled, and an address pointer is put in place of keep\_idle. It does not serve as a template for incoming connections.
 	- Details: [http://www.ultimaserial.com/avr_lwip_keepalive.html](http://www.ultimaserial.com/avr_lwip_keepalive.html) describes key protocol control block settings (see api.h union {} pcb)
 
 
@@ -41,7 +41,7 @@ Enable LWIP\_TCP\_KEEPALIVE in STM32CubeMX LwIP Key Options + Advanced Parameter
 ![](img/TCP_KEEPIDLE.PNG)
 
 
-New defaults can be specified in lwipopts.h:
+New defaults need to be placed in lwipopts.h, which is included earlier than tcp_priv.h and takes precedence:
 
 
 	/* USER CODE BEGIN 0 */
@@ -56,7 +56,7 @@ New defaults can be specified in lwipopts.h:
 	
 	/* USER CODE END 0 */		
 
-They need to be placed in lwipopts.h, because default values given in tcp\_priv.h are overwritten when the project is regenerated and not managed in STM32CubeMX:
+The fall-back default values given in tcp\_priv.h are overwritten when the project is regenerated and not managed in STM32CubeMX:
 
 	/* Keepalive values, compliant with RFC 1122. Don't change this unless you know what you're doing */
 	#ifndef  TCP_KEEPIDLE_DEFAULT
