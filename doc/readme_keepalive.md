@@ -30,13 +30,14 @@ In LwIP, this is achieved using [zero window probe](https://www.freesoft.org/CIE
 * Three values define the keep-alive behavior: in tcp\_priv.h, TCP\_KEEPIDLE\_DEFAULT, TCP\_KEEPINTVL\_DEFAULT and TCP\_KEEPCNT_DEFAULT can be superseded by definition in an lwipopts.h user code section.
 * As a new protocol control block (pcb) gets allocated (tcp\_alloc()) when a connection is accepted, the pcb is initialized with defaults. To localize the keep-alive behavior to scpi server connections, the defaults need to be replaced in every newly created pcb.
 	- Introduce particular keep-alive values in scpi\_server.h. 
-	- Update new pcb in scpi\_server.c processIoListen() and processSrqIoListen(). Note the pcb created in createServer() is being re-purposed when calling netconn\_listen(conn), being partially zero-filled, and an address pointer is put in place of keep\_idle. It does not serve as a template for incoming connections.
+	- Update new pcb in scpi\_server.c processIoListen() and processSrqIoListen().   
+	Note the pcb created in createServer() is being re-purposed when calling netconn\_listen(conn), being partially zero-filled, and an address pointer is put in place of keep\_idle. That pcb does not serve as a template for incoming connections.
 	- Details: [http://www.ultimaserial.com/avr_lwip_keepalive.html](http://www.ultimaserial.com/avr_lwip_keepalive.html) describes key protocol control block settings (see api.h union {} pcb)
 
 
 #### Enabling Keep-Alive
 
-Enable LWIP\_TCP\_KEEPALIVE in STM32CubeMX LwIP Key Options + Advanced Parameters. Note that the description says  TCP\_KEEPIDLE\_DEFAULT, TCP\_KEEPINTVL\_DEFAULT and TCP\_KEEPCNT_DEFAULT are given in seconds, **which they are not. Times are in milliseconds.** This seems to be a mix-up with the sockets API - but here we're using netconn.
+Enable LWIP\_TCP\_KEEPALIVE in STM32CubeMX LwIP Key Options + Advanced Parameters. Note that the description says  TCP\_KEEPIDLE\_DEFAULT, TCP\_KEEPINTVL\_DEFAULT and TCP\_KEEPCNT_DEFAULT are given **in seconds, which they are not. Times are in milliseconds.** This seems to be a mix-up with the socket API - but here we're using netconn.
 
 ![](img/TCP_KEEPIDLE.PNG)
 
@@ -56,7 +57,7 @@ New defaults need to be placed in lwipopts.h, which is included earlier than tcp
 	
 	/* USER CODE END 0 */		
 
-The fall-back default values given in tcp\_priv.h are overwritten when the project is regenerated and not managed in STM32CubeMX:
+The fall-back default values given in tcp\_priv.h are overwritten when the project is re-generated and not managed in STM32CubeMX:
 
 	/* Keepalive values, compliant with RFC 1122. Don't change this unless you know what you're doing */
 	#ifndef  TCP_KEEPIDLE_DEFAULT
@@ -132,3 +133,49 @@ these values are applied to the newly created pcb structure from netconn_accept(
 	}
 
 where the SOF\_KEEPALIVE flag is defined in ip.h (same as SO\_KEEPALIVE).(Setting might be redundant though, but let's be explicit).
+
+
+## Addendum: Memory Pool Sizes
+
+While on the subject of lingering connections, in the interim, more connections need to possible to guarantee smooth operation.
+For each new connection, a tcp pcb structure is created. For an scpi server to work (2 listening sockets + 2 connections) alongside a webserver (1 listening socket and up to 4 connections), a MEMP\_NUM\_NETCONN should be at least 9.
+
+https://lists.gnu.org/archive/html/lwip-users/2008-03/msg00020.html has some Q&A on the meaning of MEMP\_NUM\_... values.
+
+	> 2. MEMP_NUM_NETBUF: i set this value equal to sum of tcp connections and
+	> udp connections. IS IT RIGHT?
+	
+	No. A netbuf is used as a wrapper for pbufs for communicating across the
+	netconn API. It is also therefore used inside the BSD sockets API
+	implementation.
+	
+	> 3. MEMP_NUM_NETCONN:  i set this value equal to sum of tcp connections
+	> and udp connections and tcp listeners. IS IT RIGHT?
+	
+	Yes, although be careful since connections are needed longer than you may
+	think, e.g. in the TIME_WAIT state, even after you think you have closed them.
+
+and in https://lists.gnu.org/archive/html/lwip-users/2008-03/msg00009.html :
+
+	> In particular, my questions are:
+	> 
+	> 1. MEMP_NUM_PBUF: comments are: used for PBUF_ROM and PBUF_REF. So, if i
+	> use, for both udp and tcp, only packet build in my buffer in ram, i can
+	> set this value low. IS IT RIGHT?
+	>                                           sockets calls do copy of data,
+	> so, pbuf_rom and pbuf_ref are never used?
+	
+	One thing I did, which helped me tune pool sizes, was to run for a little
+	while, stop in my debugger, and view the lwIP lwip_stats.memp structure.
+	Or, watch a timer, and call stats_display at an interval to monitor this.
+
+Viewing the lwIP lwip_stats.memp structure sounds like a good idea going forward. It is perhaps most instructive to generate debug output to see if the application runs out of memory during regular operation. Additionally, the application should be stress tested before deployment to see whether edge cases can be provoked that cause connections or actions to fail with insufficient memory.
+
+Unfortunately, the [lwip documentation](http://www.nongnu.org/lwip/2_0_x/group__lwip__opts__memp.html) is currently not very verbose when it comes to the function of said parameters and how to dial them in. If you have more info on how to properly dimension lwip memory pools or a literature reference, please let me know.
+
+
+A possibly complete number of MEMP_NUM parameters can be adjusted in the CubeMX LwIP Key Options tab (here MEMP\_NUM\_NETCONN is set to 10 to accommodate the needs of multiple simultaneous connections, and MEMP\_NUM\_NETBUF is increased from 2 to 4 as a preventative measure).
+
+To set **MEMP\_NUM\_NETCONN** to **10** and exploratively set **MEMP\_NUM\_NETBUF** to **4** :
+
+![](img/lwip_memory_pool_sizes.png)
