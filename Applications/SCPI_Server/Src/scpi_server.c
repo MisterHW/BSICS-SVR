@@ -129,11 +129,10 @@ int SCPI_Error(scpi_t * context, int_fast16_t err) {
     iprintf("**ERROR: %ld, \"%s\"\r\n", (int32_t) err, SCPI_ErrorTranslate(err));
     if (err != 0) {
         /* New error */
-        /* Beep */
-        /* Error LED ON */
+        SCPI_ErrorIndicatorOn(context, err);
     } else {
         /* No more errors in the queue */
-        /* Error LED OFF */
+        SCPI_ErrorIndicatorOff(context, err);
     }
     return 0;
 }
@@ -450,4 +449,17 @@ void __attribute__((weak)) SCPI_DeviceConnectedEvent(struct netconn * conn) {
 
 void __attribute__((weak)) SCPI_DeviceDisconnectedEvent(struct netconn * conn) {
     // Called by closeIO() for additional reporting. Override on demand.
+}
+
+void __attribute__((weak)) SCPI_ErrorIndicatorOn(scpi_t * context, int_fast16_t err) {
+    // Called by SCPI_Error() for reporting. Override on demand.
+    /* New error */
+    /* Beep */
+    /* Error LED ON */
+}
+
+void __attribute__((weak)) SCPI_ErrorIndicatorOff(scpi_t * context, int_fast16_t err) {
+    // Called by SCPI_Error() for reporting. Override on demand.
+    /* No more errors in the queue */
+    /* Error LED OFF */
 }
