@@ -533,7 +533,6 @@ const scpi_command_t scpi_commands[] = {
 
     /* BSICS-SVR commands */
 
-
     {.pattern = "SYSTem:COMMunication:PREPend[:ENAble]", .callback = BSICS_SetPrependCommandToResponse,},
     {.pattern = "SYSTem:COMMunication:PREPend[:ENAble]?", .callback = BSICS_PrependCommandToResponseQ,},
     {.pattern = "SYSTem:COMMunication:REPorting[:ENAble]", .callback = BSICS_SetPeriodicMeasReporting,},

@@ -42,6 +42,7 @@ extern "C" {
 #include <stdint.h>
 
 #include "api.h"
+#include "scpi/types.h"
 
 void scpi_server_init(void);
 
