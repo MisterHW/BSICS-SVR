@@ -521,20 +521,23 @@ const scpi_command_t scpi_commands[] = {
 
     /* Required SCPI commands (SCPI std V1999.0 4.2.1) */
 
-    {.pattern = "SYSTem:ERRor[:NEXT]?", .callback = SCPI_SystemErrorNextQ,},
-    {.pattern = "SYSTem:ERRor:COUNt?", .callback = SCPI_SystemErrorCountQ,},
-    {.pattern = "SYSTem:VERSion?", .callback = SCPI_SystemVersionQ,},
     {.pattern = "STATus:QUEStionable[:EVENt]?", .callback = SCPI_StatusQuestionableEventQ,},
     {.pattern = "STATus:QUEStionable:ENABle", .callback = SCPI_StatusQuestionableEnable,},
     {.pattern = "STATus:QUEStionable:ENABle?", .callback = SCPI_StatusQuestionableEnableQ,},
     {.pattern = "STATus:PRESet", .callback = SCPI_StatusPreset,},
+    {.pattern = "SYSTem:ERRor[:NEXT]?", .callback = SCPI_SystemErrorNextQ,},
+    {.pattern = "SYSTem:ERRor:COUNt?", .callback = SCPI_SystemErrorCountQ,},
+    {.pattern = "SYSTem:VERSion?", .callback = SCPI_SystemVersionQ,},
+
+    {.pattern = "SYSTem:COMMunication:TCPIP:CONTROL?", .callback = SCPI_SystemCommTcpipControlQ,},
 
     /* BSICS-SVR commands */
 
-    {.pattern = "COMMunication:PREPend[:ENAble]", .callback = BSICS_SetPrependCommandToResponse,},
-    {.pattern = "COMMunication:PREPend[:ENAble]?", .callback = BSICS_PrependCommandToResponseQ,},
-    {.pattern = "COMMunication:REPorting[:ENAble]", .callback = BSICS_SetPeriodicMeasReporting,},
-    {.pattern = "COMMunication:REPorting[:ENAble]?", .callback = BSICS_PeriodicMeasReportingQ,},
+
+    {.pattern = "SYSTem:COMMunication:PREPend[:ENAble]", .callback = BSICS_SetPrependCommandToResponse,},
+    {.pattern = "SYSTem:COMMunication:PREPend[:ENAble]?", .callback = BSICS_PrependCommandToResponseQ,},
+    {.pattern = "SYSTem:COMMunication:REPorting[:ENAble]", .callback = BSICS_SetPeriodicMeasReporting,},
+    {.pattern = "SYSTem:COMMunication:REPorting[:ENAble]?", .callback = BSICS_PeriodicMeasReportingQ,},
 
     {.pattern = "GPIO:OUTput[:SET]", .callback = BSICS_SetDigitalOut,},
     {.pattern = "GPIO:OUTput?", .callback = BSICS_DigitalOutQ,},
