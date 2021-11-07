@@ -54,5 +54,6 @@ The author does not claim to be an expert and code is provided as-is. Correction
 	- [Modifications for Thread Safety (newlib)](doc/readme_newlib.md)
 * debug ouput via USART and virtual COM port
 * establishing and testing ethernet functionality
+	- [keep-alive mechanism to automatically close connections when client does no longer respond](doc/readme_keepalive.mdd)
 * adding libscpi
 * I2C device support
