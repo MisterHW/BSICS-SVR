@@ -248,12 +248,12 @@ void process_reinitialization_request(){
 }
 
 // SCPI_DeviceConnectedEvent() overrides definition in scpi_server.c to activate LD1 SCPI device connection indicator.
-void SCPI_DeviceConnectedEvent(struct netconn * conn) {
+void SCPI_Event_DeviceConnected(struct netconn * conn) {
     HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_SET);
 }
 
 // SCPI_DeviceDisconnectedEvent() overrides definition in scpi_server.c to turn off LD1 SCPI device connection indicator
-void SCPI_DeviceDisconnectedEvent(struct netconn * conn) {
+void SCPI_Event_DeviceDisconnected(struct netconn * conn) {
     HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
 }
 

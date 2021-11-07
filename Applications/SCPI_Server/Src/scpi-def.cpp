@@ -70,36 +70,35 @@ static scpi_result_t My_CoreWai(scpi_t * context) {
 
 
 /* Chained commands can produce multiple returned values, separated with ';'.
- * To make responses identifiable, they ought to be formatted as key-value pairs.
+ * To make responses automatically identifiable, they ought to be formatted as key-value pairs.
  * Here, the SCPI command itself is chosen as a key string to identify the value returned.
- * When BSICS_PrependCommandToResult == true, the reply e.g.to  is
+ * When BSICS_PrependCommandToResult == true, the reply e.g.to
  *     cmd1?;cmd2?
- * can be
- *     "cmd1?",0;"cmd2?",0
+ * is
+ *     cmd1,0;cmd2,0
  */
 bool do_prepend_command_to_result = true;
 
-size_t SCPI_ResultCommand(scpi_t * context){
-    // detected pattern with unresolved argument placeholders (escaped):
+size_t SCPI_ResultCommand(scpi_t * context) {
+    // detected pattern with unresolved argument placeholders (escaped, including '?'):
     // return SCPI_ResultText(context, context->param_list.cmd->pattern);
 
-    // detected pattern with unresolved argument placeholders (non-escaped):
+    // detected pattern with unresolved argument placeholders (non-escaped, including '?'):
     // return SCPI_ResultMnemonic(context, context->param_list.cmd->pattern);
 
-    // received command with arguments and abbreviations :
-    size_t trim = 0;
-    if(*(char*)(context->param_list.cmd_raw.data + context->param_list.cmd_raw.length -1) == '?') {
-        trim = 1;
+    // detected pattern with unresolved argument placeholders (non-escaped, excluding '?'):
+    size_t trim_right = 0;
+    if(*(char*)(context->param_list.cmd_raw.data + context->param_list.cmd_raw.length - 1) == '?') {
+        trim_right = 1;
     }
-    return SCPI_ResultCharacters( context, context->param_list.cmd_raw.data + context->param_list.cmd_raw.position, context->param_list.cmd_raw.length - trim);
+    return SCPI_ResultCharacters (
+            context,
+            context->param_list.cmd_raw.data + context->param_list.cmd_raw.position,
+            context->param_list.cmd_raw.length - trim_right );
 }
 
 size_t BSICS_PrependCommandToResult(scpi_t * context){
-    if( do_prepend_command_to_result){
-        return SCPI_ResultCommand(context);
-    } else {
-        return 0;
-    }
+    return do_prepend_command_to_result ? SCPI_ResultCommand(context) : 0;
 }
 
 static scpi_result_t BSICS_SetPrependCommandToResponse(scpi_t * context) {

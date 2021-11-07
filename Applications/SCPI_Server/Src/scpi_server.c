@@ -129,10 +129,10 @@ int SCPI_Error(scpi_t * context, int_fast16_t err) {
     iprintf("**ERROR: %ld, \"%s\"\r\n", (int32_t) err, SCPI_ErrorTranslate(err));
     if (err != 0) {
         /* New error */
-        SCPI_ErrorIndicatorOn(context, err);
+        SCPI_Event_ErrorIndicatorOn(context, err);
     } else {
         /* No more errors in the queue */
-        SCPI_ErrorIndicatorOff(context, err);
+        SCPI_Event_ErrorIndicatorOff(context, err);
     }
     return 0;
 }
@@ -255,7 +255,7 @@ static int processIoListen(user_data_t * user_data) {
             netconn_delete(newconn);
         } else {
             /* connection established */
-            SCPI_DeviceConnectedEvent(newconn);
+            SCPI_Event_DeviceConnected(newconn);
             iprintf("***Connection established %s\r\n", inet_ntoa(newconn->pcb.ip->remote_ip));
 
             newconn->pcb.tcp->so_options |= SOF_KEEPALIVE;
@@ -295,7 +295,7 @@ static int processSrqIoListen(user_data_t * user_data) {
 
 static void closeIo(user_data_t * user_data) {
     /* connection closed */
-    SCPI_DeviceDisconnectedEvent(user_data->io);
+    SCPI_Event_DeviceDisconnected(user_data->io);
     netconn_close(user_data->io);
     netconn_delete(user_data->io);
     user_data->io = NULL;
@@ -383,6 +383,7 @@ _Noreturn static void scpi_server_thread(void *arg) {
     (void) arg;
 
     user_data.evtQueue = xQueueCreate(10, sizeof (queue_event_t));
+    LWIP_ASSERT("user_data.evtQueue != NULL", user_data.evtQueue != NULL);
 
     /* user_context will be pointer to socket */
     SCPI_Init(&scpi_context,
@@ -396,7 +397,10 @@ _Noreturn static void scpi_server_thread(void *arg) {
     scpi_context.user_context = &user_data;
 
     user_data.io_listen = createServer(SCPI_DEVICE_PORT);
+    LWIP_ASSERT("user_data.io_listen != NULL", user_data.io_listen != NULL);
+
     user_data.control_io_listen = createServer(SCPI_CONTROL_PORT);
+    LWIP_ASSERT("user_data.control_io_listen != NULL", user_data.control_io_listen != NULL);
 
     while (1) {
         waitServer(&user_data, &evt);
@@ -443,23 +447,22 @@ void scpi_server_init(void) {
     assert(SCPIThreadID);
 }
 
-void __attribute__((weak)) SCPI_DeviceConnectedEvent(struct netconn * conn) {
-    // Called by processIoListen() for additional reporting. Override on demand.
+/* Called by processIoListen() for additional reporting. Override on demand. */
+void __attribute__((weak)) SCPI_Event_DeviceConnected(struct netconn * conn) {
+    /* Remote or Eth LED ON */
 }
 
-void __attribute__((weak)) SCPI_DeviceDisconnectedEvent(struct netconn * conn) {
-    // Called by closeIO() for additional reporting. Override on demand.
+/* Called by closeIO() for additional reporting. Override on demand. */
+void __attribute__((weak)) SCPI_Event_DeviceDisconnected(struct netconn * conn) {
+    /* Remote or Eth LED OFF */
 }
 
-void __attribute__((weak)) SCPI_ErrorIndicatorOn(scpi_t * context, int_fast16_t err) {
-    // Called by SCPI_Error() for reporting. Override on demand.
-    /* New error */
-    /* Beep */
-    /* Error LED ON */
+/* Called by SCPI_Error() for reporting. Override on demand. */
+void __attribute__((weak)) SCPI_Event_ErrorIndicatorOn(scpi_t * context, int_fast16_t err) {
+    /* New error : Beep, Error LED ON */
 }
 
-void __attribute__((weak)) SCPI_ErrorIndicatorOff(scpi_t * context, int_fast16_t err) {
-    // Called by SCPI_Error() for reporting. Override on demand.
-    /* No more errors in the queue */
-    /* Error LED OFF */
+/* Called by SCPI_Error() for reporting. Override on demand. */
+void __attribute__((weak)) SCPI_Event_ErrorIndicatorOff(scpi_t * context, int_fast16_t err) {
+    /* No more errors in the queue : Error LED OFF */
 }
