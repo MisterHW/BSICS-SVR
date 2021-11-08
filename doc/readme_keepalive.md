@@ -26,7 +26,7 @@ In LwIP, this is achieved using [zero window probe](https://www.freesoft.org/CIE
 ### Necessary Modifications
 
 * LWIP\_TCP\_KEEPALIVE needs to be activated in CubeMX.
-* tcp_priv.h tcp_tmr() needs to be called every 250 ms (TCP\_TMR\_INTERVAL), done here via a FreeRTOS timer in main.c Timer\_Init( 1, 250, tcp\_tmr\_callback )
+* tcp_priv.h tcp_tmr() needs to be called every 250 ms (TCP\_TMR\_INTERVAL), which will happen when setting FreeRTOS USE\_TIMERS 1 and setting LwIP LWIP\_TIMERS 1 in CubeMX.
 * Three values define the keep-alive behavior: in tcp\_priv.h, TCP\_KEEPIDLE\_DEFAULT, TCP\_KEEPINTVL\_DEFAULT and TCP\_KEEPCNT_DEFAULT can be superseded by definition in an lwipopts.h user code section.
 * As a new protocol control block (pcb) gets allocated (tcp\_alloc()) when a connection is accepted, the pcb is initialized with defaults. To localize the keep-alive behavior to scpi server connections, the defaults need to be replaced in every newly created pcb.
 	- Introduce particular keep-alive values in scpi\_server.h. 
@@ -74,25 +74,7 @@ The fall-back default values given in tcp\_priv.h are overwritten when the proje
 	
 	#define  TCP_MAXIDLE              TCP_KEEPCNT_DEFAULT * TCP_KEEPINTVL_DEFAULT  /* Maximum KEEPALIVE probe time */
 
-
-Additionally in main.c, tcp\_priv.h needs to be included,
-
-	/* USER CODE BEGIN Includes */
-	// ...
-	#include "tcp_priv.h"
-	
-	/* USER CODE END Includes */
-
-And a timer needs to be set up to call tcp\_tmr() periodically:
-
-	void tcp_tmr_callback( TimerHandle_t xTimer){
-	    configASSERT( xTimer);
-	    tcp_tmr();
-	}
-
-Setting up a timer is done via [xTimerCreate()](https://www.freertos.org/FreeRTOS-timers-xTimerCreate.html) and [xTimerStart()](https://www.freertos.org/FreeRTOS-timers-xTimerStart.html).
-
-
+In the case of non-OS use, timeouts.h needs to be included and sys\_check\_timeouts() needs to be called in the main loop to process timers.
 
 ### Keep-Alive Customization
 
@@ -104,7 +86,7 @@ In scpi\_server.h, add SCPI\_KEEP\_IDLE, SCPI\_KEEP\_INTVL and SCPI\_KEEP\_CNT:
 	#define SCPI_KEEP_INTVL   1000 // (ms) keepalive repeat interval
 	#define SCPI_KEEP_CNT        4 // Retry count before terminating connection (SCPI_KEEP_INTVL * SCPI_KEEP_INTVL (ms)).
  
-these values are applied to the newly created pcb structure from netconn_accept():
+these values are applied to the newly created pcb structure from netconn\_accept():
 
   
 	 static int processIoListen(user_data_t * user_data) {

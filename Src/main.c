@@ -29,7 +29,6 @@
 //#include "stm32f7xx_nucleo_144.h"
 #include "lwip/netif.h"
 #include "lwip/tcpip.h"
-#include "tcp_priv.h"
 
 // #include "app_ethernet.h"
 // #include "httpserver-netconn.h"
@@ -124,7 +123,7 @@ void MX_LWIP_Init_Addresses(){
 }
 
 
-#define NUM_TIMERS 2
+#define NUM_TIMERS 1
 TimerHandle_t xTimers[ NUM_TIMERS ];
 
 #define DEBOUNCE_MAX 10
@@ -162,12 +161,6 @@ void keyscan_timer_callback( TimerHandle_t xTimer )
         Devices_increment_display_page_index();
     }
 }
-
-void tcp_tmr_callback( TimerHandle_t xTimer){
-    configASSERT( xTimer);
-    tcp_tmr();
-}
-
 
 
 bool Timer_Init(unsigned int number, unsigned int interval, TimerCallbackFunction_t callback){
@@ -211,7 +204,6 @@ bool Timer_Init(unsigned int number, unsigned int interval, TimerCallbackFunctio
 bool Timers_Init(){
     bool result;
     result  = Timer_Init( 0,   3, keyscan_timer_callback );
-    result &= Timer_Init( 1, 250, tcp_tmr_callback );
     return result;
 }
 
