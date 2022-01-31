@@ -107,7 +107,11 @@ extern "C" {
 #endif
 
 #ifndef USE_COMMAND_TAGS
-#define USE_COMMAND_TAGS 1
+#define USE_COMMAND_TAGS 0
+#endif
+
+#ifndef USE_COMMAND_DESCRIPTIONS
+#define USE_COMMAND_DESCRIPTIONS 1
 #endif
 
 #ifndef USE_DEPRECATED_FUNCTIONS

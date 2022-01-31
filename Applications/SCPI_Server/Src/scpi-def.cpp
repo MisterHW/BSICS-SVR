@@ -487,15 +487,28 @@ static scpi_result_t BSICS_RecallCalibration(scpi_t * context) {
 
 static scpi_result_t BSICS_HelpQ(scpi_t * context) {
     int i = 0;
-    for(;;){
-        SCPI_ResultCharacters(context, "\r\n", 2);
-        SCPI_ResultMnemonic(context, scpi_commands[i].pattern);
-        if(scpi_commands[++i].pattern == NULL){
+    for(;;) {
+        size_t pattern_len = strnlen(scpi_commands[i].pattern, 100);
+        size_t block_len = 1 + pattern_len + 2;
+#ifdef USE_COMMAND_DESCRIPTIONS
+        size_t description_len = strnlen(scpi_commands[i].description, 100);
+        block_len = 1 + pattern_len + 1 + description_len + 2;
+#endif
+        SCPI_ResultArbitraryBlockHeader(context, block_len);
+        SCPI_ResultArbitraryBlockData(context, "\t", 1);
+        SCPI_ResultArbitraryBlockData(context, scpi_commands[i].pattern, pattern_len);
+#ifdef USE_COMMAND_DESCRIPTIONS
+        SCPI_ResultArbitraryBlockData(context, " ", 1);
+        SCPI_ResultArbitraryBlockData(context, scpi_commands[i].description, description_len);
+#endif
+        SCPI_ResultArbitraryBlockData(context, "\r\n", 2);
+        if (scpi_commands[++i].pattern == NULL) {
             break;
         }
     }
     return SCPI_RES_OK;
 }
+
 
 
 const scpi_command_t scpi_commands[] = {
@@ -504,19 +517,19 @@ const scpi_command_t scpi_commands[] = {
 
     /* IEEE Mandated Commands (SCPI std V1999.0 4.1.1) */
 
-    { .pattern = "*CLS", .callback = SCPI_CoreCls,},
-    { .pattern = "*ESE", .callback = SCPI_CoreEse,},
-    { .pattern = "*ESE?", .callback = SCPI_CoreEseQ,},
-    { .pattern = "*ESR?", .callback = SCPI_CoreEsrQ,},
-    { .pattern = "*IDN?", .callback = SCPI_CoreIdnQ,},
-    { .pattern = "*OPC", .callback = SCPI_CoreOpc,},
-    { .pattern = "*OPC?", .callback = SCPI_CoreOpcQ,},
-    { .pattern = "*RST", .callback = My_CoreRst,},
-    { .pattern = "*SRE", .callback = SCPI_CoreSre,},
-    { .pattern = "*SRE?", .callback = SCPI_CoreSreQ,},
-    { .pattern = "*STB?", .callback = SCPI_CoreStbQ,},
-    { .pattern = "*TST?", .callback = My_CoreTstQ,},
-    { .pattern = "*WAI", .callback = My_CoreWai,},
+    { .pattern = "*CLS", .callback = SCPI_CoreCls, .description = "",},
+    { .pattern = "*ESE", .callback = SCPI_CoreEse, .description = "",},
+    { .pattern = "*ESE?", .callback = SCPI_CoreEseQ, .description = "",},
+    { .pattern = "*ESR?", .callback = SCPI_CoreEsrQ, .description = "",},
+    { .pattern = "*IDN?", .callback = SCPI_CoreIdnQ, .description = "\t - return device identifier",},
+    { .pattern = "*OPC", .callback = SCPI_CoreOpc, .description = "",},
+    { .pattern = "*OPC?", .callback = SCPI_CoreOpcQ, .description = "",},
+    { .pattern = "*RST", .callback = My_CoreRst, .description = "\t - reset interface and re-initialize device",},
+    { .pattern = "*SRE", .callback = SCPI_CoreSre, .description = "",},
+    { .pattern = "*SRE?", .callback = SCPI_CoreSreQ, .description = "",},
+    { .pattern = "*STB?", .callback = SCPI_CoreStbQ, .description = "",},
+    { .pattern = "*TST?", .callback = My_CoreTstQ, .description = "\t - returns 0",},
+    { .pattern = "*WAI", .callback = My_CoreWai, .description = "\t - wait for pending operations to complete",},
 
     /* Required SCPI commands (SCPI std V1999.0 4.2.1) */
 
@@ -537,13 +550,13 @@ const scpi_command_t scpi_commands[] = {
     {.pattern = "SYSTem:COMMunication:REPorting[:ENAble]", .callback = BSICS_SetPeriodicMeasReporting,},
     {.pattern = "SYSTem:COMMunication:REPorting[:ENAble]?", .callback = BSICS_PeriodicMeasReportingQ,},
 
-    {.pattern = "GPIO:OUTput[:SET]", .callback = BSICS_SetDigitalOut,},
-    {.pattern = "GPIO:OUTput?", .callback = BSICS_DigitalOutQ,},
-    {.pattern = "GPIO:BIT#[:SET]", .callback = BSICS_SetDigitalBit,},
-    {.pattern = "GPIO:BIT#?", .callback = BSICS_DigitalBitQ,},
+    {.pattern = "GPIO:OUTput[:SET]", .callback = BSICS_SetDigitalOut, .description = "<#H0000 .. #HFFFF>",},
+    {.pattern = "GPIO:OUTput?", .callback = BSICS_DigitalOutQ, .description = "\t - returns binary output states (#Hxxxx)",},
+    {.pattern = "GPIO:BIT#[:SET]", .callback = BSICS_SetDigitalBit, .description = "<0|False|1|True>",},
+    {.pattern = "GPIO:BIT#?", .callback = BSICS_DigitalBitQ, .description = "\t - returns selected output bit (0|1)",},
 
-    {.pattern = "GRP[:SELect]", .callback = BSICS_SelectGroup,},
-    {.pattern = "GRP?", .callback = BSICS_GroupQ,},
+    {.pattern = "GRP[:SELect]", .callback = BSICS_SelectGroup, .description = "<0|1>",},
+    {.pattern = "GRP?", .callback = BSICS_GroupQ, .description = "\t - returns current group index (0|1)",},
 
     {.pattern = "GRP#:SOURce:VOLTage:LO", .callback = BSICS_SetVoltageLo,},
     {.pattern = "GRP#:SOURce:VOLTage:LO?", .callback = BSICS_VoltageLoQ,},

@@ -354,7 +354,10 @@ extern "C" {
 #if USE_COMMAND_TAGS
         int32_t tag;
 #endif /* USE_COMMAND_TAGS */
-    };
+#if USE_COMMAND_DESCRIPTIONS
+        const char * description;
+#endif
+};
 
     struct _scpi_interface_t {
         scpi_error_callback_t error;
