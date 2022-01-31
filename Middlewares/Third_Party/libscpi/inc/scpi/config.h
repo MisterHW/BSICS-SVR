@@ -178,6 +178,14 @@ extern "C" {
 #define USE_UNITS_ELECTRIC_CHARGE_CONDUCTANCE SYSTEM_TYPE
 #endif
 
+#ifndef SCPI_CMD_DESC
+#if USE_COMMAND_DESCRIPTIONS
+#define SCPI_CMD_DESC(S) .description=(S)
+#else
+#define SCPI_CMD_DESC(S)
+#endif
+#endif
+
 /* define local macros depending on existence of strnlen */
 #if HAVE_STRNLEN
 #define SCPIDEFINE_strnlen(s, l)	strnlen((s), (l))
