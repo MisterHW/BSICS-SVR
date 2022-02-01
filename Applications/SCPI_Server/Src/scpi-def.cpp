@@ -492,14 +492,18 @@ static scpi_result_t BSICS_HelpQ(scpi_t * context) {
         size_t block_len = 1 + pattern_len + 2;
 #if USE_COMMAND_DESCRIPTIONS
         size_t description_len = scpi_commands[i].description ? strnlen(scpi_commands[i].description, 100) : 0;
-        block_len = 1 + pattern_len + 1 + description_len + 2;
+        if(description_len > 0){
+            block_len = 1 + pattern_len + 1 + description_len + 2;
+        }
 #endif
         SCPI_ResultArbitraryBlockHeader(context, block_len);
         SCPI_ResultArbitraryBlockData(context, "\t", 1);
         SCPI_ResultArbitraryBlockData(context, scpi_commands[i].pattern, pattern_len);
 #if USE_COMMAND_DESCRIPTIONS
-        SCPI_ResultArbitraryBlockData(context, " ", 1);
-        SCPI_ResultArbitraryBlockData(context, scpi_commands[i].description, description_len);
+        if(description_len > 0){
+            SCPI_ResultArbitraryBlockData(context, " ", 1);
+            SCPI_ResultArbitraryBlockData(context, scpi_commands[i].description, description_len);
+        }
 #endif
         SCPI_ResultArbitraryBlockData(context, "\r\n", 2);
         if (scpi_commands[++i].pattern == NULL) {
@@ -508,8 +512,6 @@ static scpi_result_t BSICS_HelpQ(scpi_t * context) {
     }
     return SCPI_RES_OK;
 }
-
-
 
 const scpi_command_t scpi_commands[] = {
     {.pattern = "HELP", .callback = BSICS_HelpQ,},
