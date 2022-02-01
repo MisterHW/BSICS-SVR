@@ -134,7 +134,7 @@ static scpi_bool_t processCommand(scpi_t * context) {
     context->cmd_error = FALSE;
     context->output_count = 0;
     context->input_count = 0;
-    context->arbitrary_reminding = 0;
+    context->arbitrary_remaining = 0;
 
     /* if callback exists - call command callback */
     if (cmd->callback != NULL) {
@@ -615,7 +615,7 @@ size_t SCPI_ResultArbitraryBlockHeader(scpi_t * context, size_t len) {
     header_len = strlen(block_header + 2);
     block_header[1] = (char) (header_len + '0');
 
-    context->arbitrary_reminding = len;
+    context->arbitrary_remaining = len;
     result  = writeDelimiter(context);
     result += writeData(context, block_header, header_len + 2);
     return result;
@@ -630,14 +630,14 @@ size_t SCPI_ResultArbitraryBlockHeader(scpi_t * context, size_t len) {
  */
 size_t SCPI_ResultArbitraryBlockData(scpi_t * context, const void * data, size_t len) {
 
-    if (context->arbitrary_reminding < len) {
+    if (context->arbitrary_remaining < len) {
         SCPI_ErrorPush(context, SCPI_ERROR_SYSTEM_ERROR);
         return 0;
     }
 
-    context->arbitrary_reminding -= len;
+    context->arbitrary_remaining -= len;
 
-    if (context->arbitrary_reminding == 0) {
+    if (context->arbitrary_remaining == 0) {
         context->output_count++;
     }
 
