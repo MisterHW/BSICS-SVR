@@ -491,7 +491,7 @@ static scpi_result_t BSICS_HelpQ(scpi_t * context) {
         size_t pattern_len = strnlen(scpi_commands[i].pattern, 100);
         size_t block_len = 1 + pattern_len + 2;
 #if USE_COMMAND_DESCRIPTIONS
-        size_t description_len = strnlen(scpi_commands[i].description, 100);
+        size_t description_len = scpi_commands[i].description ? strnlen(scpi_commands[i].description, 100) : 0;
         block_len = 1 + pattern_len + 1 + description_len + 2;
 #endif
         SCPI_ResultArbitraryBlockHeader(context, block_len);

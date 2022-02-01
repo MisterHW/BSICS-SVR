@@ -39,7 +39,7 @@ extern "C" {
 #define SCPI_IDN1 "IPE Test&Measurement Devices"
 #define SCPI_IDN2 "BSICS-SVR DRV2A"
 #define SCPI_IDN3 NULL
-#define SCPI_IDN4 "2021-10"
+#define SCPI_IDN4 "2022-02"
 
 extern const scpi_command_t scpi_commands[];
 extern scpi_interface_t scpi_interface;
