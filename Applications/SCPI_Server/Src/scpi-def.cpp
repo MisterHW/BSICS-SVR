@@ -498,8 +498,10 @@ static scpi_result_t BSICS_HelpQ(scpi_t * context) {
         SCPI_ResultArbitraryBlockData(context, "\t", 1);
         SCPI_ResultArbitraryBlockData(context, scpi_commands[i].pattern, pattern_len);
 #if USE_COMMAND_DESCRIPTIONS
-        SCPI_ResultArbitraryBlockData(context, " ", 1);
-        SCPI_ResultArbitraryBlockData(context, scpi_commands[i].description, description_len);
+        if(description_len > 0){
+            SCPI_ResultArbitraryBlockData(context, " ", 1);
+            SCPI_ResultArbitraryBlockData(context, scpi_commands[i].description, description_len);
+        }
 #endif
         SCPI_ResultArbitraryBlockData(context, "\r\n", 2);
         if (scpi_commands[++i].pattern == NULL) {
