@@ -500,7 +500,7 @@ static scpi_result_t BSICS_RecallCalibration(scpi_t * context) {
 
 const scpi_command_t scpi_commands[] = {
     /* Optional help commands */
-    {.pattern = "HELP?", .callback = SCPI_HelpQ, SCPI_CMD_DESC("\t - list all supported comands")},
+    {.pattern = "HELP?", .callback = SCPI_HelpQ, SCPI_CMD_DESC("\t - list all supported commands")},
     {.pattern = "HELP", .callback = SCPI_HelpQ, SCPI_CMD_DESC("\t - HELP? alias")},
     
     /* IEEE Mandated Commands (SCPI std V1999.0 4.1.1) */
