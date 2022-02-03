@@ -485,51 +485,37 @@ static scpi_result_t BSICS_RecallCalibration(scpi_t * context) {
     return SCPI_RES_OK;
 }
 
-static scpi_result_t BSICS_HelpQ(scpi_t * context) {
-    int i = 0;
-    for(;;) {
-        size_t pattern_len = strnlen(scpi_commands[i].pattern, 100);
-        size_t block_len = 1 + pattern_len + 2;
+// Conditional initializer macros. Note order must remain: pattern, callback, [description,] [tag,].
 #if USE_COMMAND_DESCRIPTIONS
-        size_t description_len = scpi_commands[i].description ? strnlen(scpi_commands[i].description, 100) : 0;
-        if(description_len > 0){
-            block_len = 1 + pattern_len + 1 + description_len + 2;
-        }
+#define SCPI_CMD_DESC(S) .description=(S),
+#else
+#define SCPI_CMD_DESC(S)
 #endif
-        SCPI_ResultArbitraryBlockHeader(context, block_len);
-        SCPI_ResultArbitraryBlockData(context, "\t", 1);
-        SCPI_ResultArbitraryBlockData(context, scpi_commands[i].pattern, pattern_len);
-#if USE_COMMAND_DESCRIPTIONS
-        if(description_len > 0){
-            SCPI_ResultArbitraryBlockData(context, " ", 1);
-            SCPI_ResultArbitraryBlockData(context, scpi_commands[i].description, description_len);
-        }
+
+#if USE_COMMAND_TAGS
+#define SCPI_CMD_TAG(T) .tag=(T),
+#else
+#define SCPI_CMD_TAG(T)
 #endif
-        SCPI_ResultArbitraryBlockData(context, "\r\n", 2);
-        if (scpi_commands[++i].pattern == NULL) {
-            break;
-        }
-    }
-    return SCPI_RES_OK;
-}
 
 const scpi_command_t scpi_commands[] = {
-    {.pattern = "HELP", .callback = BSICS_HelpQ,},
-    {.pattern = "HELP?", .callback = BSICS_HelpQ,},
-
+    /* Optional help commands */
+    {.pattern = "HELP?", .callback = SCPI_HelpQ, SCPI_CMD_DESC("\t - list all supported comands")},
+    {.pattern = "HELP", .callback = SCPI_HelpQ, SCPI_CMD_DESC("\t - HELP? alias")},
+    
     /* IEEE Mandated Commands (SCPI std V1999.0 4.1.1) */
 
-    { .pattern = "*CLS", .callback = SCPI_CoreCls, SCPI_CMD_DESC("")},
-    { .pattern = "*ESE", .callback = SCPI_CoreEse, SCPI_CMD_DESC("")},
-    { .pattern = "*ESE?", .callback = SCPI_CoreEseQ, SCPI_CMD_DESC("")},
-    { .pattern = "*ESR?", .callback = SCPI_CoreEsrQ, SCPI_CMD_DESC("")},
+    { .pattern = "*CLS", .callback = SCPI_CoreCls,},
+    { .pattern = "*ESE", .callback = SCPI_CoreEse,},
+    { .pattern = "*ESE?", .callback = SCPI_CoreEseQ,},
+    { .pattern = "*ESR?", .callback = SCPI_CoreEsrQ,},
     { .pattern = "*IDN?", .callback = SCPI_CoreIdnQ, SCPI_CMD_DESC("\t - return device identifier")},
-    { .pattern = "*OPC", .callback = SCPI_CoreOpc, SCPI_CMD_DESC("")},
-    { .pattern = "*OPC?", .callback = SCPI_CoreOpcQ, SCPI_CMD_DESC("")},
+    { .pattern = "*OPC", .callback = SCPI_CoreOpc,},
+    { .pattern = "*OPC?", .callback = SCPI_CoreOpcQ,},
     { .pattern = "*RST", .callback = My_CoreRst, SCPI_CMD_DESC("\t - reset interface and re-initialize device")},
-    { .pattern = "*SRE", .callback = SCPI_CoreSre, SCPI_CMD_DESC("")},
-    { .pattern = "*SRE?", .callback = SCPI_CoreSreQ, SCPI_CMD_DESC("")},
-    { .pattern = "*STB?", .callback = SCPI_CoreStbQ, SCPI_CMD_DESC("")},
+    { .pattern = "*SRE", .callback = SCPI_CoreSre,},
+    { .pattern = "*SRE?", .callback = SCPI_CoreSreQ,},
+    { .pattern = "*STB?", .callback = SCPI_CoreStbQ,},
     { .pattern = "*TST?", .callback = My_CoreTstQ, SCPI_CMD_DESC("\t - returns 0")},
     { .pattern = "*WAI", .callback = My_CoreWai, SCPI_CMD_DESC("\t - wait for pending operations to complete")},
 
