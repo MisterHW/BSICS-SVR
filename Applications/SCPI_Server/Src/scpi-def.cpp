@@ -234,7 +234,7 @@ static scpi_result_t BSICS_SetFloatingPointValue(scpi_t * context, BSICS_SetValu
         case BSICS_group_voltage_hi: DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_hi].VOUT_mV = val_x1000; break;
         case BSICS_group_current_lo: DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_lo].IOUT_mA = val_x1000; break;
         case BSICS_group_current_hi: DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_hi].IOUT_mA = val_x1000; break;
-        default:; // handle unknown dest
+        default: return SCPI_RES_ERR; // handle unknown dest
     };
 
     return SCPI_RES_OK;
@@ -250,7 +250,7 @@ static scpi_result_t BSICS_GetFloatingPointValue(scpi_t * context, BSICS_SetValu
         case BSICS_group_voltage_hi: val_x1000 = DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_hi].VOUT_mV; break;
         case BSICS_group_current_lo: val_x1000 = DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_lo].IOUT_mA; break;
         case BSICS_group_current_hi: val_x1000 = DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_hi].IOUT_mA; break;
-        default:; // handle unknown dest
+        default: return SCPI_RES_ERR; // handle unknown dest
     };
 
     SCPI_ResultFloat(context, (float)(val_x1000/1000.0));
@@ -375,7 +375,14 @@ static scpi_result_t BSICS_DigitalBitQ(scpi_t * context) {
     return SCPI_RES_OK;
 }
 
-static scpi_result_t BSICS_SetXIODir(scpi_t * context) {
+enum BSICS_XIO_dest {
+    BSICS_group_xio_output,
+    BSICS_group_xio_input,
+    BSICS_group_xio_mode,
+    BSICS_group_xio_direction,
+};
+
+static scpi_result_t BSICS_XIO_SetValue(scpi_t * context, BSICS_XIO_dest dest){
     int32_t commandNumber[3]; // 0: group index, 1:ext. IO expander I2C address, 2: port no.
     if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 3) ||
         not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
@@ -387,89 +394,61 @@ static scpi_result_t BSICS_SetXIODir(scpi_t * context) {
          not inRange<uint32_t>(0, param0, 0xFF) )
     { return SCPI_RES_ERR; }
 
+    switch(dest){
+        case BSICS_group_xio_output   :;break;
+        case BSICS_group_xio_mode     :;break;
+        case BSICS_group_xio_direction:;break;
+        default: return SCPI_RES_ERR;
+    }
     return SCPI_RES_OK; // only return OK it I2C transfer successful, return error if NAK
+}
+
+static scpi_result_t BSICS_XIO_GetValue(scpi_t * context, BSICS_XIO_dest dest){
+    int32_t commandNumber[3]; // 0: group index, 1:ext. IO expander I2C address, 2: port no.
+    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 3) ||
+        not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
+        not inRange<int32_t>(0, commandNumber[2], 3) )
+    { return SCPI_RES_ERR; }
+
+    uint8_t result = 0;
+    switch(dest){
+        case BSICS_group_xio_output   :;break;
+        case BSICS_group_xio_input    :;break;
+        case BSICS_group_xio_mode     :;break;
+        case BSICS_group_xio_direction:;break;
+        default: return SCPI_RES_ERR;
+    }
+    BSICS_PrependCommandToResult(context);
+    SCPI_ResultUInt32Base(context, result, 16);
+    return SCPI_RES_OK;
+}
+
+static scpi_result_t BSICS_SetXIODir(scpi_t * context) {
+    return BSICS_XIO_SetValue(context, BSICS_XIO_dest::BSICS_group_xio_direction);
 }
 
 static scpi_result_t BSICS_XIODirQ(scpi_t * context) {
-    int32_t commandNumber[3]; // 0: group index, 1:ext. IO expander I2C address, 2: port no.
-    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 3) ||
-        not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
-        not inRange<int32_t>(0, commandNumber[2], 3) )
-    { return SCPI_RES_ERR; }
-
-    uint8_t result = 0;
-    BSICS_PrependCommandToResult(context);
-    SCPI_ResultUInt32Base(context, result, 16);
-    return SCPI_RES_OK;
+    return BSICS_XIO_GetValue(context, BSICS_XIO_dest::BSICS_group_xio_direction);
 }
 
 static scpi_result_t BSICS_SetXIOMode(scpi_t * context) {
-    int32_t commandNumber[3]; // 0: group index, 1:ext. IO expander I2C address, 2: port no.
-    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 3) ||
-        not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
-        not inRange<int32_t>(0, commandNumber[2], 3) )
-    { return SCPI_RES_ERR; }
-
-    uint32_t param0; // param0: new register value
-    if ( not SCPI_ParamUInt32(context, &param0, TRUE) ||
-         not inRange<uint32_t>(0, param0, 0xFF) )
-    { return SCPI_RES_ERR; }
-
-    return SCPI_RES_OK; // only return OK it I2C transfer successful, return error if NAK
+    return BSICS_XIO_SetValue(context, BSICS_XIO_dest::BSICS_group_xio_mode);
 }
 
 static scpi_result_t BSICS_XIOModeQ(scpi_t * context) {
-    int32_t commandNumber[3]; // 0: group index, 1:ext. IO expander I2C address, 2: port no.
-    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 3) ||
-        not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
-        not inRange<int32_t>(0, commandNumber[2], 3) )
-    { return SCPI_RES_ERR; }
-
-    uint8_t result = 0;
-    BSICS_PrependCommandToResult(context);
-    SCPI_ResultUInt32Base(context, result, 16);
-    return SCPI_RES_OK;
+    return BSICS_XIO_GetValue(context, BSICS_XIO_dest::BSICS_group_xio_mode);
 }
 
 static scpi_result_t BSICS_SetXIOOutput(scpi_t * context) {
-    int32_t commandNumber[3]; // 0: group index, 1:ext. IO expander I2C address, 2: port no.
-    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 3) ||
-        not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
-        not inRange<int32_t>(0, commandNumber[2], 3) )
-    { return SCPI_RES_ERR; }
-
-    uint32_t param0; // param0: new register value
-    if ( not SCPI_ParamUInt32(context, &param0, TRUE) ||
-         not inRange<uint32_t>(0, param0, 0xFF) )
-    { return SCPI_RES_ERR; }
-
-    return SCPI_RES_OK; // only return OK it I2C transfer successful, return error if NAK
+    return BSICS_XIO_SetValue(context, BSICS_XIO_dest::BSICS_group_xio_output);
 }
 
 static scpi_result_t BSICS_XIOOutputQ(scpi_t * context) {
-    int32_t commandNumber[3]; // 0: group index, 1:ext. IO expander I2C address, 2: port no.
-    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 3) ||
-        not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
-        not inRange<int32_t>(0, commandNumber[2], 3) )
-    { return SCPI_RES_ERR; }
-
-    uint8_t result = 0;
-    BSICS_PrependCommandToResult(context);
-    SCPI_ResultUInt32Base(context, result, 16);
-    return SCPI_RES_OK;
+    return BSICS_XIO_GetValue(context, BSICS_XIO_dest::BSICS_group_xio_output);
 }
 
 static scpi_result_t BSICS_XIOInputQ(scpi_t * context) {
-    int32_t commandNumber[3]; // 0: group index, 1:ext. IO expander I2C address, 2: port no.
-    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 3) ||
-        not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
-        not inRange<int32_t>(0, commandNumber[2], 3) )
-    { return SCPI_RES_ERR; }
-
-    uint8_t result = 0;
-    BSICS_PrependCommandToResult(context);
-    SCPI_ResultUInt32Base(context, result, 16);
-    return SCPI_RES_OK;
+    return BSICS_XIO_GetValue(context, BSICS_XIO_dest::BSICS_group_xio_input);
 }
 
 // Configure CHn mux configuration
