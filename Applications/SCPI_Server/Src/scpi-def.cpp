@@ -375,6 +375,103 @@ static scpi_result_t BSICS_DigitalBitQ(scpi_t * context) {
     return SCPI_RES_OK;
 }
 
+static scpi_result_t BSICS_SetXIODir(scpi_t * context) {
+    int32_t commandNumber[3]; // 0: group index, 1:ext. IO expander I2C address, 2: port no.
+    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 3) ||
+        not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
+        not inRange<int32_t>(0, commandNumber[2], 3) )
+    { return SCPI_RES_ERR; }
+
+    uint32_t param0; // param0: new register value
+    if ( not SCPI_ParamUInt32(context, &param0, TRUE) ||
+         not inRange<uint32_t>(0, param0, 0xFF) )
+    { return SCPI_RES_ERR; }
+
+    return SCPI_RES_OK; // only return OK it I2C transfer successful, return error if NAK
+}
+
+static scpi_result_t BSICS_XIODirQ(scpi_t * context) {
+    int32_t commandNumber[3]; // 0: group index, 1:ext. IO expander I2C address, 2: port no.
+    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 3) ||
+        not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
+        not inRange<int32_t>(0, commandNumber[2], 3) )
+    { return SCPI_RES_ERR; }
+
+    uint8_t result = 0;
+    BSICS_PrependCommandToResult(context);
+    SCPI_ResultUInt32Base(context, result, 16);
+    return SCPI_RES_OK;
+}
+
+static scpi_result_t BSICS_SetXIOMode(scpi_t * context) {
+    int32_t commandNumber[3]; // 0: group index, 1:ext. IO expander I2C address, 2: port no.
+    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 3) ||
+        not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
+        not inRange<int32_t>(0, commandNumber[2], 3) )
+    { return SCPI_RES_ERR; }
+
+    uint32_t param0; // param0: new register value
+    if ( not SCPI_ParamUInt32(context, &param0, TRUE) ||
+         not inRange<uint32_t>(0, param0, 0xFF) )
+    { return SCPI_RES_ERR; }
+
+    return SCPI_RES_OK; // only return OK it I2C transfer successful, return error if NAK
+}
+
+static scpi_result_t BSICS_XIOModeQ(scpi_t * context) {
+    int32_t commandNumber[3]; // 0: group index, 1:ext. IO expander I2C address, 2: port no.
+    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 3) ||
+        not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
+        not inRange<int32_t>(0, commandNumber[2], 3) )
+    { return SCPI_RES_ERR; }
+
+    uint8_t result = 0;
+    BSICS_PrependCommandToResult(context);
+    SCPI_ResultUInt32Base(context, result, 16);
+    return SCPI_RES_OK;
+}
+
+static scpi_result_t BSICS_SetXIOOutput(scpi_t * context) {
+    int32_t commandNumber[3]; // 0: group index, 1:ext. IO expander I2C address, 2: port no.
+    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 3) ||
+        not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
+        not inRange<int32_t>(0, commandNumber[2], 3) )
+    { return SCPI_RES_ERR; }
+
+    uint32_t param0; // param0: new register value
+    if ( not SCPI_ParamUInt32(context, &param0, TRUE) ||
+         not inRange<uint32_t>(0, param0, 0xFF) )
+    { return SCPI_RES_ERR; }
+
+    return SCPI_RES_OK; // only return OK it I2C transfer successful, return error if NAK
+}
+
+static scpi_result_t BSICS_XIOOutputQ(scpi_t * context) {
+    int32_t commandNumber[3]; // 0: group index, 1:ext. IO expander I2C address, 2: port no.
+    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 3) ||
+        not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
+        not inRange<int32_t>(0, commandNumber[2], 3) )
+    { return SCPI_RES_ERR; }
+
+    uint8_t result = 0;
+    BSICS_PrependCommandToResult(context);
+    SCPI_ResultUInt32Base(context, result, 16);
+    return SCPI_RES_OK;
+}
+
+static scpi_result_t BSICS_XIOInputQ(scpi_t * context) {
+    int32_t commandNumber[3]; // 0: group index, 1:ext. IO expander I2C address, 2: port no.
+    if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 3) ||
+        not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
+        not inRange<int32_t>(0, commandNumber[2], 3) )
+    { return SCPI_RES_ERR; }
+
+    uint8_t result = 0;
+    BSICS_PrependCommandToResult(context);
+    SCPI_ResultUInt32Base(context, result, 16);
+    return SCPI_RES_OK;
+}
+
 // Configure CHn mux configuration
 static scpi_result_t BSICS_SetChannelDriverMux(scpi_t * context) {
     int32_t commandNumber[2];
@@ -383,14 +480,13 @@ static scpi_result_t BSICS_SetChannelDriverMux(scpi_t * context) {
     { return SCPI_RES_ERR; }
 
     int32_t param0;
-    if (!SCPI_ParamInt32(context, &param0, TRUE)
-        || (param0 < 0) || (param0 > 0xFF) )
+    if (!SCPI_ParamInt32(context, &param0, TRUE) ||
+            not inRange<int32_t>(0, param0, 0xFF) )
     { return SCPI_RES_ERR; }
 
     DeviceGroup[commandNumber[0]].octal_spst_data[commandNumber[1]-1].value = (uint8_t) param0;
     return SCPI_RES_OK;
 }
-
 // read back CHn mux configuration
 static scpi_result_t BSICS_ChannelDriverMuxQ(scpi_t * context) {
     int32_t commandNumber[2];
@@ -411,10 +507,12 @@ static scpi_result_t BSICS_SetCalibration(scpi_t * context) {
 
     size_t o_count;
     int32_t data[4];
-    if(not SCPI_ParamArrayInt32(context, data, 4, &o_count, SCPI_FORMAT_ASCII, true)
-        || (o_count != 4)
-        || (data[0] < 0) || (data[1] < 0) || (data[2] < 0) || (data[3] < 0)
-        || (data[0] > INT16_MAX) || (data[1] > INT16_MAX) || (data[2] > INT16_MAX) || (data[3] > INT16_MAX) )
+    if( not SCPI_ParamArrayInt32(context, data, 4, &o_count, SCPI_FORMAT_ASCII, true) ||
+        not (o_count == 4) ||
+        not inRange<int32_t>(0, data[0], INT16_MAX) ||
+        not inRange<int32_t>(0, data[0], INT16_MAX) ||
+        not inRange<int32_t>(0, data[0], INT16_MAX) ||
+        not inRange<int32_t>(0, data[0], INT16_MAX) )
     { return SCPI_RES_ERR; }
 
     DeviceGroup[commandNumber[0]].adc_data[commandNumber[1]-1].coef_x1024[0] = (int16_t)data[0];
@@ -574,11 +672,11 @@ const scpi_command_t scpi_commands[] = {
 
     {.pattern = "SYSTem:COMMunication:TCPIP:CONTROL?", .callback = SCPI_SystemCommTcpipControlQ,SCPI_CMD_DESC("(" SCPI_CONTROL_PORT_STR ") - control port")},
 //    {.pattern = "SYSTem:COMMunication:TCPIP:ADDR", .callback = BSICS_IPv4, SCPI_CMD_DESC("<B>,<B>,<B>,<B> - set IP v4 address (restart to update)")},
-    {.pattern = "SYSTem:COMMunication:TCPIP:ADDR?", .callback = BSICS_IPv4Q, SCPI_CMD_DESC("\t - read stored IP v4 address")},
+    {.pattern = "SYSTem:COMMunication:TCPIP:ADDR?", .callback = BSICS_IPv4Q, SCPI_CMD_DESC(" - read stored IP v4 address")},
 //    {.pattern = "SYSTem:COMMunication:TCPIP:MASK", .callback = BSICS_SubnetMask, SCPI_CMD_DESC("<B>,<B>,<B>,<B> - set subnet mask (restart to update)")},
-    {.pattern = "SYSTem:COMMunication:TCPIP:MASK?", .callback = BSICS_SubnetMaskQ, SCPI_CMD_DESC("\t - read stored subnet mask")},
+    {.pattern = "SYSTem:COMMunication:TCPIP:MASK?", .callback = BSICS_SubnetMaskQ, SCPI_CMD_DESC(" - read stored subnet mask")},
 //    {.pattern = "SYSTem:COMMunication:TCPIP:GATeway", .callback = BSICS_Gateway, SCPI_CMD_DESC("<B>,<B>,<B>,<B> - gateway (restart to update)")},
-    {.pattern = "SYSTem:COMMunication:TCPIP:GATeway?", .callback = BSICS_GatewayQ, SCPI_CMD_DESC("\t - read stored gateway address")},
+    {.pattern = "SYSTem:COMMunication:TCPIP:GATeway?", .callback = BSICS_GatewayQ, SCPI_CMD_DESC(" - read stored gateway address")},
 
     /* BSICS-SVR commands */
 
@@ -587,13 +685,21 @@ const scpi_command_t scpi_commands[] = {
     {.pattern = "SYSTem:COMMunication:REPorting[:ENAble]", .callback = BSICS_SetPeriodicMeasReporting, SCPI_CMD_DESC("<0:False:1:True> - periodically print to UART")},
     {.pattern = "SYSTem:COMMunication:REPorting[:ENAble]?", .callback = BSICS_PeriodicMeasReportingQ, SCPI_CMD_DESC("(0|1)")},
 
-    {.pattern = "GPIO:OUTput[:SET]", .callback = BSICS_SetDigitalOut, SCPI_CMD_DESC("<#Hxxxx> - set D0 .. D15")},
-    {.pattern = "GPIO:OUTput?", .callback = BSICS_DigitalOutQ, SCPI_CMD_DESC("(#Hxxxx) - binary output states")},
-    {.pattern = "GPIO:BIT#[:SET]", .callback = BSICS_SetDigitalBit, SCPI_CMD_DESC("<0|False|1|True>")},
+    {.pattern = "GPIO:OUTput", .callback = BSICS_SetDigitalOut, SCPI_CMD_DESC("<#Hxxxx> - set board output pins D0 .. D15 (D11, D14, D15 : N/A)")},
+    {.pattern = "GPIO:OUTput?", .callback = BSICS_DigitalOutQ, SCPI_CMD_DESC("(#Hxxxx) - D0 .. D15 pin read-back (D11, D14, D15 : N/A)")},
+    {.pattern = "GPIO:BIT#", .callback = BSICS_SetDigitalBit, SCPI_CMD_DESC("<0|False|1|True>")},
     {.pattern = "GPIO:BIT#?", .callback = BSICS_DigitalBitQ, SCPI_CMD_DESC("(0|1)")},
 
     {.pattern = "GRP[:SELect]", .callback = BSICS_SelectGroup, SCPI_CMD_DESC("<0|1>")},
     {.pattern = "GRP?", .callback = BSICS_GroupQ, SCPI_CMD_DESC("(0|1) - current group index")},
+
+    {.pattern = "GRP#:XIOaddr#:DIRection#", .callback = BSICS_SetXIODir, SCPI_CMD_DESC("<#Hxx> - set GRP<0,1>:XIO<dev addr>:DIR<port> direction reg")},
+    {.pattern = "GRP#:XIOaddr#:DIRection#?", .callback = BSICS_XIODirQ, SCPI_CMD_DESC("(#Hxx) - read direction<port> reg")},
+    {.pattern = "GRP#:XIOaddr#:MODE#", .callback = BSICS_SetXIOMode, SCPI_CMD_DESC("<#Hxx> - set GRP<0,1>:XIO<dev addr>:MODE<port> mode reg")},
+    {.pattern = "GRP#:XIOaddr#:MODE#?", .callback = BSICS_XIOModeQ, SCPI_CMD_DESC("(#Hxx) - read mode<port> reg")},
+    {.pattern = "GRP#:XIOaddr#:OUTput#", .callback = BSICS_SetXIOOutput, SCPI_CMD_DESC("<#Hxx> - set GRP<0,1>:XIO<dev addr>:OUT<port> output")},
+    {.pattern = "GRP#:XIOaddr#:OUTput#?", .callback = BSICS_XIOOutputQ, SCPI_CMD_DESC("(#Hxx) - read output<port> reg")},
+    {.pattern = "GRP#:XIOaddr#:INput#?", .callback = BSICS_XIOInputQ, SCPI_CMD_DESC("(#Hxx) - read input<port> reg")},
 
     {.pattern = "GRP#:SOURce:VOLTage:LO", .callback = BSICS_SetVoltageLo, SCPI_CMD_DESC("<float> - [V] LO DCDC setpoint")},
     {.pattern = "GRP#:SOURce:VOLTage:LO?", .callback = BSICS_VoltageLoQ, SCPI_CMD_DESC("(float) - [V] last LO setpoint")},
@@ -608,7 +714,7 @@ const scpi_command_t scpi_commands[] = {
     {.pattern = "GRP#:MEASure:CH#:HI?", .callback = BSICS_ChannelVoltageHiQ, SCPI_CMD_DESC("<float> - [V] CH1..CH3 secondary-side ADC HI readback")},
     {.pattern = "GRP#:MEASure:CH#:TEMP?", .callback = BSICS_ChannelTemperatureQ, SCPI_CMD_DESC("<float> - [°C] CH1..CH3 secondary-side T sensor")},
 
-    {.pattern = "GRP#:CONFigure:CH#:DRIVer[:STATe]", .callback = BSICS_SetChannelDriverMux, SCPI_CMD_DESC("<#Hxx> - CH1..CH3 HS (7:4) and LS (3:0) switch configuration")},
+    {.pattern = "GRP#:CONFigure:CH#:DRIVer[:STATe]", .callback = BSICS_SetChannelDriverMux, SCPI_CMD_DESC("<#Hxx> - CH1..CH3 HS (7:4) and LS (3:0) switch config")},
     {.pattern = "GRP#:CONFigure:CH#:DRIVer[:STATe]?", .callback = BSICS_ChannelDriverMuxQ, SCPI_CMD_DESC("(#Hxx)")},
 
     {.pattern = "GRP#:STATus:DCDC[:OPERating]?", .callback = BSICS_StatusDCDCsQ, SCPI_CMD_DESC("(0|1) - combined DCDC PG/~ALERT")},
