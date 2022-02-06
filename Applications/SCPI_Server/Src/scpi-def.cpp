@@ -5,6 +5,11 @@
 #include "scpi/scpi.h"
 #include "scpi-def.h"
 #include "devices.h"
+#include "scpi_server.h"
+
+extern const uint8_t IP_ADDRESS[4];
+extern const uint8_t NETMASK_ADDRESS[4];
+extern const uint8_t GATEWAY_ADDRESS[4];
 
 typedef struct {
     uint32_t start_ticks;
@@ -485,6 +490,39 @@ static scpi_result_t BSICS_RecallCalibration(scpi_t * context) {
     return SCPI_RES_OK;
 }
 
+
+
+static scpi_result_t BSICS_IPv4(scpi_t * context) {
+    return SCPI_RES_OK;
+}
+
+static scpi_result_t BSICS_IPv4Q(scpi_t * context) {
+    BSICS_PrependCommandToResult(context);
+    SCPI_ResultArrayUInt8(context, IP_ADDRESS, 4, SCPI_FORMAT_ASCII);
+    return SCPI_RES_OK;
+}
+
+static scpi_result_t BSICS_SubnetMask(scpi_t * context) {
+    return SCPI_RES_OK;
+}
+
+static scpi_result_t BSICS_SubnetMaskQ(scpi_t * context) {
+    BSICS_PrependCommandToResult(context);
+    SCPI_ResultArrayUInt8(context, NETMASK_ADDRESS, 4, SCPI_FORMAT_ASCII);
+    return SCPI_RES_OK;
+}
+
+static scpi_result_t BSICS_Gateway(scpi_t * context) {
+    return SCPI_RES_OK;
+}
+
+static scpi_result_t BSICS_GatewayQ(scpi_t * context) {
+    BSICS_PrependCommandToResult(context);
+    SCPI_ResultArrayUInt8(context, GATEWAY_ADDRESS, 4, SCPI_FORMAT_ASCII);
+    return SCPI_RES_OK;
+}
+
+
 // Conditional initializer macros. Note order must remain: pattern, callback, [description,] [tag,].
 #if USE_COMMAND_DESCRIPTIONS
 #define SCPI_CMD_DESC(S) .description=(S),
@@ -498,6 +536,11 @@ static scpi_result_t BSICS_RecallCalibration(scpi_t * context) {
 #define SCPI_CMD_TAG(T)
 #endif
 
+#define STR_INDIR(s) #s
+#define STR_HELPER(s) STR_INDIR(s)
+
+#define SCPI_CONTROL_PORT_STR STR_HELPER(SCPI_CONTROL_PORT)
+
 const scpi_command_t scpi_commands[] = {
     /* Optional help commands */
     {.pattern = "HELP?", .callback = SCPI_HelpQ, SCPI_CMD_DESC("\t - list all supported commands")},
@@ -505,19 +548,19 @@ const scpi_command_t scpi_commands[] = {
     
     /* IEEE Mandated Commands (SCPI std V1999.0 4.1.1) */
 
-    { .pattern = "*CLS", .callback = SCPI_CoreCls,},
-    { .pattern = "*ESE", .callback = SCPI_CoreEse,},
+    { .pattern = "*CLS", .callback = SCPI_CoreCls, SCPI_CMD_DESC("\t - clear status byte, error queue, event reg")},
+    { .pattern = "*ESE", .callback = SCPI_CoreEse,SCPI_CMD_DESC("\t - event status enable")},
     { .pattern = "*ESE?", .callback = SCPI_CoreEseQ,},
-    { .pattern = "*ESR?", .callback = SCPI_CoreEsrQ,},
+    { .pattern = "*ESR?", .callback = SCPI_CoreEsrQ,SCPI_CMD_DESC("\t - event status enable reg")},
     { .pattern = "*IDN?", .callback = SCPI_CoreIdnQ, SCPI_CMD_DESC("\t - return device identifier")},
-    { .pattern = "*OPC", .callback = SCPI_CoreOpc,},
-    { .pattern = "*OPC?", .callback = SCPI_CoreOpcQ,},
-    { .pattern = "*RST", .callback = My_CoreRst, SCPI_CMD_DESC("\t - reset interface and re-initialize device")},
-    { .pattern = "*SRE", .callback = SCPI_CoreSre,},
+    { .pattern = "*OPC", .callback = SCPI_CoreOpc,SCPI_CMD_DESC("\t - operation complete cmd")},
+    { .pattern = "*OPC?", .callback = SCPI_CoreOpcQ,SCPI_CMD_DESC("\t - complete overlapped cmd (1)")},
+    { .pattern = "*RST", .callback = My_CoreRst, SCPI_CMD_DESC("\t - reset interface and re-initialize")},
+    { .pattern = "*SRE", .callback = SCPI_CoreSre,SCPI_CMD_DESC("\t - service request enable")},
     { .pattern = "*SRE?", .callback = SCPI_CoreSreQ,},
-    { .pattern = "*STB?", .callback = SCPI_CoreStbQ,},
-    { .pattern = "*TST?", .callback = My_CoreTstQ, SCPI_CMD_DESC("\t - returns 0")},
-    { .pattern = "*WAI", .callback = My_CoreWai, SCPI_CMD_DESC("\t - wait for pending operations to complete")},
+    { .pattern = "*STB?", .callback = SCPI_CoreStbQ,SCPI_CMD_DESC("\t - status byte query")},
+    { .pattern = "*TST?", .callback = My_CoreTstQ, SCPI_CMD_DESC("\t - self-test (0:pass)")},
+    { .pattern = "*WAI", .callback = My_CoreWai, SCPI_CMD_DESC("\t - halt cmd execution until pending operations complete")},
 
     /* Required SCPI commands (SCPI std V1999.0 4.2.1) */
 
@@ -529,43 +572,47 @@ const scpi_command_t scpi_commands[] = {
     {.pattern = "SYSTem:ERRor:COUNt?", .callback = SCPI_SystemErrorCountQ,},
     {.pattern = "SYSTem:VERSion?", .callback = SCPI_SystemVersionQ,},
 
-    {.pattern = "SYSTem:COMMunication:TCPIP:CONTROL?", .callback = SCPI_SystemCommTcpipControlQ,},
+    {.pattern = "SYSTem:COMMunication:TCPIP:CONTROL?", .callback = SCPI_SystemCommTcpipControlQ,SCPI_CMD_DESC("(" SCPI_CONTROL_PORT_STR ") - control port")},
+//    {.pattern = "SYSTem:COMMunication:TCPIP:ADDR", .callback = BSICS_IPv4, SCPI_CMD_DESC("<B>,<B>,<B>,<B> - set IP v4 address (restart to update)")},
+    {.pattern = "SYSTem:COMMunication:TCPIP:ADDR?", .callback = BSICS_IPv4Q, SCPI_CMD_DESC("\t - read stored IP v4 address")},
+//    {.pattern = "SYSTem:COMMunication:TCPIP:MASK", .callback = BSICS_SubnetMask, SCPI_CMD_DESC("<B>,<B>,<B>,<B> - set subnet mask (restart to update)")},
+    {.pattern = "SYSTem:COMMunication:TCPIP:MASK?", .callback = BSICS_SubnetMaskQ, SCPI_CMD_DESC("\t - read stored subnet mask")},
+//    {.pattern = "SYSTem:COMMunication:TCPIP:GATeway", .callback = BSICS_Gateway, SCPI_CMD_DESC("<B>,<B>,<B>,<B> - gateway (restart to update)")},
+    {.pattern = "SYSTem:COMMunication:TCPIP:GATeway?", .callback = BSICS_GatewayQ, SCPI_CMD_DESC("\t - read stored gateway address")},
 
     /* BSICS-SVR commands */
 
-    {.pattern = "SYSTem:COMMunication:PREPend[:ENAble]", .callback = BSICS_SetPrependCommandToResponse,},
-    {.pattern = "SYSTem:COMMunication:PREPend[:ENAble]?", .callback = BSICS_PrependCommandToResponseQ,},
-    {.pattern = "SYSTem:COMMunication:REPorting[:ENAble]", .callback = BSICS_SetPeriodicMeasReporting,},
-    {.pattern = "SYSTem:COMMunication:REPorting[:ENAble]?", .callback = BSICS_PeriodicMeasReportingQ,},
+    {.pattern = "SYSTem:COMMunication:PREPend[:ENAble]", .callback = BSICS_SetPrependCommandToResponse, SCPI_CMD_DESC("<0:False:1:True> - prepend cmd to response")},
+    {.pattern = "SYSTem:COMMunication:PREPend[:ENAble]?", .callback = BSICS_PrependCommandToResponseQ, SCPI_CMD_DESC("(0|1)")},
+    {.pattern = "SYSTem:COMMunication:REPorting[:ENAble]", .callback = BSICS_SetPeriodicMeasReporting, SCPI_CMD_DESC("<0:False:1:True> - periodically print to UART")},
+    {.pattern = "SYSTem:COMMunication:REPorting[:ENAble]?", .callback = BSICS_PeriodicMeasReportingQ, SCPI_CMD_DESC("(0|1)")},
 
-    {.pattern = "GPIO:OUTput[:SET]", .callback = BSICS_SetDigitalOut, SCPI_CMD_DESC("<#H0000 .. #HFFFF>")},
-    {.pattern = "GPIO:OUTput?", .callback = BSICS_DigitalOutQ, SCPI_CMD_DESC("\t - returns binary output states (#Hxxxx)")},
+    {.pattern = "GPIO:OUTput[:SET]", .callback = BSICS_SetDigitalOut, SCPI_CMD_DESC("<#Hxxxx> - set D0 .. D15")},
+    {.pattern = "GPIO:OUTput?", .callback = BSICS_DigitalOutQ, SCPI_CMD_DESC("(#Hxxxx) - binary output states")},
     {.pattern = "GPIO:BIT#[:SET]", .callback = BSICS_SetDigitalBit, SCPI_CMD_DESC("<0|False|1|True>")},
-    {.pattern = "GPIO:BIT#?", .callback = BSICS_DigitalBitQ, SCPI_CMD_DESC("\t - returns selected output bit (0|1)")},
+    {.pattern = "GPIO:BIT#?", .callback = BSICS_DigitalBitQ, SCPI_CMD_DESC("(0|1)")},
 
     {.pattern = "GRP[:SELect]", .callback = BSICS_SelectGroup, SCPI_CMD_DESC("<0|1>")},
-    {.pattern = "GRP?", .callback = BSICS_GroupQ, SCPI_CMD_DESC("\t - returns current group index (0|1)")},
+    {.pattern = "GRP?", .callback = BSICS_GroupQ, SCPI_CMD_DESC("(0|1) - current group index")},
 
-    {.pattern = "GRP#:SOURce:VOLTage:LO", .callback = BSICS_SetVoltageLo,},
-    {.pattern = "GRP#:SOURce:VOLTage:LO?", .callback = BSICS_VoltageLoQ,},
+    {.pattern = "GRP#:SOURce:VOLTage:LO", .callback = BSICS_SetVoltageLo, SCPI_CMD_DESC("<float> - [V] LO DCDC setpoint")},
+    {.pattern = "GRP#:SOURce:VOLTage:LO?", .callback = BSICS_VoltageLoQ, SCPI_CMD_DESC("(float) - [V] last LO setpoint")},
+    {.pattern = "GRP#:SOURce:VOLTage:HI", .callback = BSICS_SetVoltageHi, SCPI_CMD_DESC("<float> - [V] HI DCDC setpoint")},
+    {.pattern = "GRP#:SOURce:VOLTage:HI?", .callback = BSICS_VoltageHiQ, SCPI_CMD_DESC("(float) - [V] last HI setpoint")},
+    {.pattern = "GRP#:SOURce:CURRent:LO", .callback = BSICS_SetCurrentLo, SCPI_CMD_DESC("<float> - [A] limit for LO DCDC")},
+    {.pattern = "GRP#:SOURce:CURRent:LO?", .callback = BSICS_CurrentLoQ, SCPI_CMD_DESC("(float) - [A] last LO DCDC limit")},
+    {.pattern = "GRP#:SOURce:CURRent:HI", .callback = BSICS_SetCurrentHi, SCPI_CMD_DESC("<float> - [A] limit for HI DCDC")},
+    {.pattern = "GRP#:SOURce:CURRent:HI?", .callback = BSICS_CurrentHiQ, SCPI_CMD_DESC("(float) - [A] last HI DCDC limit")},
 
-    {.pattern = "GRP#:SOURce:VOLTage:HI", .callback = BSICS_SetVoltageHi,},
-    {.pattern = "GRP#:SOURce:VOLTage:HI?", .callback = BSICS_VoltageHiQ,},
+    {.pattern = "GRP#:MEASure:CH#:LO?", .callback = BSICS_ChannelVoltageLoQ, SCPI_CMD_DESC("<float> - [V] CH1..CH3 secondary-side ADC LO readback")},
+    {.pattern = "GRP#:MEASure:CH#:HI?", .callback = BSICS_ChannelVoltageHiQ, SCPI_CMD_DESC("<float> - [V] CH1..CH3 secondary-side ADC HI readback")},
+    {.pattern = "GRP#:MEASure:CH#:TEMP?", .callback = BSICS_ChannelTemperatureQ, SCPI_CMD_DESC("<float> - [°C] CH1..CH3 secondary-side T sensor")},
 
-    {.pattern = "GRP#:SOURce:CURRent:LO", .callback = BSICS_SetCurrentLo,},
-    {.pattern = "GRP#:SOURce:CURRent:LO?", .callback = BSICS_CurrentLoQ,},
-    {.pattern = "GRP#:SOURce:CURRent:HI", .callback = BSICS_SetCurrentHi,},
-    {.pattern = "GRP#:SOURce:CURRent:HI?", .callback = BSICS_CurrentHiQ,},
+    {.pattern = "GRP#:CONFigure:CH#:DRIVer[:STATe]", .callback = BSICS_SetChannelDriverMux, SCPI_CMD_DESC("<#Hxx> - CH1..CH3 HS (7:4) and LS (3:0) switch configuration")},
+    {.pattern = "GRP#:CONFigure:CH#:DRIVer[:STATe]?", .callback = BSICS_ChannelDriverMuxQ, SCPI_CMD_DESC("(#Hxx)")},
 
-    {.pattern = "GRP#:MEASure:CH#:LO?", .callback = BSICS_ChannelVoltageLoQ,},
-    {.pattern = "GRP#:MEASure:CH#:HI?", .callback = BSICS_ChannelVoltageHiQ,},
-    {.pattern = "GRP#:MEASure:CH#:TEMP?", .callback = BSICS_ChannelTemperatureQ,},
-
-    {.pattern = "GRP#:CONFigure:CH#:DRIVer[:STATe]", .callback = BSICS_SetChannelDriverMux,},
-    {.pattern = "GRP#:CONFigure:CH#:DRIVer[:STATe]?", .callback = BSICS_ChannelDriverMuxQ,},
-
-    {.pattern = "GRP#:STATus:DCDC[:OPERating]?", .callback = BSICS_StatusDCDCsQ,},
-    {.pattern = "GRP#:STATus:DRIVers[:RDY]?", .callback = BSICS_StatusDriversReadyQ,},
+    {.pattern = "GRP#:STATus:DCDC[:OPERating]?", .callback = BSICS_StatusDCDCsQ, SCPI_CMD_DESC("(0|1) - combined DCDC PG/~ALERT")},
+    {.pattern = "GRP#:STATus:DRIVers[:RDY]?", .callback = BSICS_StatusDriversReadyQ, SCPI_CMD_DESC("(0|1) - combined RDY state")},
 
 //    {.pattern = "GRP#:DISPlay:TEXT", .callback = BSICS_SetDisplayText,},
     {.pattern = "GRP#:DISPlay:TEXT?", .callback = BSICS_DisplayTextQ,},
