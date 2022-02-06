@@ -188,6 +188,24 @@ static scpi_result_t BSICS_GroupQ(scpi_t * context) {
     return SCPI_RES_OK;
 }
 
+static scpi_result_t  BSICS_ProbeI2CQ(scpi_t * context) {
+    int32_t idx; // command number 0: group index
+    if( not BSICS_GetGroupCommandNumbers(context, &idx, 1) )
+    { return SCPI_RES_ERR; }
+
+    int32_t param0; // coomand param 0: I2C address
+    if ( not SCPI_ParamInt32(context, &param0, TRUE) ||
+         not inRange<int32_t>(1, param0, 0x7F) ) {
+        return SCPI_RES_ERR;
+    }
+
+    bool result = false;
+    // todo: test if I2C slave device responds, update result
+    BSICS_PrependCommandToResult(context);
+    SCPI_ResultBool(context, result);
+    return SCPI_RES_OK;
+}
+
 static scpi_result_t BSICS_SetPeriodicMeasReporting(scpi_t * context) {
     scpi_bool_t param0;
     if ( not SCPI_ParamBool(context, &param0, TRUE) )
@@ -253,6 +271,7 @@ static scpi_result_t BSICS_GetFloatingPointValue(scpi_t * context, BSICS_SetValu
         default: return SCPI_RES_ERR; // handle unknown dest
     };
 
+    BSICS_PrependCommandToResult(context);
     SCPI_ResultFloat(context, (float)(val_x1000/1000.0));
     return SCPI_RES_OK;
 }
@@ -388,6 +407,7 @@ static scpi_result_t BSICS_XIO_SetValue(scpi_t * context, BSICS_XIO_dest dest){
         not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
         not inRange<int32_t>(0, commandNumber[2], 3) )
     { return SCPI_RES_ERR; }
+    uint8_t idx = commandNumber[0]; // group index
 
     uint32_t param0; // param0: new register value
     if ( not SCPI_ParamUInt32(context, &param0, TRUE) ||
@@ -395,9 +415,10 @@ static scpi_result_t BSICS_XIO_SetValue(scpi_t * context, BSICS_XIO_dest dest){
     { return SCPI_RES_ERR; }
 
     switch(dest){
-        case BSICS_group_xio_output   :;break;
-        case BSICS_group_xio_mode     :;break;
-        case BSICS_group_xio_direction:;break;
+        case BSICS_group_xio_output   :;break; // todo: write reg
+        case BSICS_group_xio_mode     :;break; // todo: write reg
+        case BSICS_group_xio_direction:;break; // todo: write reg
+        case BSICS_group_xio_input: // write to input reg not supported, fall through
         default: return SCPI_RES_ERR;
     }
     return SCPI_RES_OK; // only return OK it I2C transfer successful, return error if NAK
@@ -409,13 +430,14 @@ static scpi_result_t BSICS_XIO_GetValue(scpi_t * context, BSICS_XIO_dest dest){
         not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
         not inRange<int32_t>(0, commandNumber[2], 3) )
     { return SCPI_RES_ERR; }
+    uint8_t idx = commandNumber[0]; // group index
 
     uint8_t result = 0;
     switch(dest){
-        case BSICS_group_xio_output   :;break;
-        case BSICS_group_xio_input    :;break;
-        case BSICS_group_xio_mode     :;break;
-        case BSICS_group_xio_direction:;break;
+        case BSICS_group_xio_output   :;break; // todo: read write reg
+        case BSICS_group_xio_mode     :;break; // todo: read write reg
+        case BSICS_group_xio_direction:;break; // todo: read write reg
+        case BSICS_group_xio_input    :;break; // todo: read write reg
         default: return SCPI_RES_ERR;
     }
     BSICS_PrependCommandToResult(context);
@@ -672,6 +694,8 @@ const scpi_command_t scpi_commands[] = {
     {.pattern = "GRP[:SELect]", .callback = BSICS_SelectGroup, SCPI_CMD_DESC("<0|1>")},
     {.pattern = "GRP?", .callback = BSICS_GroupQ, SCPI_CMD_DESC("(0|1) - current group index")},
 
+    {.pattern = "GRP#:PROBe?", .callback = BSICS_ProbeI2CQ, SCPI_CMD_DESC("<#H01..#H7F> - test if I2C slave device is present (0|1)")},
+
     {.pattern = "GRP#:XIOaddr#:DIRection#", .callback = BSICS_SetXIODir, SCPI_CMD_DESC("<#Hxx> - set GRP<0,1>:XIO<dev addr>:DIR<port> direction reg")},
     {.pattern = "GRP#:XIOaddr#:DIRection#?", .callback = BSICS_XIODirQ, SCPI_CMD_DESC("(#Hxx) - read direction<port> reg")},
     {.pattern = "GRP#:XIOaddr#:MODE#", .callback = BSICS_SetXIOMode, SCPI_CMD_DESC("<#Hxx> - set GRP<0,1>:XIO<dev addr>:MODE<port> mode reg")},
@@ -693,7 +717,7 @@ const scpi_command_t scpi_commands[] = {
     {.pattern = "GRP#:MEASure:CH#:HI?", .callback = BSICS_ChannelVoltageHiQ, SCPI_CMD_DESC("<float> - [V] CH1..CH3 secondary-side ADC HI readback")},
     {.pattern = "GRP#:MEASure:CH#:TEMP?", .callback = BSICS_ChannelTemperatureQ, SCPI_CMD_DESC("<float> - [°C] CH1..CH3 secondary-side T sensor")},
 
-    {.pattern = "GRP#:CONFigure:CH#:DRIVer[:STATe]", .callback = BSICS_SetChannelDriverMux, SCPI_CMD_DESC("<#Hxx> - CH1..CH3 HS (7:4) and LS (3:0) switch config")},
+    {.pattern = "GRP#:CONFigure:CH#:DRIVer[:STATe]", .callback = BSICS_SetChannelDriverMux, SCPI_CMD_DESC("<#Hxx> - CH1..CH3 HS 7:4 and LS 3:0 switch config")},
     {.pattern = "GRP#:CONFigure:CH#:DRIVer[:STATe]?", .callback = BSICS_ChannelDriverMuxQ, SCPI_CMD_DESC("(#Hxx)")},
 
     {.pattern = "GRP#:STATus:DCDC[:OPERating]?", .callback = BSICS_StatusDCDCsQ, SCPI_CMD_DESC("(0|1) - combined DCDC PG/~ALERT")},
