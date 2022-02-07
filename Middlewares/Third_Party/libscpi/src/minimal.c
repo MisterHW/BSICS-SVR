@@ -215,14 +215,24 @@ scpi_result_t SCPI_StatusPreset(scpi_t * context) {
 }
 
 /**
- * HELP?
+ * HELP? [<string>]
  * @param context
  * @return
  */
 scpi_result_t SCPI_HelpQ(scpi_t * context) {
-    int i = 0;
-    for(;;) {
+#if USE_HELP_FILTER
+    size_t search_string_len = 0;
+    const char * search_string = NULL;
+    scpi_bool_t narrowed_down = SCPI_ParamCharacters(context, &search_string, &search_string_len, false);
+#endif
+
+    for(int i = 0; context->cmdlist[i].pattern != NULL; i++) {
         size_t pattern_len = strlen(context->cmdlist[i].pattern);
+#if USE_HELP_FILTER
+        if(narrowed_down && not strncasestrn(context->cmdlist[i].pattern, pattern_len, search_string, search_string_len)){
+            continue;
+        }
+#endif
         size_t block_len = 1 + pattern_len + strlen(SCPI_LINE_ENDING);
 #if USE_COMMAND_DESCRIPTIONS
         size_t description_len = context->cmdlist[i].description ? strlen(context->cmdlist[i].description) : 0;
@@ -240,9 +250,7 @@ scpi_result_t SCPI_HelpQ(scpi_t * context) {
         }
 #endif
         SCPI_ResultArbitraryBlockData(context, SCPI_LINE_ENDING, strlen(SCPI_LINE_ENDING));
-        if (context->cmdlist[++i].pattern == NULL) {
-            break;
-        }
     }
     return SCPI_RES_OK;
 }
+

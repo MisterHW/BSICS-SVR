@@ -569,41 +569,6 @@ static scpi_result_t BSICS_GatewayQ(scpi_t * context) {
     return SCPI_RES_OK;
 }
 
-scpi_result_t BSICS_HelpQ(scpi_t * context) {
-#if USE_HELP_SEARCH
-    size_t search_string_len = 0;
-    char search_string[16];
-    scpi_bool_t narrowed_down = SCPI_ParamCopyText(context, search_string,16, &search_string_len, false);
-#endif
-
-    for(int i = 0; context->cmdlist[i].pattern != NULL; i++) {
-        size_t pattern_len = strlen(context->cmdlist[i].pattern);
-#if USE_HELP_SEARCH
-        if(narrowed_down && not strstr(context->cmdlist[i].pattern, search_string)){
-            continue;
-        }
-#endif
-        size_t block_len = 1 + pattern_len + strlen(SCPI_LINE_ENDING);
-#if USE_COMMAND_DESCRIPTIONS
-        size_t description_len = context->cmdlist[i].description ? strlen(context->cmdlist[i].description) : 0;
-        if(description_len > 0){
-            block_len = 1 + pattern_len + 1 + description_len + strlen(SCPI_LINE_ENDING);
-        }
-#endif
-        SCPI_ResultArbitraryBlockHeader(context, block_len);
-        SCPI_ResultArbitraryBlockData(context, "\t", 1);
-        SCPI_ResultArbitraryBlockData(context, context->cmdlist[i].pattern, pattern_len);
-#if USE_COMMAND_DESCRIPTIONS
-        if(description_len > 0){
-            SCPI_ResultArbitraryBlockData(context, " ", 1);
-            SCPI_ResultArbitraryBlockData(context, context->cmdlist[i].description, description_len);
-        }
-#endif
-        SCPI_ResultArbitraryBlockData(context, SCPI_LINE_ENDING, strlen(SCPI_LINE_ENDING));
-    }
-    return SCPI_RES_OK;
-}
-
 // Conditional initializer macros. Note order must remain: pattern, callback, [description,] [tag,].
 #if USE_COMMAND_DESCRIPTIONS
 #define SCPI_CMD_DESC(S) .description=(S),
@@ -624,10 +589,10 @@ scpi_result_t BSICS_HelpQ(scpi_t * context) {
 
 const scpi_command_t scpi_commands[] = {
     /* Optional help commands */
-    {.pattern = "HELP?", .callback = BSICS_HelpQ,
-        SCPI_CMD_DESC("\t - list all supported commands")},
-    {.pattern = "HELP", .callback = BSICS_HelpQ,
-        SCPI_CMD_DESC("\t - HELP? alias")},
+    {.pattern = "HELP?", .callback = SCPI_HelpQ,
+        SCPI_CMD_DESC("[<string>] - list all supported commands, optionally filter for <string>")},
+    {.pattern = "HELP", .callback = SCPI_HelpQ,
+        SCPI_CMD_DESC("[<string>] - HELP? alias")},
     
     /* IEEE Mandated Commands (SCPI std V1999.0 4.1.1) */
 

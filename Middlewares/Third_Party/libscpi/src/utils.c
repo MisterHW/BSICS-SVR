@@ -1162,15 +1162,19 @@ uint64_t SCPI_Swap64(uint64_t val) {
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
+
+#define CHEROKEE_CHAR_TO_LOWER(_ch)     ((_ch) | 32)
+#define CHEROKEE_CHAR_TO_UPPER(_ch)     ((_ch) & ~32)
+
 char * strncasestrn(const char *s, size_t slen, const char *find, size_t findlen)
 {
     char c;
     char sc;
 
-    if (unlikely (find == NULL) || (findlen == 0))
+    if ((find == NULL) || (findlen == 0))
         return (char *)s;
 
-    if (unlikely (*find == '\0'))
+    if ((*find == '\0'))
         return (char *)s;
 
     c = *find;
