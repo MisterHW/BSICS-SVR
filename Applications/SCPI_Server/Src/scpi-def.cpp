@@ -230,15 +230,27 @@ enum BSICS_SetValue_dest {
 };
 
 /* BSICS_SetFloatingPointValue : GRP#:SOURce:(VOLTage, CURrent):(LO, HI) <double value> [<unit>]
- * param0 : int, optional
- * param1 : double
+ * param0 : int, optional - group index
+ * param1 : double - new value
  */
-static scpi_result_t BSICS_SetFloatingPointValue(scpi_t * context, BSICS_SetValue_dest dest, scpi_unit_t optional_unit) {
+static scpi_result_t BSICS_SetFloatingPointValue(scpi_t *context) {
     int32_t idx;
     if( not BSICS_GetGroupCommandNumbers(context, &idx, 1) )
     { return SCPI_RES_ERR; }
 
-    // read param0 (new setpoint, float)
+    scpi_unit_t optional_unit = SCPI_UNIT_NONE;
+    switch((BSICS_SetValue_dest)(context->param_list.cmd->tag)){
+        case BSICS_group_voltage_lo:
+        case BSICS_group_voltage_hi: {
+            SpecifyOperationFinishedIn(500); // specify settling time estimate [ms]
+            optional_unit = SCPI_UNIT_VOLT;
+        } break;
+        case BSICS_group_current_lo:
+        case BSICS_group_current_hi: optional_unit = SCPI_UNIT_AMPER; break;
+        default:;
+    }
+
+    // read param0 : new setpoint [float]
     scpi_number_t param0;
     if (!SCPI_ParamNumber(context, scpi_special_numbers_def, &param0, TRUE)
         || not ((param0.unit == SCPI_UNIT_NONE) || (param0.unit == optional_unit))
@@ -247,7 +259,7 @@ static scpi_result_t BSICS_SetFloatingPointValue(scpi_t * context, BSICS_SetValu
     }
     uint16_t val_x1000 = (uint16_t)(param0.content.value * 1000 + 0.5);
 
-    switch(dest){
+    switch((BSICS_SetValue_dest)(context->param_list.cmd->tag)){
         case BSICS_group_voltage_lo: DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_lo].VOUT_mV = val_x1000; break;
         case BSICS_group_voltage_hi: DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_hi].VOUT_mV = val_x1000; break;
         case BSICS_group_current_lo: DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_lo].IOUT_mA = val_x1000; break;
@@ -258,12 +270,14 @@ static scpi_result_t BSICS_SetFloatingPointValue(scpi_t * context, BSICS_SetValu
     return SCPI_RES_OK;
 }
 
-static scpi_result_t BSICS_GetFloatingPointValue(scpi_t * context, BSICS_SetValue_dest dest, scpi_unit_t unit) {
+/* BSICS_GetFloatingPointValue : GRP#:SOURce:(VOLTage, CURrent):(LO, HI)?
+ */
+static scpi_result_t BSICS_GetFloatingPointValue(scpi_t *context) {
     int32_t idx;
     if (not BSICS_GetGroupCommandNumbers(context, &idx, 1)) { return SCPI_RES_ERR; }
 
     uint16_t val_x1000 = 0;
-    switch(dest){
+    switch((BSICS_SetValue_dest)(context->param_list.cmd->tag)){
         case BSICS_group_voltage_lo: val_x1000 = DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_lo].VOUT_mV; break;
         case BSICS_group_voltage_hi: val_x1000 = DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_hi].VOUT_mV; break;
         case BSICS_group_current_lo: val_x1000 = DeviceGroup[idx].dcdc_data[PeripheralDeviceGroup::dcdc_lo].IOUT_mA; break;
@@ -274,44 +288,6 @@ static scpi_result_t BSICS_GetFloatingPointValue(scpi_t * context, BSICS_SetValu
     BSICS_PrependCommandToResult(context);
     SCPI_ResultFloat(context, (float)(val_x1000/1000.0));
     return SCPI_RES_OK;
-}
-
-// set DCDC_lo output voltage
-static scpi_result_t BSICS_SetVoltageLo(scpi_t * context) {
-    SpecifyOperationFinishedIn(500); // specify settling time estimate
-    return BSICS_SetFloatingPointValue(context, BSICS_group_voltage_lo, SCPI_UNIT_VOLT);
-}
-
-// set DCDC_hi output voltage
-static scpi_result_t BSICS_SetVoltageHi(scpi_t * context) {
-    SpecifyOperationFinishedIn(500); // specify settling time estimate
-    return BSICS_SetFloatingPointValue(context, BSICS_group_voltage_hi, SCPI_UNIT_VOLT);
-}
-
-// set DCDC_lo current limit
-static scpi_result_t BSICS_SetCurrentLo(scpi_t * context) {
-    return BSICS_SetFloatingPointValue(context, BSICS_group_current_lo, SCPI_UNIT_AMPER);
-}
-
-// set DCDC_hi current limit
-static scpi_result_t BSICS_SetCurrentHi(scpi_t * context) {
-    return BSICS_SetFloatingPointValue(context, BSICS_group_current_hi, SCPI_UNIT_AMPER);
-}
-
-static scpi_result_t BSICS_VoltageLoQ(scpi_t * context) {
-    return BSICS_GetFloatingPointValue(context, BSICS_group_voltage_lo, SCPI_UNIT_VOLT);
-}
-
-static scpi_result_t BSICS_VoltageHiQ(scpi_t * context) {
-    return BSICS_GetFloatingPointValue(context, BSICS_group_voltage_hi, SCPI_UNIT_VOLT);
-}
-
-static scpi_result_t BSICS_CurrentLoQ(scpi_t * context) {
-    return BSICS_GetFloatingPointValue(context, BSICS_group_current_lo, SCPI_UNIT_AMPER);
-}
-
-static scpi_result_t BSICS_CurrentHiQ(scpi_t * context) {
-    return BSICS_GetFloatingPointValue(context, BSICS_group_current_hi, SCPI_UNIT_AMPER);
 }
 
 // Return last DRV2A-CHn negative supply voltage (scaled ADC.ch0).
@@ -401,7 +377,7 @@ enum BSICS_XIO_dest {
     BSICS_group_xio_direction,
 };
 
-static scpi_result_t BSICS_XIO_SetValue(scpi_t * context, BSICS_XIO_dest dest){
+static scpi_result_t BSICS_XIO_SetValue(scpi_t * context){
     int32_t commandNumber[3]; // 0: group index, 1:ext. IO expander I2C address, 2: port no.
     if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 3) ||
         not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
@@ -414,7 +390,7 @@ static scpi_result_t BSICS_XIO_SetValue(scpi_t * context, BSICS_XIO_dest dest){
          not inRange<uint32_t>(0, param0, 0xFF) )
     { return SCPI_RES_ERR; }
 
-    switch(dest){
+    switch((BSICS_XIO_dest)(context->param_list.cmd->tag)){
         case BSICS_group_xio_output   :;break; // todo: write reg
         case BSICS_group_xio_mode     :;break; // todo: write reg
         case BSICS_group_xio_direction:;break; // todo: write reg
@@ -424,7 +400,7 @@ static scpi_result_t BSICS_XIO_SetValue(scpi_t * context, BSICS_XIO_dest dest){
     return SCPI_RES_OK; // only return OK it I2C transfer successful, return error if NAK
 }
 
-static scpi_result_t BSICS_XIO_GetValue(scpi_t * context, BSICS_XIO_dest dest){
+static scpi_result_t BSICS_XIO_GetValue(scpi_t * context){
     int32_t commandNumber[3]; // 0: group index, 1:ext. IO expander I2C address, 2: port no.
     if( not BSICS_GetGroupCommandNumbers(context, commandNumber, 3) ||
         not inRange<int32_t>(1, commandNumber[1], 0x7F) ||
@@ -433,7 +409,7 @@ static scpi_result_t BSICS_XIO_GetValue(scpi_t * context, BSICS_XIO_dest dest){
     uint8_t idx = commandNumber[0]; // group index
 
     uint8_t result = 0;
-    switch(dest){
+    switch((BSICS_XIO_dest)(context->param_list.cmd->tag)){
         case BSICS_group_xio_output   :;break; // todo: read write reg
         case BSICS_group_xio_mode     :;break; // todo: read write reg
         case BSICS_group_xio_direction:;break; // todo: read write reg
@@ -443,34 +419,6 @@ static scpi_result_t BSICS_XIO_GetValue(scpi_t * context, BSICS_XIO_dest dest){
     BSICS_PrependCommandToResult(context);
     SCPI_ResultUInt32Base(context, result, 16);
     return SCPI_RES_OK;
-}
-
-static scpi_result_t BSICS_SetXIODir(scpi_t * context) {
-    return BSICS_XIO_SetValue(context, BSICS_XIO_dest::BSICS_group_xio_direction);
-}
-
-static scpi_result_t BSICS_XIODirQ(scpi_t * context) {
-    return BSICS_XIO_GetValue(context, BSICS_XIO_dest::BSICS_group_xio_direction);
-}
-
-static scpi_result_t BSICS_SetXIOMode(scpi_t * context) {
-    return BSICS_XIO_SetValue(context, BSICS_XIO_dest::BSICS_group_xio_mode);
-}
-
-static scpi_result_t BSICS_XIOModeQ(scpi_t * context) {
-    return BSICS_XIO_GetValue(context, BSICS_XIO_dest::BSICS_group_xio_mode);
-}
-
-static scpi_result_t BSICS_SetXIOOutput(scpi_t * context) {
-    return BSICS_XIO_SetValue(context, BSICS_XIO_dest::BSICS_group_xio_output);
-}
-
-static scpi_result_t BSICS_XIOOutputQ(scpi_t * context) {
-    return BSICS_XIO_GetValue(context, BSICS_XIO_dest::BSICS_group_xio_output);
-}
-
-static scpi_result_t BSICS_XIOInputQ(scpi_t * context) {
-    return BSICS_XIO_GetValue(context, BSICS_XIO_dest::BSICS_group_xio_input);
 }
 
 // Configure CHn mux configuration
@@ -630,7 +578,7 @@ static scpi_result_t BSICS_GatewayQ(scpi_t * context) {
 #endif
 
 #if USE_COMMAND_TAGS
-#define SCPI_CMD_TAG(T) .tag=(T),
+#define SCPI_CMD_TAG(T) .tag=(int32_t)(T),
 #else
 #define SCPI_CMD_TAG(T)
 #endif
@@ -642,24 +590,37 @@ static scpi_result_t BSICS_GatewayQ(scpi_t * context) {
 
 const scpi_command_t scpi_commands[] = {
     /* Optional help commands */
-    {.pattern = "HELP?", .callback = SCPI_HelpQ, SCPI_CMD_DESC("\t - list all supported commands")},
-    {.pattern = "HELP", .callback = SCPI_HelpQ, SCPI_CMD_DESC("\t - HELP? alias")},
+    {.pattern = "HELP?", .callback = SCPI_HelpQ,
+        SCPI_CMD_DESC("\t - list all supported commands")},
+    {.pattern = "HELP", .callback = SCPI_HelpQ,
+        SCPI_CMD_DESC("\t - HELP? alias")},
     
     /* IEEE Mandated Commands (SCPI std V1999.0 4.1.1) */
 
-    { .pattern = "*CLS", .callback = SCPI_CoreCls, SCPI_CMD_DESC("\t - clear status byte, error queue, event reg")},
-    { .pattern = "*ESE", .callback = SCPI_CoreEse,SCPI_CMD_DESC("\t - event status enable")},
+    { .pattern = "*CLS", .callback = SCPI_CoreCls,
+        SCPI_CMD_DESC("\t - clear status byte, error queue, event reg")},
+    { .pattern = "*ESE", .callback = SCPI_CoreEse,
+        SCPI_CMD_DESC("\t - event status enable")},
     { .pattern = "*ESE?", .callback = SCPI_CoreEseQ,},
-    { .pattern = "*ESR?", .callback = SCPI_CoreEsrQ,SCPI_CMD_DESC("\t - event status enable reg")},
-    { .pattern = "*IDN?", .callback = SCPI_CoreIdnQ, SCPI_CMD_DESC("\t - return device identifier")},
-    { .pattern = "*OPC", .callback = SCPI_CoreOpc,SCPI_CMD_DESC("\t - operation complete cmd")},
-    { .pattern = "*OPC?", .callback = SCPI_CoreOpcQ,SCPI_CMD_DESC("\t - complete overlapped cmd (1)")},
-    { .pattern = "*RST", .callback = My_CoreRst, SCPI_CMD_DESC("\t - reset interface and re-initialize")},
-    { .pattern = "*SRE", .callback = SCPI_CoreSre,SCPI_CMD_DESC("\t - service request enable")},
+    { .pattern = "*ESR?", .callback = SCPI_CoreEsrQ,
+        SCPI_CMD_DESC("\t - event status enable reg")},
+    { .pattern = "*IDN?", .callback = SCPI_CoreIdnQ,
+        SCPI_CMD_DESC("\t - return device identifier")},
+    { .pattern = "*OPC", .callback = SCPI_CoreOpc,
+        SCPI_CMD_DESC("\t - operation complete cmd")},
+    { .pattern = "*OPC?", .callback = SCPI_CoreOpcQ,
+        SCPI_CMD_DESC("\t - complete overlapped cmd (1)")},
+    { .pattern = "*RST", .callback = My_CoreRst,
+        SCPI_CMD_DESC("\t - reset interface and re-initialize")},
+    { .pattern = "*SRE", .callback = SCPI_CoreSre,
+        SCPI_CMD_DESC("\t - service request enable")},
     { .pattern = "*SRE?", .callback = SCPI_CoreSreQ,},
-    { .pattern = "*STB?", .callback = SCPI_CoreStbQ,SCPI_CMD_DESC("\t - status byte query")},
-    { .pattern = "*TST?", .callback = My_CoreTstQ, SCPI_CMD_DESC("\t - self-test (0:pass)")},
-    { .pattern = "*WAI", .callback = My_CoreWai, SCPI_CMD_DESC("\t - halt cmd execution until pending operations complete")},
+    { .pattern = "*STB?", .callback = SCPI_CoreStbQ,
+        SCPI_CMD_DESC("\t - status byte query")},
+    { .pattern = "*TST?", .callback = My_CoreTstQ,
+        SCPI_CMD_DESC("\t - self-test (0:pass)")},
+    { .pattern = "*WAI", .callback = My_CoreWai,
+        SCPI_CMD_DESC("\t - halt cmd execution until pending operations complete")},
 
     /* Required SCPI commands (SCPI std V1999.0 4.2.1) */
 
@@ -671,62 +632,104 @@ const scpi_command_t scpi_commands[] = {
     {.pattern = "SYSTem:ERRor:COUNt?", .callback = SCPI_SystemErrorCountQ,},
     {.pattern = "SYSTem:VERSion?", .callback = SCPI_SystemVersionQ,},
 
-    {.pattern = "SYSTem:COMMunication:TCPIP:CONTROL?", .callback = SCPI_SystemCommTcpipControlQ,SCPI_CMD_DESC("(" SCPI_CONTROL_PORT_STR ") - control port")},
-//    {.pattern = "SYSTem:COMMunication:TCPIP:ADDR", .callback = BSICS_IPv4, SCPI_CMD_DESC("<B>,<B>,<B>,<B> - set IP v4 address (restart to update)")},
-    {.pattern = "SYSTem:COMMunication:TCPIP:ADDR?", .callback = BSICS_IPv4Q, SCPI_CMD_DESC(" - read stored IP v4 address")},
-//    {.pattern = "SYSTem:COMMunication:TCPIP:MASK", .callback = BSICS_SubnetMask, SCPI_CMD_DESC("<B>,<B>,<B>,<B> - set subnet mask (restart to update)")},
-    {.pattern = "SYSTem:COMMunication:TCPIP:MASK?", .callback = BSICS_SubnetMaskQ, SCPI_CMD_DESC(" - read stored subnet mask")},
-//    {.pattern = "SYSTem:COMMunication:TCPIP:GATeway", .callback = BSICS_Gateway, SCPI_CMD_DESC("<B>,<B>,<B>,<B> - gateway (restart to update)")},
-    {.pattern = "SYSTem:COMMunication:TCPIP:GATeway?", .callback = BSICS_GatewayQ, SCPI_CMD_DESC(" - read stored gateway address")},
+    {.pattern = "SYSTem:COMMunication:TCPIP:CONTROL?", .callback = SCPI_SystemCommTcpipControlQ,
+        SCPI_CMD_DESC("(" SCPI_CONTROL_PORT_STR ") - control port")},
+//    {.pattern = "SYSTem:COMMunication:TCPIP:ADDR", .callback = BSICS_IPv4,
+//      SCPI_CMD_DESC("<B>,<B>,<B>,<B> - set IP v4 address (restart to update)")},
+    {.pattern = "SYSTem:COMMunication:TCPIP:ADDR?", .callback = BSICS_IPv4Q,
+        SCPI_CMD_DESC(" - read stored IP v4 address")},
+//    {.pattern = "SYSTem:COMMunication:TCPIP:MASK", .callback = BSICS_SubnetMask,
+//      SCPI_CMD_DESC("<B>,<B>,<B>,<B> - set subnet mask (restart to update)")},
+    {.pattern = "SYSTem:COMMunication:TCPIP:MASK?", .callback = BSICS_SubnetMaskQ,
+        SCPI_CMD_DESC(" - read stored subnet mask")},
+//    {.pattern = "SYSTem:COMMunication:TCPIP:GATeway", .callback = BSICS_Gateway,
+//      SCPI_CMD_DESC("<B>,<B>,<B>,<B> - gateway (restart to update)")},
+    {.pattern = "SYSTem:COMMunication:TCPIP:GATeway?", .callback = BSICS_GatewayQ,
+        SCPI_CMD_DESC(" - read stored gateway address")},
 
     /* BSICS-SVR commands */
 
-    {.pattern = "SYSTem:COMMunication:PREPend[:ENAble]", .callback = BSICS_SetPrependCommandToResponse, SCPI_CMD_DESC("<0:False:1:True> - prepend cmd to response")},
-    {.pattern = "SYSTem:COMMunication:PREPend[:ENAble]?", .callback = BSICS_PrependCommandToResponseQ, SCPI_CMD_DESC("(0|1)")},
-    {.pattern = "SYSTem:COMMunication:REPorting[:ENAble]", .callback = BSICS_SetPeriodicMeasReporting, SCPI_CMD_DESC("<0:False:1:True> - periodically print to UART")},
-    {.pattern = "SYSTem:COMMunication:REPorting[:ENAble]?", .callback = BSICS_PeriodicMeasReportingQ, SCPI_CMD_DESC("(0|1)")},
+    {.pattern = "SYSTem:COMMunication:PREPend[:ENAble]", .callback = BSICS_SetPrependCommandToResponse,
+        SCPI_CMD_DESC("<0:False:1:True> - prepend cmd to response")},
+    {.pattern = "SYSTem:COMMunication:PREPend[:ENAble]?", .callback = BSICS_PrependCommandToResponseQ,
+        SCPI_CMD_DESC("(0|1)")},
+    {.pattern = "SYSTem:COMMunication:REPorting[:ENAble]", .callback = BSICS_SetPeriodicMeasReporting,
+        SCPI_CMD_DESC("<0:False:1:True> - periodically print to UART")},
+    {.pattern = "SYSTem:COMMunication:REPorting[:ENAble]?", .callback = BSICS_PeriodicMeasReportingQ,
+        SCPI_CMD_DESC("(0|1)")},
 
-    {.pattern = "GPIO:OUTput", .callback = BSICS_SetDigitalOut, SCPI_CMD_DESC("<#Hxxxx> - set board output pins D0 .. D15 (D11, D14, D15 : N/A)")},
-    {.pattern = "GPIO:OUTput?", .callback = BSICS_DigitalOutQ, SCPI_CMD_DESC("(#Hxxxx) - D0 .. D15 pin read-back (D11, D14, D15 : N/A)")},
-    {.pattern = "GPIO:BIT#", .callback = BSICS_SetDigitalBit, SCPI_CMD_DESC("<0|False|1|True>")},
-    {.pattern = "GPIO:BIT#?", .callback = BSICS_DigitalBitQ, SCPI_CMD_DESC("(0|1)")},
+    {.pattern = "GPIO:OUTput", .callback = BSICS_SetDigitalOut,
+        SCPI_CMD_DESC("<#Hxxxx> - set board output pins D0 .. D15 (D11, D14, D15 : N/A)")},
+    {.pattern = "GPIO:OUTput?", .callback = BSICS_DigitalOutQ,
+        SCPI_CMD_DESC("(#Hxxxx) - D0 .. D15 pin read-back (D11, D14, D15 : N/A)")},
+    {.pattern = "GPIO:BIT#", .callback = BSICS_SetDigitalBit,
+        SCPI_CMD_DESC("<0|False|1|True>")},
+    {.pattern = "GPIO:BIT#?", .callback = BSICS_DigitalBitQ,
+        SCPI_CMD_DESC("(0|1)")},
 
-    {.pattern = "GRP[:SELect]", .callback = BSICS_SelectGroup, SCPI_CMD_DESC("<0|1>")},
-    {.pattern = "GRP?", .callback = BSICS_GroupQ, SCPI_CMD_DESC("(0|1) - current group index")},
+    {.pattern = "GRP[:SELect]", .callback = BSICS_SelectGroup,
+        SCPI_CMD_DESC("<0|1>")},
+    {.pattern = "GRP?", .callback = BSICS_GroupQ,
+        SCPI_CMD_DESC("(0|1) - current group index")},
 
-    {.pattern = "GRP#:PROBe?", .callback = BSICS_ProbeI2CQ, SCPI_CMD_DESC("<#H01..#H7F> - test if I2C slave device is present (0|1)")},
+    {.pattern = "GRP#:PROBe?", .callback = BSICS_ProbeI2CQ,
+        SCPI_CMD_DESC("<#H01..#H7F> - test if I2C slave device is present (0|1)")},
 
-    {.pattern = "GRP#:XIOaddr#:DIRection#", .callback = BSICS_SetXIODir, SCPI_CMD_DESC("<#Hxx> - set GRP<0,1>:XIO<dev addr>:DIR<port> direction reg")},
-    {.pattern = "GRP#:XIOaddr#:DIRection#?", .callback = BSICS_XIODirQ, SCPI_CMD_DESC("(#Hxx) - read direction<port> reg")},
-    {.pattern = "GRP#:XIOaddr#:MODE#", .callback = BSICS_SetXIOMode, SCPI_CMD_DESC("<#Hxx> - set GRP<0,1>:XIO<dev addr>:MODE<port> mode reg")},
-    {.pattern = "GRP#:XIOaddr#:MODE#?", .callback = BSICS_XIOModeQ, SCPI_CMD_DESC("(#Hxx) - read mode<port> reg")},
-    {.pattern = "GRP#:XIOaddr#:OUTput#", .callback = BSICS_SetXIOOutput, SCPI_CMD_DESC("<#Hxx> - set GRP<0,1>:XIO<dev addr>:OUT<port> output")},
-    {.pattern = "GRP#:XIOaddr#:OUTput#?", .callback = BSICS_XIOOutputQ, SCPI_CMD_DESC("(#Hxx) - read output<port> reg")},
-    {.pattern = "GRP#:XIOaddr#:INput#?", .callback = BSICS_XIOInputQ, SCPI_CMD_DESC("(#Hxx) - read input<port> reg")},
+    {.pattern = "GRP#:XIOaddr#:DIRection#", .callback = BSICS_XIO_SetValue,
+        SCPI_CMD_DESC("<#Hxx> - set GRP<0,1>:XIO<dev addr>:DIR<port> direction reg") SCPI_CMD_TAG(BSICS_group_xio_direction)},
+    {.pattern = "GRP#:XIOaddr#:DIRection#?", .callback = BSICS_XIO_GetValue,
+        SCPI_CMD_DESC("(#Hxx) - read direction<port> reg") SCPI_CMD_TAG(BSICS_group_xio_direction)},
+    {.pattern = "GRP#:XIOaddr#:MODE#", .callback = BSICS_XIO_SetValue,
+        SCPI_CMD_DESC("<#Hxx> - set GRP<0,1>:XIO<dev addr>:MODE<port> mode reg") SCPI_CMD_TAG(BSICS_group_xio_mode)},
+    {.pattern = "GRP#:XIOaddr#:MODE#?", .callback = BSICS_XIO_GetValue,
+        SCPI_CMD_DESC("(#Hxx) - read mode<port> reg") SCPI_CMD_TAG(BSICS_group_xio_mode)},
+    {.pattern = "GRP#:XIOaddr#:OUTput#", .callback = BSICS_XIO_SetValue,
+        SCPI_CMD_DESC("<#Hxx> - set GRP<0,1>:XIO<dev addr>:OUT<port> output") SCPI_CMD_TAG(BSICS_group_xio_output)},
+    {.pattern = "GRP#:XIOaddr#:OUTput#?", .callback = BSICS_XIO_GetValue,
+        SCPI_CMD_DESC("(#Hxx) - read output<port> reg") SCPI_CMD_TAG(BSICS_group_xio_output)},
+    {.pattern = "GRP#:XIOaddr#:INput#?", .callback = BSICS_XIO_GetValue,
+        SCPI_CMD_DESC("(#Hxx) - read input<port> reg") SCPI_CMD_TAG(BSICS_group_xio_input)},
 
-    {.pattern = "GRP#:SOURce:VOLTage:LO", .callback = BSICS_SetVoltageLo, SCPI_CMD_DESC("<float> - [V] LO DCDC setpoint")},
-    {.pattern = "GRP#:SOURce:VOLTage:LO?", .callback = BSICS_VoltageLoQ, SCPI_CMD_DESC("(float) - [V] last LO setpoint")},
-    {.pattern = "GRP#:SOURce:VOLTage:HI", .callback = BSICS_SetVoltageHi, SCPI_CMD_DESC("<float> - [V] HI DCDC setpoint")},
-    {.pattern = "GRP#:SOURce:VOLTage:HI?", .callback = BSICS_VoltageHiQ, SCPI_CMD_DESC("(float) - [V] last HI setpoint")},
-    {.pattern = "GRP#:SOURce:CURRent:LO", .callback = BSICS_SetCurrentLo, SCPI_CMD_DESC("<float> - [A] limit for LO DCDC")},
-    {.pattern = "GRP#:SOURce:CURRent:LO?", .callback = BSICS_CurrentLoQ, SCPI_CMD_DESC("(float) - [A] last LO DCDC limit")},
-    {.pattern = "GRP#:SOURce:CURRent:HI", .callback = BSICS_SetCurrentHi, SCPI_CMD_DESC("<float> - [A] limit for HI DCDC")},
-    {.pattern = "GRP#:SOURce:CURRent:HI?", .callback = BSICS_CurrentHiQ, SCPI_CMD_DESC("(float) - [A] last HI DCDC limit")},
+    {.pattern = "GRP#:SOURce:VOLTage:LO", .callback = BSICS_SetFloatingPointValue,
+        SCPI_CMD_DESC("<float> - [V] LO DCDC setpoint") SCPI_CMD_TAG(BSICS_group_voltage_lo)},
+    {.pattern = "GRP#:SOURce:VOLTage:LO?", .callback = BSICS_GetFloatingPointValue,
+        SCPI_CMD_DESC("(float) - [V] last LO setpoint") SCPI_CMD_TAG(BSICS_group_voltage_lo)},
+    {.pattern = "GRP#:SOURce:VOLTage:HI", .callback = BSICS_SetFloatingPointValue,
+        SCPI_CMD_DESC("<float> - [V] HI DCDC setpoint") SCPI_CMD_TAG(BSICS_group_voltage_hi)},
+    {.pattern = "GRP#:SOURce:VOLTage:HI?", .callback = BSICS_GetFloatingPointValue,
+        SCPI_CMD_DESC("(float) - [V] last HI setpoint") SCPI_CMD_TAG(BSICS_group_voltage_hi)},
+    {.pattern = "GRP#:SOURce:CURRent:LO", .callback = BSICS_SetFloatingPointValue,
+        SCPI_CMD_DESC("<float> - [A] limit for LO DCDC") SCPI_CMD_TAG(BSICS_group_current_lo)},
+    {.pattern = "GRP#:SOURce:CURRent:LO?", .callback = BSICS_GetFloatingPointValue,
+        SCPI_CMD_DESC("(float) - [A] last LO DCDC limit") SCPI_CMD_TAG(BSICS_group_current_lo)},
+    {.pattern = "GRP#:SOURce:CURRent:HI", .callback = BSICS_SetFloatingPointValue,
+        SCPI_CMD_DESC("<float> - [A] limit for HI DCDC") SCPI_CMD_TAG(BSICS_group_current_hi)},
+    {.pattern = "GRP#:SOURce:CURRent:HI?", .callback = BSICS_GetFloatingPointValue,
+        SCPI_CMD_DESC("(float) - [A] last HI DCDC limit") SCPI_CMD_TAG(BSICS_group_current_hi)},
 
-    {.pattern = "GRP#:MEASure:CH#:LO?", .callback = BSICS_ChannelVoltageLoQ, SCPI_CMD_DESC("<float> - [V] CH1..CH3 secondary-side ADC LO readback")},
-    {.pattern = "GRP#:MEASure:CH#:HI?", .callback = BSICS_ChannelVoltageHiQ, SCPI_CMD_DESC("<float> - [V] CH1..CH3 secondary-side ADC HI readback")},
-    {.pattern = "GRP#:MEASure:CH#:TEMP?", .callback = BSICS_ChannelTemperatureQ, SCPI_CMD_DESC("<float> - [°C] CH1..CH3 secondary-side T sensor")},
+    {.pattern = "GRP#:MEASure:CH#:LO?", .callback = BSICS_ChannelVoltageLoQ,
+        SCPI_CMD_DESC("<float> - [V] CH1..CH3 secondary-side ADC LO readback")},
+    {.pattern = "GRP#:MEASure:CH#:HI?", .callback = BSICS_ChannelVoltageHiQ,
+        SCPI_CMD_DESC("<float> - [V] CH1..CH3 secondary-side ADC HI readback")},
+    {.pattern = "GRP#:MEASure:CH#:TEMP?", .callback = BSICS_ChannelTemperatureQ,
+        SCPI_CMD_DESC("<float> - [°C] CH1..CH3 secondary-side T sensor")},
 
-    {.pattern = "GRP#:CONFigure:CH#:DRIVer[:STATe]", .callback = BSICS_SetChannelDriverMux, SCPI_CMD_DESC("<#Hxx> - CH1..CH3 HS 7:4 and LS 3:0 switch config")},
-    {.pattern = "GRP#:CONFigure:CH#:DRIVer[:STATe]?", .callback = BSICS_ChannelDriverMuxQ, SCPI_CMD_DESC("(#Hxx)")},
+    {.pattern = "GRP#:CONFigure:CH#:DRIVer[:STATe]", .callback = BSICS_SetChannelDriverMux,
+        SCPI_CMD_DESC("<#Hxx> - CH1..CH3 HS 7:4 and LS 3:0 switch config")},
+    {.pattern = "GRP#:CONFigure:CH#:DRIVer[:STATe]?", .callback = BSICS_ChannelDriverMuxQ,
+        SCPI_CMD_DESC("(#Hxx)")},
 
-    {.pattern = "GRP#:STATus:DCDC[:OPERating]?", .callback = BSICS_StatusDCDCsQ, SCPI_CMD_DESC("(0|1) - combined DCDC PG/~ALERT")},
-    {.pattern = "GRP#:STATus:DRIVers[:RDY]?", .callback = BSICS_StatusDriversReadyQ, SCPI_CMD_DESC("(0|1) - combined RDY state")},
+    {.pattern = "GRP#:STATus:DCDC[:OPERating]?", .callback = BSICS_StatusDCDCsQ,
+        SCPI_CMD_DESC("(0|1) - combined DCDC PG/~ALERT")},
+    {.pattern = "GRP#:STATus:DRIVers[:RDY]?", .callback = BSICS_StatusDriversReadyQ,
+        SCPI_CMD_DESC("(0|1) - combined RDY state")},
 
 //    {.pattern = "GRP#:DISPlay:TEXT", .callback = BSICS_SetDisplayText,},
-    {.pattern = "GRP#:DISPlay:TEXT?", .callback = BSICS_DisplayTextQ,},
+    {.pattern = "GRP#:DISPlay:TEXT?", .callback = BSICS_DisplayTextQ,
+        SCPI_CMD_DESC("(string)")},
 
-    {.pattern = "GRP#:CALibration:CH#[:SET]", .callback = BSICS_SetCalibration,},
+    {.pattern = "GRP#:CALibration:CH#[:SET]", .callback = BSICS_SetCalibration,
+        SCPI_CMD_DESC("<i1c1024>,<i1c4k>,<i2c1024>,<i2_c4k> - [int16] CH1 .. CH3 ADC coef.")},
     {.pattern = "GRP#:CALibration:CH#?", .callback = BSICS_CalibrationQ,},
 //    {.pattern = "GRP#:CALibration:STOre", .callback = BSICS_StoreCalibration,},
 //    {.pattern = "GRP#:CALibration:RECall", .callback = BSICS_RecallCalibration,},
