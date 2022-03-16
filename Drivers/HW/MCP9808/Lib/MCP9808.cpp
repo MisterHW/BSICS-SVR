@@ -20,7 +20,7 @@ bool MCP9808::write(MCP9808_register reg, uint8_t *data, unsigned int len) {
     // deviceAddress << 1 | 0 : ACK : ADDR : ACK
     // MSB0 : ACK : LSB0 : ACK [ : MSB1 : ACK : LSB1 : ACK [ : ... ]]
     // P
-    return HAL_OK == HAL_I2C_Mem_Write(hI2C, deviceAddress << 1, reg, 1, data, len, 5);
+    return HAL_OK == HAL_I2C_Mem_Write(hI2C, deviceAddress << 1, reg, 1, data, len, 20);
 }
 
 bool MCP9808::read(MCP9808_register reg, uint8_t* data, unsigned int len) {
@@ -29,7 +29,7 @@ bool MCP9808::read(MCP9808_register reg, uint8_t* data, unsigned int len) {
     // S
     // deviceAddress << 1 | 1 : ACK : MSB0 : ACK : LSB0 : ACK [ : MSB1 : ACK : LSB1 : ACK [ : ... ]]
     // P
-    return HAL_OK == HAL_I2C_Mem_Read(hI2C, deviceAddress << 1, reg, 1, data, len, 5);
+    return HAL_OK == HAL_I2C_Mem_Read(hI2C, deviceAddress << 1, reg, 1, data, len, 20);
 }
 
 bool MCP9808::writeReg16(MCP9808_register reg, uint16_t value) {

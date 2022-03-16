@@ -231,7 +231,7 @@ bool SSD1306<disp_width, disp_height>::send_command(SSD1306_command cmd) {
     uint8_t buf[2];
     buf[0] = SSD1306_CTRL_WORD_CONTAINS_COMMAND ;
     buf[1] = cmd;
-    return HAL_OK == HAL_I2C_Master_Transmit( hI2C, deviceAddress << 1, buf, 2, 5 );
+    return HAL_OK == HAL_I2C_Master_Transmit( hI2C, deviceAddress << 1, buf, 2, 20 );
 }
 
 template <size_t disp_width , size_t disp_height>
@@ -243,7 +243,7 @@ bool SSD1306<disp_width, disp_height>::send_command(SSD1306_command cmd, uint8_t
     buf[0] = SSD1306_CTRL_WORD_CONTAINS_COMMAND | SSD1306_CTRL_ALL_FOLLOWING_BYTES_ARE_DATA ;
     buf[1] = cmd;
     buf[2] = data;
-    return HAL_OK == HAL_I2C_Master_Transmit( hI2C, deviceAddress << 1, buf, 3, 5 );
+    return HAL_OK == HAL_I2C_Master_Transmit( hI2C, deviceAddress << 1, buf, 3, 20 );
 }
 
 template<size_t disp_width, size_t disp_height>
@@ -252,7 +252,7 @@ bool SSD1306<disp_width, disp_height>::send_raw(uint8_t *data, uint16_t len) {
     // S
     // deviceAddress << 1 | 0 : ACK : D0 : ACK : D1 : ACK : ... : Dn : ACK
     // P
-    return HAL_OK == HAL_I2C_Master_Transmit( hI2C, deviceAddress << 1, data, len, 5 );
+    return HAL_OK == HAL_I2C_Master_Transmit( hI2C, deviceAddress << 1, data, len, 20 );
 }
 
 template <size_t disp_width , size_t disp_height>
@@ -262,7 +262,7 @@ bool SSD1306<disp_width, disp_height>::send_data(uint8_t *bytes, uint16_t len) {
     // P
     return HAL_OK == HAL_I2C_Mem_Write( hI2C, deviceAddress << 1,
                                         SSD1306_CTRL_WORD_CONTAINS_DATA | SSD1306_CTRL_ALL_FOLLOWING_BYTES_ARE_DATA , 1 ,
-                                        bytes, len, 5);
+                                        bytes, len, 20);
 }
 
 template<size_t disp_width, size_t disp_height>
@@ -270,7 +270,7 @@ bool SSD1306<disp_width, disp_height>::read_status(uint8_t &status) {
     // S
     // deviceAddress << 1 | 1 : ACK : STATUS
     // P
-    return HAL_OK == HAL_I2C_Master_Receive(hI2C, deviceAddress << 1, &status, 1, 5);
+    return HAL_OK == HAL_I2C_Master_Receive(hI2C, deviceAddress << 1, &status, 1, 20);
 }
 
 template<size_t disp_width, size_t disp_height>

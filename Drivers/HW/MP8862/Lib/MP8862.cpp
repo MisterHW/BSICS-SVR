@@ -24,7 +24,7 @@ bool MP8862::write(MP8862_register reg, uint8_t *data, uint8_t len ) {
     // DATA0 : ACK [ : DATA1* : ACK [ : ... ]]
     // P
     // *: Register addresses are post-incremented, and *** read-only registers will be skipped ***.
-    return HAL_OK == HAL_I2C_Mem_Write( hI2C, deviceAddress << 1, reg, 1, data, len, 5 );
+    return HAL_OK == HAL_I2C_Mem_Write( hI2C, deviceAddress << 1, reg, 1, data, len, 20 );
 }
 
 bool MP8862::write(MP8862_register reg, uint8_t value) {
@@ -43,7 +43,7 @@ bool MP8862::read(MP8862_register reg, uint8_t *data, uint8_t len ) {
     //    - when master ACK is sent instead of NACK, multiple bytes can be read from auto-incrementing reg addresses
     //    - unmapped register addresses 0x0D ... 0x26 and 0x2A .. 0xFF read as 0x00
     //    -
-    return HAL_OK == HAL_I2C_Mem_Read( hI2C, deviceAddress << 1, reg, 1, data, len, 5 );
+    return HAL_OK == HAL_I2C_Mem_Read( hI2C, deviceAddress << 1, reg, 1, data, len, 20 );
 }
 
 bool MP8862::hardwarePowerUp(bool (*callback_set_enable_pin)(uint16_t ID, uint8_t state), uint16_t ID, MP8862_retry_count trials) {

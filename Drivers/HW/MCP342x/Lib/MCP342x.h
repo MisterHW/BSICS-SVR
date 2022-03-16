@@ -174,7 +174,7 @@ bool MCP342x<MCP342x_address, MP342x_channel>::writeConfig( MCP342x_config data 
     // P
     // cfg[data.bits.channel] = data; // update shadow copy
     uint8_t txbuf =(uint8_t)data;
-    return HAL_OK == HAL_I2C_Master_Transmit( hI2C, deviceAddress << 1, &txbuf, 1, 5 );
+    return HAL_OK == HAL_I2C_Master_Transmit( hI2C, deviceAddress << 1, &txbuf, 1, 20 );
 }
 
 template<typename MCP342x_address, typename MP342x_channel>
@@ -182,7 +182,7 @@ bool MCP342x<MCP342x_address, MP342x_channel>::read( uint8_t* data, MCP342x_rx_b
     // S
     // deviceAddress << 1 | 1 : ACK [ : DATA2 : ACK ] : DATA1 : ACK : DATA0 : ACK [ : CFG : ACK [ : CFG : ACK [ : ... ]]
     // P
-    return HAL_OK == HAL_I2C_Master_Receive( hI2C, deviceAddress << 1, data, len, 5 );
+    return HAL_OK == HAL_I2C_Master_Receive( hI2C, deviceAddress << 1, data, len, 20 );
 }
 
 template<typename MCP342x_address, typename MP342x_channel>

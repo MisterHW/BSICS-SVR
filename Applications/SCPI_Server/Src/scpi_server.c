@@ -53,7 +53,7 @@
 #include "lwip/inet.h"
 #include "lwip/api.h"
 
-#define SCPI_THREAD_PRIO (tskIDLE_PRIORITY + 2)
+#define SCPI_THREAD_PRIO (tskIDLE_PRIORITY + 0) // osPriorityNormal = 0
 
 #define SCPI_MSG_TIMEOUT                0
 #define SCPI_MSG_TEST                   1
