@@ -246,7 +246,10 @@ static scpi_result_t BSICS_SetFloatingPointValue(scpi_t *context) {
             optional_unit = SCPI_UNIT_VOLT;
         } break;
         case BSICS_group_current_lo:
-        case BSICS_group_current_hi: optional_unit = SCPI_UNIT_AMPER; break;
+        case BSICS_group_current_hi: {
+            SpecifyOperationFinishedIn(500); // settling time estimate (may differ from voltage settling) [ms]
+            optional_unit = SCPI_UNIT_AMPER;
+        }
         default:;
     }
 
@@ -434,6 +437,7 @@ static scpi_result_t BSICS_SetChannelDriverMux(scpi_t * context) {
     { return SCPI_RES_ERR; }
 
     DeviceGroup[commandNumber[0]].octal_spst_data[commandNumber[1]-1].value = (uint8_t) param0;
+    SpecifyOperationFinishedIn(100);
     return SCPI_RES_OK;
 }
 // read back CHn mux configuration
