@@ -442,7 +442,7 @@ static void MX_I2C1_Init(void)
 
   /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
-  hi2c1.Init.Timing = 0x20500716;
+  hi2c1.Init.Timing = 0x10900516;
   hi2c1.Init.OwnAddress1 = 0;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
@@ -462,7 +462,7 @@ static void MX_I2C1_Init(void)
   }
   /** Configure Digital filter
   */
-  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 3) != HAL_OK)
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 15) != HAL_OK)
   {
     Error_Handler();
   }
@@ -488,7 +488,7 @@ static void MX_I2C2_Init(void)
 
   /* USER CODE END I2C2_Init 1 */
   hi2c2.Instance = I2C2;
-  hi2c2.Init.Timing = 0x20500716;
+  hi2c2.Init.Timing = 0x10900516;
   hi2c2.Init.OwnAddress1 = 0;
   hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
@@ -508,7 +508,7 @@ static void MX_I2C2_Init(void)
   }
   /** Configure Digital filter
   */
-  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c2, 3) != HAL_OK)
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c2, 15) != HAL_OK)
   {
     Error_Handler();
   }
@@ -687,18 +687,17 @@ void StartDefaultTask(void const * argument)
     //User_notification();
 
     uint8_t state = 0;
-    bool refresh_success = false;
+    bool refresh_success = true;
   /* Infinite loop */
   for(;;)
   {
+      process_reinitialization_request(!refresh_success); // Combined use of UART and I2C from single task here (in critcal section).
       osDelay(15);
-      process_reinitialization_request(false); // Combined use of UART and I2C from single task here (in critcal section).
       xSemaphoreTake(MTX_UART_I2C, portMAX_DELAY);
       refresh_success = Devices_refresh((state & 0x07) == 0x07); // UART transmit suppressed here.
       xSemaphoreGive(MTX_UART_I2C);
       if(!refresh_success){
           printf("Error: I2C transfer(s) failed.\r\n");
-          process_reinitialization_request(true);
       }
       state++;
   }
