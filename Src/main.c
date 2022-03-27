@@ -224,19 +224,21 @@ void request_reinitialization(){
     reinitialize_peripherals = true;
 }
 
-void process_reinitialization_request(){
-    if(reinitialize_peripherals){
-        taskENTER_CRITICAL(); // Prevent UART transmissions from other tasks from interfering with I2C transfers within.
-        {
+void process_reinitialization_request(bool force_reinitialize_I2C){
+    taskENTER_CRITICAL(); // Prevent UART transmissions from other tasks from interfering with I2C transfers within.
+    {
+        if(reinitialize_peripherals || force_reinitialize_I2C){
             I2C1_DeInit();
             I2C2_DeInit();
             MX_I2C1_Init();
             MX_I2C2_Init();
+        }
+        if(reinitialize_peripherals) {
             Devices_full_init();
             reinitialize_peripherals = false;
         }
-        taskEXIT_CRITICAL();
     }
+    taskEXIT_CRITICAL();
 }
 
 // SCPI_DeviceConnectedEvent() overrides definition in scpi_server.c to activate LD1 SCPI device connection indicator.
@@ -339,7 +341,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityAboveNormal, 0, 768);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 768);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -440,7 +442,7 @@ static void MX_I2C1_Init(void)
 
   /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
-  hi2c1.Init.Timing = 0x00701954;
+  hi2c1.Init.Timing = 0x20500716;
   hi2c1.Init.OwnAddress1 = 0;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
@@ -460,7 +462,7 @@ static void MX_I2C1_Init(void)
   }
   /** Configure Digital filter
   */
-  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 3) != HAL_OK)
   {
     Error_Handler();
   }
@@ -486,7 +488,7 @@ static void MX_I2C2_Init(void)
 
   /* USER CODE END I2C2_Init 1 */
   hi2c2.Instance = I2C2;
-  hi2c2.Init.Timing = 0x00701954;
+  hi2c2.Init.Timing = 0x20500716;
   hi2c2.Init.OwnAddress1 = 0;
   hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
@@ -506,7 +508,7 @@ static void MX_I2C2_Init(void)
   }
   /** Configure Digital filter
   */
-  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c2, 0) != HAL_OK)
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c2, 3) != HAL_OK)
   {
     Error_Handler();
   }
@@ -685,15 +687,19 @@ void StartDefaultTask(void const * argument)
     //User_notification();
 
     uint8_t state = 0;
-
+    bool refresh_success = false;
   /* Infinite loop */
   for(;;)
   {
       osDelay(15);
-      process_reinitialization_request(); // Combined use of UART and I2C from single task here (in ciritcal section).
+      process_reinitialization_request(false); // Combined use of UART and I2C from single task here (in critcal section).
       xSemaphoreTake(MTX_UART_I2C, portMAX_DELAY);
-      Devices_refresh((state & 0x07) == 0x07); // UART transmit suppressed here.
+      refresh_success = Devices_refresh((state & 0x07) == 0x07); // UART transmit suppressed here.
       xSemaphoreGive(MTX_UART_I2C);
+      if(!refresh_success){
+          printf("Error: I2C transfer(s) failed.\r\n");
+          process_reinitialization_request(true);
+      }
       state++;
   }
   /* USER CODE END 5 */

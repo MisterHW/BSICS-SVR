@@ -53,7 +53,7 @@ enum MCP342x_conversion_mode {
 };
 
 enum MCP342x_bit_mask {
-    MCP342X_RDY          = 0x80, // RDY flag
+    MCP342X_RDY_N        = 0x80, // !RDY flag
     MCP342X_GAIN_MASK    = 0x03,
     MCP342X_MODE_MASK    = 0x10,
     MCP342X_CHANNEL_MASK = 0x60,
@@ -189,7 +189,7 @@ template<typename MCP342x_address, typename MP342x_channel>
 bool MCP342x<MCP342x_address, MP342x_channel>::readConvResult(int32_t &value) {
     uint8_t data[MCP342x_rx_18bit_plus_status] {};
     bool success = read(data, MCP342x_rx_18bit_plus_status);
-    success = success && (data[3] & MCP342X_RDY);
+    success = success && ((data[3] & MCP342X_RDY_N) == 0);
     uint8_t  res = data[3] & MCP342X_RES_MASK;
     uint32_t tmp = data[0] << 24 | data[1] << 16;
     if(res == MCP342X_RES_18BIT)
