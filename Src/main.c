@@ -697,7 +697,7 @@ void StartDefaultTask(void const * argument)
       refresh_success = Devices_refresh((state & 0x07) == 0x07); // UART transmit suppressed here.
       xSemaphoreGive(MTX_UART_I2C);
       if(!refresh_success){
-          printf("Error: I2C transfer(s) failed.\r\n");
+          printf("I2C transfer(s) failed, re-init.\r\n");
       }
       state++;
   }

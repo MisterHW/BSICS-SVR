@@ -410,6 +410,87 @@ In *main.c*, SCB->SHCSR interrupt bits are set:
 	MPU_Config();
 
 
+
+
+**Error Handlers**
+
+The four error handlers `HardFault_Handler`, `MemManage_Handler`, `BusFault_Handler` and `UsageFault_Handler` documented under [System Control Block (SCB)](https://developer.arm.com/documentation/dui0646/a/CIHFDJCA) will give some insight into the cause of a problem brought to light by correctly applied MPU settings under operation.  One the one hand, status register flags describe the nature of the fault,
+
+![](img/fault_register_table.png)
+
+On the other hand, their corresponding address registers `MMFAR` and `BFAR` can give a hint by exposing the offending memory address. In full, the necessary handlers  can be implemented as (*stm32f7xx\_it.c*):
+
+	void HardFault_Handler(void)
+	{
+	  /* USER CODE BEGIN HardFault_IRQn 0 */
+	    printf("\r\n\r\nHardFault_Handler called.\r\n");
+	    /* See PM0253 and SCB registers https://developer.arm.com/documentation/dui0646/a/CIHFDJCA .
+	     * HFSR 0xE000ED2C : HardFault Status Register (dword access)
+	     */
+	  /* USER CODE END HardFault_IRQn 0 */
+	  while (1)
+	  {
+	    /* USER CODE BEGIN W1_HardFault_IRQn 0 */
+	    /* USER CODE END W1_HardFault_IRQn 0 */
+	  }
+	}
+	
+	void MemManage_Handler(void)
+	{
+	  /* USER CODE BEGIN MemoryManagement_IRQn 0 */
+	    printf("\r\n\r\nMemManage_Handler called.\r\n");
+	    /* See PM0253 and SCB registers https://developer.arm.com/documentation/dui0646/a/CIHFDJCA .
+	     * MMFSR 0xE000ED28 : MemManage Fault Status register (byte access)
+	     * MMFAR 0xE000ED34 : MemManage Fault Address Register (dword access)
+	     * cy_stc_fault_cfsr_t sr = SCB->CFSR;
+	     */
+	    printf("MMFSR : 0x%02x\r\n", SCB->CFSR & 0xFF);
+	    printf("MMFAR : 0x%08x\r\n", SCB->MMFAR);
+	
+	  /* USER CODE END MemoryManagement_IRQn 0 */
+	  while (1)
+	  {
+	    /* USER CODE BEGIN W1_MemoryManagement_IRQn 0 */
+	    /* USER CODE END W1_MemoryManagement_IRQn 0 */
+	  }
+	}
+	
+	void BusFault_Handler(void)
+	{
+	  /* USER CODE BEGIN BusFault_IRQn 0 */
+	    printf("\r\n\r\nBusFault_Handler called.\r\n");
+	    /* See PM0253 and SCB registers https://developer.arm.com/documentation/dui0646/a/CIHFDJCA .
+	     * BFSR 0xE000ED29 : Bus Fault Status register (byte access)
+	     * BFAR 0xE000ED38 : BusFault Address Register
+	     */
+	    printf("BFSR : 0x%02x\r\n", (SCB->CFSR >> 8) & 0xFF);
+	    printf("BFAR : 0x%08x\r\n", SCB->BFAR);
+	  /* USER CODE END BusFault_IRQn 0 */
+	  while (1)
+	  {
+	    /* USER CODE BEGIN W1_BusFault_IRQn 0 */
+	    /* USER CODE END W1_BusFault_IRQn 0 */
+	  }
+	}
+	
+	void UsageFault_Handler(void)
+	{
+	  /* USER CODE BEGIN UsageFault_IRQn 0 */
+	    printf("\r\n\r\nUsageFault_Handler called.\r\n");
+	    /* See PM0253 and SCB registers https://developer.arm.com/documentation/dui0646/a/CIHFDJCA .
+	     * UFSR 0xE000ED2A : UsageFault Status Register (word access)
+	     */
+	    printf("UFSR : 0x%04x\r\n", (SCB->CFSR >> 16) & 0xFFFF);
+	  /* USER CODE END UsageFault_IRQn 0 */
+	  while (1)
+	  {
+	    /* USER CODE BEGIN W1_UsageFault_IRQn 0 */
+	    /* USER CODE END W1_UsageFault_IRQn 0 */
+	  }
+	}
+
+(Note: printf requires the aforementioned [newlib fixes](readme_newlib.md)).
+
 **Further reading**
 
 [DMA is not working on STM32H7 devices, handling DMA buffers with D-Cache enabled](https://community.st.com/s/article/FAQ-DMA-is-not-working-on-STM32H7-devices)
