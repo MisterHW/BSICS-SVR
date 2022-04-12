@@ -45,6 +45,7 @@ Enable LWIP\_TCP\_KEEPALIVE in STM32CubeMX LwIP Key Options + Advanced Parameter
 New defaults need to be placed in lwipopts.h, which is included earlier than tcp_priv.h and takes precedence:
 
 
+```cpp
 	/* USER CODE BEGIN 0 */
 	// ...
 	
@@ -55,10 +56,12 @@ New defaults need to be placed in lwipopts.h, which is included earlier than tcp
 	#define  TCP_KEEPINTVL_DEFAULT   5000UL /* Default Time between KEEPALIVE probes in milliseconds */
 	#define  TCP_KEEPCNT_DEFAULT        3U  /* Default Counter for KEEPALIVE probes */
 	
-	/* USER CODE END 0 */		
-
+	/* USER CODE END 0 */	
+```
+	
 The fall-back default values given in tcp\_priv.h are overwritten when the project is re-generated and not managed in STM32CubeMX:
 
+```cpp
 	/* Keepalive values, compliant with RFC 1122. Don't change this unless you know what you're doing */
 	#ifndef  TCP_KEEPIDLE_DEFAULT
 	#define  TCP_KEEPIDLE_DEFAULT     7200000UL /* Default KEEPALIVE timer in milliseconds */
@@ -73,22 +76,24 @@ The fall-back default values given in tcp\_priv.h are overwritten when the proje
 	#endif
 	
 	#define  TCP_MAXIDLE              TCP_KEEPCNT_DEFAULT * TCP_KEEPINTVL_DEFAULT  /* Maximum KEEPALIVE probe time */
-
-In the case of non-OS use, timeouts.h needs to be included and sys\_check\_timeouts() needs to be called in the main loop to process timers.
+```
+In the case of non-OS use, timeouts.h needs to be included and sys\_check\_timeouts() needs to be called in the main loop to process timers, while with `NO_SYS = 0` and `LWIP_TCP`, a `tcp_tmr()` gets added to `lwip_cyclic_timers` in timeouts.c . 
 
 ### Keep-Alive Customization
 
 In scpi\_server.h, add SCPI\_KEEP\_IDLE, SCPI\_KEEP\_INTVL and SCPI\_KEEP\_CNT:
  
+```cpp
 	#define SCPI_DEVICE_PORT  5025 // scpi-raw standard port
 	#define SCPI_CONTROL_PORT 5026 // libscpi control port (not part of the standard)
 	#define SCPI_KEEP_IDLE    2000 // (ms) keepalive quiet time after last TCP packet
 	#define SCPI_KEEP_INTVL   1000 // (ms) keepalive repeat interval
 	#define SCPI_KEEP_CNT        4 // Retry count before terminating connection (SCPI_KEEP_INTVL * SCPI_KEEP_INTVL (ms)).
- 
+```
+
 these values are applied to the newly created pcb structure from netconn\_accept():
 
-  
+```cpp
 	 static int processIoListen(user_data_t * user_data) {
 	    struct netconn *newconn;
 	
@@ -113,6 +118,8 @@ these values are applied to the newly created pcb structure from netconn\_accept
 	
 	    return 0;
 	}
+```
+
 
 where the SOF\_KEEPALIVE flag is defined in ip.h (same as SO\_KEEPALIVE).(Setting might be redundant though, but let's be explicit).
 
