@@ -402,7 +402,7 @@ In *main.c*, SCB->SHCSR interrupt bits are set:
 ```cpp
 	/* USER CODE BEGIN 1 */
 	
-	/ * Set all three (USGFAULTENA, BUSFAULTENA, and MEMFAULTENA) fault enable bits
+	/* Set all three (USGFAULTENA, BUSFAULTENA, and MEMFAULTENA) fault enable bits
 	* in the System Control Block, System Handler Control and State Register.
 	* Otherwise these faults are handled as hard faults by HardFault_Handler().
 	*/
@@ -420,7 +420,7 @@ In *main.c*, SCB->SHCSR interrupt bits are set:
 
 **Error Handlers**
 
-The four error handlers `HardFault_Handler`, `MemManage_Handler`, `BusFault_Handler` and `UsageFault_Handler` documented under [System Control Block (SCB)](https://developer.arm.com/documentation/dui0646/a/CIHFDJCA) will give some insight into the cause of a problem brought to light by correctly applied MPU settings under operation.  One the one hand, status register flags describe the nature of the fault,
+The four error handlers `HardFault_Handler`, `MemManage_Handler`, `BusFault_Handler` and `UsageFault_Handler` documented under [System Control Block (SCB)](https://developer.arm.com/documentation/dui0646/a/CIHFDJCA) will give some insight into the cause of a problem brought to light by correctly applied MPU settings under operation.  On the one hand, status register flags describe the nature of the fault,
 
 ![](img/fault_register_table.png)
 
