@@ -91,7 +91,7 @@ The MAC DMA controller requires packet data buffers, but also tables of ETH\_DMA
 Extern declarations are added to tag corresponding variable definitions with *\_\_attribute\_\_((section(".nc\_bss")))* and *\_\_attribute\_\_((section(".nc\_bss\*")))* expressions. 
 As code maintained by STM32CubeMX will be regenerated when clicking "Generate Code", persistent modifications can only be put in a USER CODE block:
 
-
+```cpp
     /* Private variables ---------------------------------------------------------*/
 
     __ALIGN_BEGIN ETH_DMADescTypeDef  DMARxDscrTab[ETH_RXBUFNB] __ALIGN_END; /* Ethernet Rx MA Descriptor */
@@ -107,6 +107,8 @@ As code maintained by STM32CubeMX will be regenerated when clicking "Generate Co
 	extern uint8_t Tx_Buff[ETH_TXBUFNB][ETH_TX_BUF_SIZE] __attribute__((section(".nc_bss*")));
 	
     /* USER CODE END 2 */
+```
+
 
 The *nc\_* prefix is an advance mention of the need to set both buffer and DMA descriptor memories as non-cached, see below.
 
@@ -325,7 +327,7 @@ Three regions are defined. When regions overlap, the region with the highest num
 
 MPU\_Config() is generated from the [corresponding STM32CubeMX Cortex-M7 Mode and Configuration](img/MPU_eth_regions_with_safe_background.png).
 
-
+```cpp
 	  /* Disables the MPU */
 	  HAL_MPU_Disable();
 	  /** Initializes and configures the Region and the memory to be protected
@@ -375,7 +377,7 @@ MPU\_Config() is generated from the [corresponding STM32CubeMX Cortex-M7 Mode an
 	  
 	  /* Enables the MPU */
 	  HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
-
+```
 
 The author does not know of a way to consistently induce speculative access faults, but reads to external RAM range or attempts for code execution to trigger a HardFault (or MemManage fault if enabled, default: not enabled).
 
@@ -385,15 +387,19 @@ Stack pointer: were \_estack to remain at the end of SRAM2, it would be in a non
 
 in *stm32f7xx\_it.c*, there are
 
+```cpp
 	void HardFault_Handler(void); // This function handles Hard fault interrupt.
 	void MemManage_Handler(void); // This function handles Memory management fault.
 	void BusFault_Handler(void); // This function handles Pre-fetch fault, memory access fault.
 	void UsageFault_Handler(void); // This function handles Undefined instruction or illegal state.
+```
+
 
 which need to be enabled in the STM32CubeMX project under NVIC, and have user code sections for printf() output generation or other reporting.
 
 In *main.c*, SCB->SHCSR interrupt bits are set:
 
+```cpp
 	/* USER CODE BEGIN 1 */
 	
 	/ * Set all three (USGFAULTENA, BUSFAULTENA, and MEMFAULTENA) fault enable bits
@@ -408,7 +414,7 @@ In *main.c*, SCB->SHCSR interrupt bits are set:
 	
 	/* MPU Configuration--------------------------------------------------------*/
 	MPU_Config();
-
+```
 
 
 
@@ -420,6 +426,7 @@ The four error handlers `HardFault_Handler`, `MemManage_Handler`, `BusFault_Hand
 
 On the other hand, their corresponding address registers `MMFAR` and `BFAR` can give a hint by exposing the offending memory address. In full, the necessary handlers  can be implemented as (*stm32f7xx\_it.c*):
 
+```cpp
 	void HardFault_Handler(void)
 	{
 	  /* USER CODE BEGIN HardFault_IRQn 0 */
@@ -488,6 +495,8 @@ On the other hand, their corresponding address registers `MMFAR` and `BFAR` can 
 	    /* USER CODE END W1_UsageFault_IRQn 0 */
 	  }
 	}
+```
+
 
 (Note: printf requires the aforementioned [newlib fixes](readme_newlib.md)).
 

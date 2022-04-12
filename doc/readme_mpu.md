@@ -217,6 +217,7 @@ Unlike the external RAM region, both Code and SRAM region are safe to access. Mi
 
 Safe-Background MPU region 0 initialization:
  
+```cpp
 	MPU_InitStruct.Enable = MPU_REGION_ENABLE;
 	MPU_InitStruct.Number = MPU_REGION_NUMBER0;
 	MPU_InitStruct.BaseAddress = 0;
@@ -234,7 +235,7 @@ Safe-Background MPU region 0 initialization:
 	
 	// Enable the MPU, use default memory access for regions not defined here
 	HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
-
+```
 
 MPU\_REGION\_NO\_ACCESS removes program access permissions (no read or write permissions, in both Handler and Thread modes). 
 
