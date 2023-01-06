@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="libscpi" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile">
+    <makefile filename="$PROJECT_DIR$/Middlewares/Third_Party/libscpi/Makefile" target=" clean static" workingDirectory="$PROJECT_DIR$/Middlewares/Third_Party/libscpi" arguments="CC=arm-none-eabi-gcc AR=arm-none-eabi-ar MODE=&quot;-mcpu=cortex-m7 -mthumb -mfpu=fpv5-sp-d16 -mfloat-abi=hard&quot;">
+      <envs />
+    </makefile>
+    <method v="2" />
+  </configuration>
+</component>
