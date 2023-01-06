@@ -3,3 +3,4 @@ cmake-build-nonoptimized
 cmake-build-release
 *.backup
 research
+*.o

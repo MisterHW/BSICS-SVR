@@ -711,11 +711,11 @@ const scpi_command_t scpi_commands[] = {
         SCPI_CMD_DESC("(float) - [A] last HI DCDC limit") SCPI_CMD_TAG(BSICS_group_current_hi)},
 
     {.pattern = "GRP#:MEASure:CH#:LO?", .callback = BSICS_ChannelVoltageLoQ,
-        SCPI_CMD_DESC("<float> - [V] CH1..CH3 secondary-side ADC LO readback")},
+        SCPI_CMD_DESC("(float) - [V] CH1..CH3 secondary-side ADC LO readback")},
     {.pattern = "GRP#:MEASure:CH#:HI?", .callback = BSICS_ChannelVoltageHiQ,
-        SCPI_CMD_DESC("<float> - [V] CH1..CH3 secondary-side ADC HI readback")},
+        SCPI_CMD_DESC("(float) - [V] CH1..CH3 secondary-side ADC HI readback")},
     {.pattern = "GRP#:MEASure:CH#:TEMP?", .callback = BSICS_ChannelTemperatureQ,
-        SCPI_CMD_DESC("<float> - [°C] CH1..CH3 secondary-side T sensor")},
+        SCPI_CMD_DESC("(float) - [°C] CH1..CH3 secondary-side T sensor")},
 
     {.pattern = "GRP#:CONFigure:CH#:DRIVer[:STATe]", .callback = BSICS_SetChannelDriverMux,
         SCPI_CMD_DESC("<#Hxx> - CH1..CH3 HS 7:4 and LS 3:0 switch config")},
