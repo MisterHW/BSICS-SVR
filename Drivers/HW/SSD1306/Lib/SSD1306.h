@@ -204,8 +204,7 @@ SSD1306<disp_width, disp_height>::init(I2C_HandleTypeDef *_hI2C, SSD1306_address
     i &= send_command(SSD1306_SET_START_LINE(0)); // RAM to COM offset = 0
 
     // Memory Use and Mapping to COM and SEGMENT lines (general case or panel-specific)
-    i &= send_command(SSD1306_SET_SEGMENT_REMAP_INV); // inverse column mapping
-    i &= send_command(SSD1306_COM_SCAN_DIR_DEC); // scan dir reverse
+    i &= configure_orientation(invert_x, invert_y);
     i &= send_command(SSD1306_SET_VERT_DISPLAY_OFFSET, 0);
     i &= init_panel_specifics(); // panel-specific commands (may override commands above)
 
